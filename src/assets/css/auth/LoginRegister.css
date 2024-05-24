@@ -1,0 +1,42 @@
+/* LoginRegister.css */
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  .form-title {
+    text-align: center;
+    color: #1890ff;
+  }
+
+  .forgot-password {
+    float: right;
+  }
+
+  .form-button {
+    width: 100%;
+    background-color: #1890ff;
+    border-color: #1890ff;
+  }
+
+  .social-login {
+    text-align: center;
+  }
+
+  .social-icons {
+    margin-top: 10px;
+  }
+
+  .social-icon {
+    font-size: 24px;
+    margin: 0 10px;
+    color: #1890ff;
+  }
+
+  .role-selector {
+    text-align: center;
+  }

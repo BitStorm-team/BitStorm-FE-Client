@@ -1,0 +1,48 @@
+.session3-container {
+    padding: 40px;
+    text-align: center;
+    /* background-color: red; */
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .session3-subtitle {
+    color: #1890ff;
+    margin-bottom: 8px;
+  }
+
+  .session3-title {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+  }
+
+  .podcast-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .podcast-card {
+    width: 240px;
+  }
+
+  .podcast-image {
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .podcast-duration,
+  .podcast-rating {
+    margin-top: 10px;
+  }
+
+  .see-more-button {
+    margin-top: 20px;
+    width: 150px;
+    margin:  0 auto;
+  }

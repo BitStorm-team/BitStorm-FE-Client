@@ -68,3 +68,21 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## install antd design
+--> npm i antd
+
+## install axios
+--> npm i axios
+
+## install jwt
+--> npm i jwt-decode
+
+## install react routing
+--> npm i react-router-dom
+
+## install antd design icon
+--> npm install @ant-design/icons
+
+

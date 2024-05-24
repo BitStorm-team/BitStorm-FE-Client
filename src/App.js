@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainLayout from "./layout/Layout";
 
-function App() {
+import { privateRoutes, publicRoutes } from "./utils/routes";
+import withPublicRoute from "./router/PublicRouter";
+import withPrivateRoute from "./router/PrivateRouter";
+import NotFound from "./pages/NotFound.jsx";
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {publicRoutes.map((route, index) =>
+          withPublicRoute({ ...route }, index)
+        )}
+        {privateRoutes.map((route, index) =>
+          withPrivateRoute({ ...route }, index)
+        )}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

@@ -1,0 +1,44 @@
+/* Session4.css */
+.session4 {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f9f9f9;
+  }
+
+  .session4 h2 {
+    color: #1890ff;
+  }
+
+  .session4 h1 {
+    font-size: 28px;
+    margin-bottom: 40px;
+  }
+
+  .session4-card {
+    border-radius: 8px;
+    transition: transform 0.3s;
+  }
+
+  .session4-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .session4-card .ant-card-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background: #f0f2f5;
+    border-bottom: 1px solid #e8e8e8;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .session4-card .ant-card-meta-title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .session4-card .ant-card-meta-description {
+    font-size: 14px;
+    color: #555;
+  }

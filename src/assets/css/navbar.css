@@ -1,0 +1,33 @@
+.navbar {
+
+  padding: 10px 20px;
+  /* box-shadow: 0px 4px 2px -2px gray; */
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 0 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #555;
+  font-size: 16px;
+  border-bottom: 2px solid #ffffff;
+  transition: color 0.3s, border 0.3s, transform 0.3s; }
+
+.nav-link:hover {
+  color: lightblue;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid #13818d;
+  transform: translateY(2px);
+}

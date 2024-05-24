@@ -1,0 +1,34 @@
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: red; */
+    background-color: #98dded;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0px;
+    z-index: 9999;
+  }
+
+  .header-section {
+    flex: 1;
+  }
+
+  .logo {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .buttons button {
+    margin-left: 10px;
+  }
