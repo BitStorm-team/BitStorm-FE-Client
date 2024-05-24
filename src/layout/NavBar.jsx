@@ -11,7 +11,9 @@ const NavBar = () => {
           <li className="nav-item" key={index}>
             <NavLink
               to={`/${item.toLowerCase()}`}
-              className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
             >
               {item}
             </NavLink>
