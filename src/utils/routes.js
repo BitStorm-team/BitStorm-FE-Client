@@ -15,6 +15,21 @@ export const publicRoutes = [
     element: <SignUp />,
     exact: true,
   },
+  {
+    path: "/",
+    element: <MainLayout main={<HomePage />} />,
+    exact: true,
+  },
+  {
+    path: "/home",
+    element: <MainLayout main={<HomePage />} />,
+    exact: true,
+  },
+  {
+    path: "/contact",
+    element: <MainLayout main={<Contact />} />,
+    exact: true,
+  },
 ];
 
 export const privateRoutes = [
