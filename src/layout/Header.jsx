@@ -24,18 +24,23 @@ const MainHeader = () => {
       const decodedToken = jwtDecode(storedToken); // Use jwtDecode correctly
       setUserInfo(decodedToken);
     }
+    else {
+      alert("You don't have permission to login");
+      localStorage.removeItem("permission");
+    }
   }, []);
 
   useEffect(() => {
     if (userInfo && userInfo.sub) {
       getUser();
     }
-  }, [userInfo, token]); // Add userInfo and token as dependencies
+
+  }, [token]); // Add userInfo and token as dependencies
 
   const getUser = async () => {
     const header = headerAPI();
     const userId = userInfo.sub;
-    const apiUrl = `http://127.0.0.1:8000/api/experts/profile/${userId}`;
+    const apiUrl = `https://bitstormbe.zeabur.app/api/user/profile/${userId}`;
     try {
       const response = await axios.get(apiUrl, {
         headers: header,
@@ -47,10 +52,7 @@ const MainHeader = () => {
     }
   };
 
-  if (localStorage.getItem("permission")) {
-    alert("You don't have permission to login");
-    localStorage.removeItem("permission");
-  }
+
 
   const handleLogout = () => {
     console.log("User logged out");

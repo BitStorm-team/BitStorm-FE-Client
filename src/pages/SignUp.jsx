@@ -1,64 +1,116 @@
 // Register.js
-import React from 'react';
-import { Form, Input, Button, Typography, Radio } from 'antd';
-import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
-import '../assets/css/auth/LoginRegister.css';
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, Typography, Radio } from "antd";
+import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
+import "../assets/css/auth/LoginRegister.css";
+import { useNavigate } from "react-router-dom";
+import fetchCsrfToken from "../api/csrf-token";
+import axios from "axios";
 
 const { Title, Link } = Typography;
 
 const SingUp = () => {
-  const onFinish = values => {
-    console.log('Success:', values);
+  // states
+  const [csrfToken, setCsrfToken] = useState("");
+  const navigate = useNavigate();
+
+  // effects
+  useEffect(() => {
+    fetchCsrfToken(setCsrfToken);
+  }, []);
+
+  useEffect(() => {});
+
+  const onFinish = async (values) => {
+    console.log("Success:", values);
+    // if expert
+    if (values.role_id === 3) {
+      localStorage.setItem('values', JSON.stringify(values));
+      navigate("/signup/expert");
+    }
+    // // if user
+    // const URL = "https://bitstormbe.zeabur.app/api/auth/register"; // Thay thế bằng URL thực tế của bạn
+    // try {
+    //   const response = await axios.post(URL, values, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "X-CSRF-TOKEN": csrfToken, // Bao gồm CSRF token trong headers
+    //     },
+    //     withCredentials: true,
+    //   });
+    //   if(response){
+    //     navigate("/signin");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   alert(
+    //     "Login failed: " + (error.response?.data?.message || error.message)
+    //   );
+    // }
   };
 
+  // render
   return (
     <div className="form-container">
-      <Title level={2} className="form-title">Đăng ký</Title>
+      <Title level={2} className="form-title">
+        Đăng ký
+      </Title>
       <Form name="register" onFinish={onFinish}>
         <Form.Item
-          name="username"
-          rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
+          name="name"
+          rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập!" }]}
         >
           <Input placeholder="Tên đăng nhập" />
         </Form.Item>
         <Form.Item
           name="email"
-          rules={[{ required: true, message: 'Vui lòng nhập địa chỉ email!' }]}
+          rules={[{ required: true, message: "Vui lòng nhập địa chỉ email!" }]}
         >
           <Input placeholder="Địa chỉ email" />
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!', min: 8, message: 'Mật khẩu ít nhất 8 ký tự!' }]}
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng nhập mật khẩu!",
+              min: 8,
+              message: "Mật khẩu ít nhất 8 ký tự!",
+            },
+          ]}
         >
           <Input.Password placeholder="Mật khẩu (ít nhất 8 kí tự)" />
         </Form.Item>
         <Form.Item
-          name="confirm"
-          dependencies={['password']}
+          name="password_confirmation"
+          dependencies={["password"]}
           hasFeedback
           rules={[
-            { required: true, message: 'Vui lòng nhập lại mật khẩu!' },
+            { required: true, message: "Vui lòng nhập lại mật khẩu!" },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
+                if (!value || getFieldValue("password") === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error('Hai mật khẩu bạn nhập không khớp!'));
+                return Promise.reject(
+                  new Error("Hai mật khẩu bạn nhập không khớp!")
+                );
               },
             }),
           ]}
         >
           <Input.Password placeholder="Nhập lại mật khẩu" />
         </Form.Item>
-        <Form.Item name="role" className="role-selector">
+        <Form.Item name="role_id" className="role-selector">
           <Radio.Group>
-            <Radio.Button value="user">Người nhận tư vấn</Radio.Button>
-            <Radio.Button value="advisor">Người tư vấn</Radio.Button>
+            <Radio.Button value={2}>Người nhận tư vấn</Radio.Button>
+            <Radio.Button value={3}>Người tư vấn</Radio.Button>
           </Radio.Group>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="form-button">Đăng ký</Button>
+          <Button type="primary" htmlType="submit" className="form-button">
+            Đăng ký
+          </Button>
         </Form.Item>
         <Form.Item>
           <div className="social-login">
@@ -70,7 +122,9 @@ const SingUp = () => {
           </div>
         </Form.Item>
         <Form.Item>
-          <span>Đã có tài khoản? <Link href="#">Đăng Nhập</Link></span>
+          <span>
+            Đã có tài khoản? <Link href="#">Đăng Nhập</Link>
+          </span>
         </Form.Item>
       </Form>
     </div>
