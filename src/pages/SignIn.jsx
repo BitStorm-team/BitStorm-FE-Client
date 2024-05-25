@@ -9,13 +9,14 @@ import {
 import "../assets/css/auth/LoginRegister.css";
 import axios from "axios";
 import { setStorage } from "../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Link } = Typography;
 
 const SignIn = () => {
   // state
   const [csrfToken, setCsrfToken] = useState("");
-
+  const navigate = useNavigate();
   // get csrf token
   useEffect(() => {
     // Fetch CSRF token from the server
@@ -51,7 +52,7 @@ const SignIn = () => {
           const { access_token, expires_in } = response.data;
           setStorage("__token__", access_token);
           setStorage("expires_in", expires_in);
-          window.location.href = "/";
+          navigate("/");
         } catch (error) {
           console.log(error);
           alert(

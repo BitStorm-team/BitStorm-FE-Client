@@ -11,7 +11,7 @@ const Session1 = () => {
         <button className="start-button">Bắt Đầu Ngay</button>
       </div>
       <div className="image-content">
-        <img src={doctorImage} alt="Doctor" />
+        <img data-aos="fade-up" src={doctorImage} alt="Doctor" />
       </div>
     </div>
   );

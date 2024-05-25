@@ -37,6 +37,7 @@ const Session3 = () => {
       <div className="podcast-grid">
         {podcastData.map((podcast, index) => (
           <Card
+            data-aos="fade-up"
             key={index}
             hoverable
             className="podcast-card"
