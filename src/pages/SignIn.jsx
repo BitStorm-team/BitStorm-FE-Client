@@ -1,6 +1,6 @@
 // Login.js
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import {
   FacebookOutlined,
   GoogleOutlined,
@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import "../assets/css/auth/LoginRegister.css";
 import axios from "axios";
-import { setStorage } from "../utils/helpers";
+import { API_URL, setStorage } from "../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import fetchCsrfToken from "../api/csrf-token";
 
@@ -25,7 +25,7 @@ const SignIn = () => {
 
   //  handle login request
   const onFinish = async (values) => {
-    const URL = "https://bitstormbe.zeabur.app/api/auth/login"; // Thay thế bằng URL thực tế của bạn
+    const URL = API_URL + "/auth/login";
     console.log("Success:", values);
     try {
       const response = await axios.post(URL, values, {

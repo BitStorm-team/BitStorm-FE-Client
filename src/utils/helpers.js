@@ -1,5 +1,5 @@
-import { jwtDecode } from "jwt-decode"; // Correctly import jwtDecode
-import axios from "axios";
+import {jwtDecode} from 'jwt-decode' // Correctly import jwtDecode
+import axios from 'axios'
 
 const ACCESS_TOKEN = "__token__";
 
@@ -70,3 +70,4 @@ export function headerAPI() {
   return headers;
 }
 
+export const API_URL = process.env.API_URL || 'https://bitstormbe.zeabur.app/api'
