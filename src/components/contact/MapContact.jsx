@@ -8,7 +8,7 @@ const MapContact = () => {
   const longitude = 108.2412752378355;
 
   return (
-    <div className="map-contact">
+    <div className="map-contact" style={{display:"flex",justifyContent:"center",}}>
       <div className="map-container">
         <iframe
           title="Google Map"
@@ -20,7 +20,7 @@ const MapContact = () => {
           loading="lazy"
         ></iframe>
       </div>
-      <div className="contact-info">
+      <div className="contact-info" style={{marginTop:"5%"}}>
         <h2>We are here for you</h2>
         <p>
           <strong>Address: </strong>108 - Le Huu Trac - Son Tra - Da Nang
