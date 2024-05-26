@@ -1,15 +1,11 @@
 // Login.js
-import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Typography } from "antd";
-import {
-  FacebookOutlined,
-  GoogleOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
-import "../assets/css/auth/LoginRegister.css";
-import axios from "axios";
-import { setStorage } from "../utils/helpers";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from 'react'
+import {Button, Form, Input, Typography} from 'antd'
+import {FacebookOutlined, GoogleOutlined, TwitterOutlined,} from '@ant-design/icons'
+import '../assets/css/auth/LoginRegister.css'
+import axios from 'axios'
+import {API_URL, setStorage} from '../utils/helpers'
+import {useNavigate} from 'react-router-dom'
 
 const { Title, Link } = Typography;
 
@@ -39,7 +35,7 @@ const SignIn = () => {
 
     //  handle login request
     const onFinish = async (values) => {
-        const URL = "http://localhost:8000/api/auth/login"; // Thay thế bằng URL thực tế của bạn
+      const URL = API_URL + '/auth/login'
         console.log("Success:", values);
         try {
           const response = await axios.post(URL, values, {
