@@ -1,16 +1,12 @@
 // Login.js
-import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Typography } from "antd";
-import {
-  FacebookOutlined,
-  GoogleOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
-import "../assets/css/auth/LoginRegister.css";
-import axios from "axios";
-import { API_URL, setStorage } from "../utils/helpers";
-import { useNavigate } from "react-router-dom";
-import fetchCsrfToken from "../api/csrf-token";
+import React, {useEffect, useState} from 'react'
+import {Button, Form, Input, Typography, message} from 'antd'
+import {FacebookOutlined, GoogleOutlined, TwitterOutlined,} from '@ant-design/icons'
+import '../assets/css/auth/LoginRegister.css'
+import axios from 'axios'
+import {API_URL, setStorage} from '../utils/helpers'
+import {useNavigate} from 'react-router-dom'
+import fetchCsrfToken from '../api/csrf-token'
 
 const { Title, Link } = Typography;
 
@@ -23,29 +19,31 @@ const SignIn = () => {
     fetchCsrfToken(setCsrfToken);
   }, []); // Empty dependency array to run only once on mount
 
-  //  handle login request
-  const onFinish = async (values) => {
-    const URL = API_URL + "/auth/login";
-    console.log("Success:", values);
-    try {
-      const response = await axios.post(URL, values, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": csrfToken, // Bao gồm CSRF token trong headers
-        },
-        withCredentials: true,
-      });
-      const { access_token, expires_in } = response.data;
-      setStorage("__token__", access_token);
-      setStorage("expires_in", expires_in);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      alert(
-        "Login failed: " + (error.response?.data?.message || error.message)
-      );
-    }
-  };
+
+
+    //  handle login request
+    const onFinish = async (values) => {
+      const URL = API_URL + '/auth/login'
+        console.log("Success:", values);
+        try {
+          const response = await axios.post(URL, values, {
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": csrfToken, // Bao gồm CSRF token trong headers
+            },
+            withCredentials: true,
+          });
+          const { access_token, expires_in } = response.data;
+          setStorage("__token__", access_token);
+          setStorage("expires_in", expires_in);
+          navigate("/");
+        } catch (error) {
+          console.log(error);
+          message.error(
+            "Login failed"
+          );
+        }
+      };
 
   return (
     <div className="form-container">

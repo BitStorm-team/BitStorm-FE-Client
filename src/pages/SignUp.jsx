@@ -6,9 +6,9 @@ import "../assets/css/auth/LoginRegister.css";
 import { useNavigate } from "react-router-dom";
 import fetchCsrfToken from "../api/csrf-token";
 import axios from "axios";
+import signUp from "../api/signUp";
 
 const { Title, Link } = Typography;
-
 const SingUp = () => {
   // states
   const [csrfToken, setCsrfToken] = useState("");
@@ -19,34 +19,14 @@ const SingUp = () => {
     fetchCsrfToken(setCsrfToken);
   }, []);
 
-  useEffect(() => {});
-
   const onFinish = async (values) => {
     console.log("Success:", values);
     // if expert
     if (values.role_id === 3) {
-      localStorage.setItem('values', JSON.stringify(values));
+      localStorage.setItem("values", JSON.stringify(values));
       navigate("/signup/expert");
     }
-    // // if user
-    // const URL = "https://bitstormbe.zeabur.app/api/auth/register"; // Thay thế bằng URL thực tế của bạn
-    // try {
-    //   const response = await axios.post(URL, values, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "X-CSRF-TOKEN": csrfToken, // Bao gồm CSRF token trong headers
-    //     },
-    //     withCredentials: true,
-    //   });
-    //   if(response){
-    //     navigate("/signin");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   alert(
-    //     "Login failed: " + (error.response?.data?.message || error.message)
-    //   );
-    // }
+    signUp(values,navigate);
   };
 
   // render

@@ -1,13 +1,13 @@
-import {Avatar, Button} from 'antd'
-import {Link, useNavigate} from 'react-router-dom' // Import useNavigate
-import Logo from '../components/Logo'
-import NavBar from './NavBar'
-import '../assets/css/header.css'
-import {useEffect, useState} from 'react'
-import {API_URL, headerAPI} from '../utils/helpers'
-import {UserOutlined} from '@ant-design/icons'
-import axios from 'axios'
-import {jwtDecode} from 'jwt-decode' // Corrected import
+import { Avatar, Button, message } from "antd";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import Logo from "../components/Logo";
+import NavBar from "./NavBar";
+import "../assets/css/header.css";
+import { useEffect, useState } from "react";
+import { API_URL, headerAPI } from "../utils/helpers";
+import { UserOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode"; // Corrected import
 
 const MainHeader = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -18,14 +18,19 @@ const MainHeader = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("__token__");
-    if (storedToken) {
-      setToken(storedToken);
-      setIsLogin(true); // Set isLogin to true if token exists
-      const decodedToken = jwtDecode(storedToken); // Use jwtDecode correctly
-      setUserInfo(decodedToken);
+    if(storedToken){
+       setToken(storedToken);
+       setIsLogin(true); // Set isLogin to true if token exists
     }
-    else {
-      alert("You don't have permission to login");
+  },[])
+
+  useEffect(() => {
+    if (token) {
+      setToken(token);
+      const decodedToken = jwtDecode(token); // Use jwtDecode correctly
+      setUserInfo(decodedToken);
+    } else {
+
       localStorage.removeItem("permission");
     }
   }, []);
@@ -34,25 +39,42 @@ const MainHeader = () => {
     if (userInfo && userInfo.sub) {
       getUser();
     }
-
   }, [token]); // Add userInfo and token as dependencies
 
   const getUser = async () => {
     const header = headerAPI();
     const userId = userInfo.sub;
-    const apiUrl = API_URL + `/experts/profile/${userId}`
+    const apiUrl = API_URL + `/auth/user-profile`;
     try {
       const response = await axios.get(apiUrl, {
         headers: header,
       });
-      setUserProfile(response.data.data); // Assuming response.data.data contains the user profile
+      if (response.data.role_id === 3) {
+        getExpert();
+      }
+      setUserProfile(response.data); // Assuming response.data.data contains the user profile
     } catch (error) {
       localStorage.setItem("permission", true);
       handleLogout();
     }
   };
 
+  const getExpert = async () => {
+    const header = headerAPI();
+    const userId = userInfo.sub;
+    const apiUrl = API_URL + `/experts/profile/${userId}`;
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: header,
+      });
 
+      setUserProfile(response.data.data); // Assuming response.data.data contains the user profile
+    } catch (error) {
+      handleLogout();
+    }
+  };
+
+  console.log(userProfile);
 
   const handleLogout = () => {
     console.log("User logged out");
