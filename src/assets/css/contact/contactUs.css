@@ -1,0 +1,101 @@
+.contact-us {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .banner {
+    background-color: #f4f4f4;
+    padding: 50px 20px;
+    margin-bottom: 20px;
+  }
+  
+  .banner h1 {
+    margin: 0;
+    font-size: 36px;
+  }
+  
+  .banner p {
+    margin: 10px 0 0;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  .contact-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .contact-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .contact-form button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .contact-form button:hover {
+    background-color: #0056b3;
+  }
+  .map-contact {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .map-container {
+    flex: 1;
+  }
+  
+  .contact-info {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .contact-info h2 {
+    color: #0056b3;
+  }
+  
+  .contact-info p {
+    margin: 10px 0;
+  }
+  
+  .contact-info a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  
+  .contact-info a:hover {
+    text-decoration: underline;
+  }
+  .circular-image {
+    width: 200px; /* Đổi kích thước theo nhu cầu */
+    height: 200px; /* Đổi kích thước theo nhu cầu */
+    border-radius: 50%; /* Biến hình ảnh thành hình tròn */
+    overflow: hidden; /* Đảm bảo phần thừa nếu có sẽ bị ẩn */
+  }
+  
+  /* Ví dụ sử dụng */
+  .circular-image img {
+    width: 100%; /* Đảm bảo hình ảnh lấp đầy hình tròn */
+    height: auto; /* Đảm bảo tỷ lệ khung hình không bị méo */
+  }

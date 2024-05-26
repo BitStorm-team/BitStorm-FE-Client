@@ -1,8 +1,8 @@
-import Contact from "../pages/Contact";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
+import ContactUs from "../pages/ContactUs";
 
 export const publicRoutes = [
   {
@@ -26,8 +26,8 @@ export const publicRoutes = [
     exact: true,
   },
   {
-    path: "/contact",
-    element: <MainLayout main={<Contact />} />,
+    path: "/contactUs",
+    element: <MainLayout main={<ContactUs />} />,
     exact: true,
   },
 ];
@@ -44,8 +44,8 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/contact",
-    element: <MainLayout main={<Contact />} />,
+    path: "/contactUs",
+    element: <MainLayout main={<ContactUs />} />,
     exact: true,
   },
 ];
