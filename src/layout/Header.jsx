@@ -1,13 +1,13 @@
-import { Avatar, Button } from "antd";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import Logo from "../components/Logo";
-import NavBar from "./NavBar";
-import "../assets/css/header.css";
-import { useState, useEffect } from "react";
-import { headerAPI } from "../utils/helpers";
-import { UserOutlined } from "@ant-design/icons";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode"; // Corrected import
+import {Avatar, Button} from 'antd'
+import {Link, useNavigate} from 'react-router-dom' // Import useNavigate
+import Logo from '../components/Logo'
+import NavBar from './NavBar'
+import '../assets/css/header.css'
+import {useEffect, useState} from 'react'
+import {API_URL, headerAPI} from '../utils/helpers'
+import {UserOutlined} from '@ant-design/icons'
+import axios from 'axios'
+import {jwtDecode} from 'jwt-decode' // Corrected import
 
 const MainHeader = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -35,7 +35,7 @@ const MainHeader = () => {
   const getUser = async () => {
     const header = headerAPI();
     const userId = userInfo.sub;
-    const apiUrl = `http://127.0.0.1:8000/api/experts/profile/${userId}`;
+    const apiUrl = API_URL + `/experts/profile/${userId}`
     try {
       const response = await axios.get(apiUrl, {
         headers: header,
