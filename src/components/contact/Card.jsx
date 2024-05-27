@@ -1,25 +1,22 @@
-import React from 'react';
-import { Card, Avatar, Space } from 'antd';
-import { UserOutlined, FacebookOutlined, InstagramOutlined, LinkedinOutlined } from '@ant-design/icons';
+// Card.js
+import React from "react";
+import "../../assets/css/contact/card.css"; // Đảm bảo rằng bạn có file CSS để style cho component
 
-const { Meta } = Card;
-
-const ProfileCard = ({ name, avatar, facebookLink, instagramLink, linkedinLink }) => {
+const Card = ({ name, email, image }) => {
   return (
-    <Card style={{ width: 300 }}>
-      <Meta
-        avatar={<Avatar src={avatar} icon={<UserOutlined />} />}
-        title={name}
-        description={
-          <Space>
-            <a href={facebookLink}><FacebookOutlined /></a>
-            <a href={instagramLink}><InstagramOutlined /></a>
-            <a href={linkedinLink}><LinkedinOutlined /></a>
-          </Space>
-        }
-      />
-    </Card>
+    <div className="card">
+      <div className="card-image">
+        <img src={image} alt={name} />
+      </div>
+      <div className="card-content" >
+        <h3 className="card-title">{name}</h3>
+        <p className="card-name">{email}</p>
+      </div>
+      <div className="btn_card_box">
+        <button className="btn_card">See Detail</button>
+      </div>
+    </div>
   );
-}
+};
 
-export default ProfileCard;
+export default Card;

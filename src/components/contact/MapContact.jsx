@@ -1,5 +1,4 @@
 import React from "react";
-import "../../assets/css/contact/MapContact.css";
 
 const MapContact = () => {
   //Vỹ độ

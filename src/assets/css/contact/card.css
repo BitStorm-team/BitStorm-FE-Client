@@ -1,0 +1,44 @@
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    background-color: #3695ED;
+    width: 230px;
+    border-radius: 10px;
+    height: 400px;
+}
+
+.card-image {
+    width: 100%;
+    height: 250px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.card-title,.card-name {
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.card-title{
+    font-size: 1.2em;
+}
+.card-name {
+    font-size: 1em;
+}
+.btn_card {
+    width: 50%;
+    border-radius: 20px;
+    border: none;
+}
+.btn_card_box{
+    margin-top: 25px;
+}
