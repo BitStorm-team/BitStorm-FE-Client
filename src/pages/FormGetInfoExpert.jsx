@@ -28,7 +28,6 @@ const FormGetInforExpert = () => {
       certificate: imageUrl,
       ...parentValues
     };
-
     // reister here
     signUp(formData,navigate)
   };

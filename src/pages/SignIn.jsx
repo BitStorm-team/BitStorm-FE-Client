@@ -1,12 +1,16 @@
 // Login.js
-import React, {useEffect, useState} from 'react'
-import {Button, Form, Input, Typography, message} from 'antd'
-import {FacebookOutlined, GoogleOutlined, TwitterOutlined,} from '@ant-design/icons'
-import '../assets/css/auth/LoginRegister.css'
-import axios from 'axios'
-import {API_URL, setStorage} from '../utils/helpers'
-import {useNavigate} from 'react-router-dom'
-import fetchCsrfToken from '../api/csrf-token'
+import React, { useEffect, useState } from "react";
+import { Button, Form, Input, Typography, message } from "antd";
+import {
+  FacebookOutlined,
+  GoogleOutlined,
+  TwitterOutlined,
+} from "@ant-design/icons";
+import "../assets/css/auth/LoginRegister.css";
+import axios from "axios";
+import { API_URL, API_URL_BACKUP, setStorage } from "../utils/helpers";
+import { useNavigate } from "react-router-dom";
+import fetchCsrfToken from "../api/csrf-token";
 
 const { Title, Link } = Typography;
 
@@ -19,31 +23,47 @@ const SignIn = () => {
     fetchCsrfToken(setCsrfToken);
   }, []); // Empty dependency array to run only once on mount
 
+  //  handle login request
+  const onFinish = async (values) => {
+    const URL = API_URL + "/auth/login";
+    const URL_BACKUP = API_URL_BACKUP + "/auth/login";
+    try {
+      // First attempt with primary URL
+      const response = await axios.post(URL, values, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfToken,
+        },
+        withCredentials: true,
+      });
 
+      const { access_token, expires_in } = response.data;
+      setStorage("__token__", access_token);
+      setStorage("expires_in", expires_in);
+      navigate("/");
+    } catch (error) {
+      console.log("Primary server error:", error);
 
-    //  handle login request
-    const onFinish = async (values) => {
-      const URL = API_URL + '/auth/login'
-        console.log("Success:", values);
-        try {
-          const response = await axios.post(URL, values, {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-TOKEN": csrfToken, // Bao gồm CSRF token trong headers
-            },
-            withCredentials: true,
-          });
-          const { access_token, expires_in } = response.data;
-          setStorage("__token__", access_token);
-          setStorage("expires_in", expires_in);
-          navigate("/");
-        } catch (error) {
-          console.log(error);
-          message.error(
-            "Login failed"
-          );
-        }
-      };
+      try {
+        // Attempt with backup URL
+        const responseBackup = await axios.post(URL_BACKUP, values, {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+          },
+          withCredentials: true,
+        });
+
+        const { access_token, expires_in } = responseBackup.data;
+        setStorage("__token__", access_token);
+        setStorage("expires_in", expires_in);
+        navigate("/");
+      } catch (backupError) {
+        console.log("Backup server error:", backupError);
+        message.error("Login failed");
+      }
+    }
+  };
 
   return (
     <div className="form-container">

@@ -22,11 +22,12 @@ const SingUp = () => {
   const onFinish = async (values) => {
     console.log("Success:", values);
     // if expert
-    if (values.role_id === 3) {
+    if (values.role_id === 3 || values.role_id === "3") {
       localStorage.setItem("values", JSON.stringify(values));
       navigate("/signup/expert");
+    } else {
+      signUp(values, navigate);
     }
-    signUp(values,navigate);
   };
 
   // render
