@@ -215,7 +215,7 @@ const ContactUs = () => {
         </div>
       </div>
       <div className="doctor_contact">
-        <h1>Các Bác Sĩ Chuyên Ngành Tâm Lý</h1>
+        <h1 style={{marginTop:"10px"}}>Some experts in the field of psychology</h1>
         <div className="card-container">
           <Slider {...settings}>
             {expertData.map((doctor, index) => (
