@@ -1,10 +1,16 @@
 // Card.js
 import React from "react";
 import "../../assets/css/contact/card.css"; // Đảm bảo rằng bạn có file CSS để style cho component
+import { useNavigate } from "react-router-dom";
 
-const Card = ({ name, email, image }) => {
+const Card = ({ name, email, image, id }) => {
+  const navigate = useNavigate();
+
+  const handleDetail = () => {
+    navigate(`/expert/${id}`);
+  };
   return (
-    <div className="card">
+    <div className="cardd">
       <div className="card-image">
         <img src={image} alt={name} />
       </div>
@@ -13,7 +19,7 @@ const Card = ({ name, email, image }) => {
         <p className="card-name">{email}</p>
       </div>
       <div className="btn_card_box">
-        <button className="btn_card">See Detail</button>
+        <button className="btn_card" onClick={handleDetail}>See Detail</button>
       </div>
     </div>
   );

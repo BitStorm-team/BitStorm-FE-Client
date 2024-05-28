@@ -11,16 +11,11 @@ import { headerAPI } from "../utils/helpers.js";
 import DrImage from "../assets/images/Doctor.jpg";
 
 const ContactUs = () => {
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    // Here you can add your logic to handle form submission
-  };
-  //  states
+  // states
   const [expertData, setExpertData] = useState([{}]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
-  const [email, setEmail] = useState("");
+
   // effects
   useEffect(() => {
     fetchExpertData();
@@ -40,6 +35,7 @@ const ContactUs = () => {
       setLoading(false);
     }
   };
+
   const settings = {
     dots: true,
     infinite: true,
@@ -65,33 +61,28 @@ const ContactUs = () => {
       },
     ],
   };
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handleMessageChange = (e) => {
-    setMessage(e.target.value);
-  };
-  const handleSubmitContactForm = async (event) => {
-    event.preventDefault();
+
+  const handleSubmitContactForm = async (values) => {
     const header = headerAPI();
     const API = "http://127.0.0.1:8000/api/contactUs";
     try {
-      const respone = await axios.post(
+      const response = await axios.post(
         API,
         {
-          email: email,
-          message: message,
+          email: values.email,
+          message: values.message,
         },
         {
           headers: header,
         }
       );
-      console.log("hehe",respone);
+      console.log("Response:", response);
       alert("Success");
     } catch (error) {
-      alert(error);
+      alert(error.message);
     }
   };
+
   return (
     <div className="contact-us">
       <Banner />
@@ -142,7 +133,7 @@ const ContactUs = () => {
             </div>
             <Form
               name="contact"
-              onFinish={onFinish}
+              onFinish={handleSubmitContactForm}
               style={{ width: "40%", zIndex: "2" }}
             >
               <Form.Item
@@ -159,7 +150,6 @@ const ContactUs = () => {
                 wrapperCol={{ span: 24 }}
               >
                 <Input
-                  onChange={handleEmailChange}
                   placeholder="Enter your email address here"
                   style={{
                     backgroundColor: "#ECEFFF",
@@ -182,7 +172,6 @@ const ContactUs = () => {
               >
                 <Input.TextArea
                   placeholder="Enter your message here"
-                  onChange={handleMessageChange}
                   style={{
                     height: "160px",
                     backgroundColor: "#ECEFFF",
@@ -202,7 +191,6 @@ const ContactUs = () => {
                   }}
                   type="primary"
                   htmlType="submit"
-                  onSubmit={handleSubmitContactForm}
                 >
                   Send Message
                 </Button>
@@ -220,7 +208,7 @@ const ContactUs = () => {
         ) : error ? (
           <p>{error}</p>
         ) : (
-          <div className="card-container">
+          <div className="card-containerr">
             <Slider {...settings}>
               {expertData.map((doctor, index) => (
                 <Card
@@ -230,6 +218,7 @@ const ContactUs = () => {
                   image={
                     doctor.profile_picture ? doctor.profile_picture : DrImage
                   }
+                  id = {doctor.id}
                 />
               ))}
             </Slider>
