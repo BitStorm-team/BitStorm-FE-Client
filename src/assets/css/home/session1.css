@@ -1,35 +1,105 @@
 .home-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+  height: 85vh;
+  background-color: transparent !important;
+  overflow: hidden;
+  font-size: 30px;
+}
+
+.box-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.highlight {
+  color: #ffffff;
+}
+
+.start-button {
+  background-color: #40bcd8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.start-button:hover {
+  background-color: #3399a8;
+}
+
+.text-content,
+.image-content {
+  position: relative;
+  z-index: 10;
+}
+
+.text-content {
+  margin-bottom: 20px;
+  left: 10%;
+}
+
+.image-content {
+  right: 20%;
+}
+
+.image-content img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .home-container {
+    flex-direction: row;
   }
 
   .text-content {
     margin-right: 20px;
+    margin-bottom: 0;
+    left: auto;
   }
 
-  .highlight {
-    color: #40bcd8;
-  }
-
-  .start-button {
-    background-color: #40bcd8;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    font-size: 16px;
-  }
-
-  .start-button:hover {
-    background-color: #3399a8;
-  }
-
-  .image-content img {
-    width: 500px;
+  .image-content {
+    right: auto;
+    width: 50%;
     height: auto;
   }
+}
+.scroll-down-icon {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollAnimation 1.5s infinite alternate;
+
+}
+
+@keyframes scrollAnimation {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
