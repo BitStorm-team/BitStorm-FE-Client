@@ -3,6 +3,8 @@ import SignUp from "../pages/SignUp";
 import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
 import ContactUs from "../pages/ContactUs";
+import Expert from "../pages/Expert";
+import FormGetInforExpert from "../pages/FormGetInfoExpert";
 
 export const publicRoutes = [
   {
@@ -13,6 +15,11 @@ export const publicRoutes = [
   {
     path: "/signup",
     element: <SignUp />,
+    exact: true,
+  },
+  {
+    path: "/signup/expert",
+    element: <FormGetInforExpert />,
     exact: true,
   },
   {
@@ -28,6 +35,11 @@ export const publicRoutes = [
   {
     path: "/contactUs",
     element: <MainLayout main={<ContactUs />} />,
+    exact: true,
+  },
+  {
+    path: "/expert",
+    element: <MainLayout main={<Expert />} />,
     exact: true,
   },
 ];
