@@ -1,65 +1,52 @@
 // Login.js
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, Typography, message } from "antd";
 import {
   FacebookOutlined,
   GoogleOutlined,
   TwitterOutlined,
 } from "@ant-design/icons";
 import "../assets/css/auth/LoginRegister.css";
-import axios from "axios";
-import { setStorage } from "../utils/helpers";
 import { useNavigate } from "react-router-dom";
+import { fetchCsrfToken, signIn } from "../api";
+import { setStorage } from "../utils/helpers";
 
 const { Title, Link } = Typography;
 
 const SignIn = () => {
-  // state
   const [csrfToken, setCsrfToken] = useState("");
   const navigate = useNavigate();
-  // get csrf token
+
   useEffect(() => {
-    // Fetch CSRF token from the server
-    const fetchCsrfToken = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://bitstormbe.zeabur.app/api/csrf-token",
-          {
-            withCredentials: true,
-          }
-        );
-        setCsrfToken(response.data.csrf_token);
+        const token = await fetchCsrfToken();
+        setCsrfToken(token);
       } catch (error) {
         console.error("Error fetching CSRF token:", error);
       }
     };
-
-    fetchCsrfToken();
+    fetchData();
   }, []);
 
-    //  handle login request
-    const onFinish = async (values) => {
-        const URL = "http://localhost:8000/api/auth/login"; // Thay thế bằng URL thực tế của bạn
-        console.log("Success:", values);
-        try {
-          const response = await axios.post(URL, values, {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-TOKEN": csrfToken, // Bao gồm CSRF token trong headers
-            },
-            withCredentials: true,
-          });
-          const { access_token, expires_in } = response.data;
-          setStorage("__token__", access_token);
-          setStorage("expires_in", expires_in);
-          navigate("/");
-        } catch (error) {
-          console.log(error);
-          alert(
-            "Login failed: " + (error.response?.data?.message || error.message)
-          );
-        }
-      };
+  const onFinish = async (values) => {
+    try {
+      const data = await signIn(values, csrfToken);
+      const { access_token, expires_in } = data;
+      // Handle success
+      console.log("Login successful:", data);
+
+      setStorage("__token__", access_token);
+      setStorage("expires_in", expires_in);
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      message.error(
+        "Đăng nhập không thành công: " +
+          (error.response?.data?.message || error.message)
+      );
+    }
+  };
 
   return (
     <div className="form-container">
