@@ -87,3 +87,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## install animation lib
 ---> npm install --save aos@next
+
+## install cloudinary for React
+--> npm install @cloudinary/url-gen @cloudinary/react
