@@ -3,10 +3,7 @@ import { Form, Input, Button } from "antd";
 import "../assets/css/contact/contactUs.css";
 import Banner from "../components/contact/Banner.jsx";
 import ImageContact from "../assets/images/long-haired-girl-watching-through-binoculars (2) 1.svg";
-import LineIcon from "../assets/images/Group 1000006713iconOfContact.png";
 import Card from "../components/contact/Card.jsx";
-// import DoctorImage from "../assets/images/Doctor.jpg";
-// import DoctorImage2 from "../assets/images/Telephone-Counselling-768x512.jpg";
 import MapContact from "../components/contact/MapContact.jsx";
 import Slider from "react-slick";
 import axios from "axios";
@@ -20,6 +17,10 @@ const ContactUs = () => {
   };
   //  states
   const [expertData, setExpertData] = useState([{}]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
   // effects
   useEffect(() => {
     fetchExpertData();
@@ -32,10 +33,11 @@ const ContactUs = () => {
       const response = await axios.get(API, { headers: header });
       if (response) {
         setExpertData(response.data.data[0].slice(0, 5));
-        
       }
     } catch (error) {
-      console.log(error);
+      setError("Error fetching doctors. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
   const settings = {
@@ -63,6 +65,33 @@ const ContactUs = () => {
       },
     ],
   };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+  };
+  const handleSubmitContactForm = async (event) => {
+    event.preventDefault();
+    const header = headerAPI();
+    const API = "http://127.0.0.1:8000/api/contactUs";
+    try {
+      const respone = await axios.post(
+        API,
+        {
+          email: email,
+          message: message,
+        },
+        {
+          headers: header,
+        }
+      );
+      console.log("hehe",respone);
+      alert("Success");
+    } catch (error) {
+      alert(error);
+    }
+  };
   return (
     <div className="contact-us">
       <Banner />
@@ -73,74 +102,37 @@ const ContactUs = () => {
           maxHeight: "500px",
           position: "relative",
           borderRadius: "20px",
-          backgroundColor: "rgba(155, 81, 219, 0.1)",
+          backgroundColor: "#ECEFFF",
+          maxWidth: "95%",
         }}
       >
-        <div style={{ marginTop: "-150px", position: "relative", zIndex: "0" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "40%",
-              position: "relative",
-              zIndex: "1",
-              marginTop: "-90px",
-              marginLeft: "-10%",
-            }}
-          >
-            <img
-              className="FirstImage"
-              src={LineIcon}
-              alt="LineIcon"
-              style={{ width: "300px", position: "relative", zIndex: "2" }}
-            />
-            <img
-              className="ThirdImage"
-              src={LineIcon}
-              alt="LineIcon"
-              style={{
-                width: "200px",
-                maxHeight: "230px",
-                position: "relative",
-                zIndex: "2",
-              }}
-            />
-          </div>
-          <div
-            className="form_icon_contact"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-              zIndex: "2",
-              gap: "10%",
-            }}
-          >
-            <div style={{ zIndex: "3", marginTop: "-5%" }}>
+        <div style={{ position: "relative", zIndex: "0" }}>
+          <div className="form_icon_contact">
+            <div style={{ zIndex: "3" }}>
               <div
                 style={{
-                  maxWidth: "100%",
-                  color: "#76AFF2",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                 }}
               >
-                <h3>Do you have any questions?</h3>
+                <h3 style={{ fontSize: "35px" }}>
+                  Lets Get in <span style={{ color: "#676ECA" }}>Touch !</span>
+                </h3>
                 <p>
-                  If you have any questions or wish to express your feelings, or{" "}
+                  If you have any questions or wish to express your feelings, or
                   <br />
-                  anything you would like to share with us, please feel free to{" "}
+                  anything you would like to share with us, please feel free to
                   <br />
                   contact us. <br />
-                  BitStorm will respond as soon as possible.
+                  <strong>
+                    <span style={{ color: "#676ECA" }}>
+                      BitStorm will respond as soon as possible.
+                    </span>
+                  </strong>
                 </p>
               </div>
-              <div
-                className="circular-image"
-                style={{ marginLeft: "70%", marginTop: "-10%" }}
-              >
+              <div className="circular-image" style={{ marginLeft: "70%" }}>
                 <img
                   src={ImageContact}
                   alt="Contact-us"
@@ -151,7 +143,7 @@ const ContactUs = () => {
             <Form
               name="contact"
               onFinish={onFinish}
-              style={{ width: "50%", zIndex: "2" }}
+              style={{ width: "40%", zIndex: "2" }}
             >
               <Form.Item
                 name="email"
@@ -162,8 +154,18 @@ const ContactUs = () => {
                     message: "Please enter a valid email address",
                   },
                 ]}
+                label="Email"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
               >
-                <Input placeholder="Email" />
+                <Input
+                  onChange={handleEmailChange}
+                  placeholder="Enter your email address here"
+                  style={{
+                    backgroundColor: "#ECEFFF",
+                    border: "1px solid #676ECA",
+                  }}
+                />
               </Form.Item>
 
               <Form.Item
@@ -174,10 +176,18 @@ const ContactUs = () => {
                     message: "Please enter your message",
                   },
                 ]}
+                label="Message"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
               >
                 <Input.TextArea
-                  style={{ height: "160px" }}
-                  placeholder="Message"
+                  placeholder="Enter your message here"
+                  onChange={handleMessageChange}
+                  style={{
+                    height: "160px",
+                    backgroundColor: "#ECEFFF",
+                    border: "1px solid #676ECA",
+                  }}
                 />
               </Form.Item>
 
@@ -185,53 +195,46 @@ const ContactUs = () => {
                 style={{ display: "flex", justifyContent: "flex-end" }}
               >
                 <Button
-                  style={{ display: "flex", alignItems: "center" }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    backgroundColor: "#676ECA",
+                  }}
                   type="primary"
                   htmlType="submit"
+                  onSubmit={handleSubmitContactForm}
                 >
                   Send Message
                 </Button>
               </Form.Item>
             </Form>
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "40%",
-              position: "relative",
-              zIndex: "1",
-              marginTop: "-110px",
-              marginLeft: "-10%",
-            }}
-          >
-            <img
-              src={LineIcon}
-              alt="LineIcon"
-              style={{ width: "130px", maxHeight: "130px" }}
-            />
-            <img src={LineIcon} alt="LineIcon" style={{ width: "300px" }} />
-          </div>
         </div>
       </div>
       <div className="doctor_contact">
-        <h1 style={{marginTop:"10px"}}>Some experts in the field of psychology</h1>
-        <div className="card-container">
-          <Slider {...settings}>
-            {expertData.map((doctor, index) => (
-              <Card
-                key={index}
-                name={doctor.name}
-                email={doctor.email}
-                image={
-                  doctor.profile_picture
-                    ? doctor.profile_picture
-                    : DrImage
-                }
-              />
-            ))}
-          </Slider>
-        </div>
+        <h1 style={{ marginTop: "10px" }}>
+          Some experts in the field of psychology
+        </h1>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div className="card-container">
+            <Slider {...settings}>
+              {expertData.map((doctor, index) => (
+                <Card
+                  key={index}
+                  name={doctor.name}
+                  email={doctor.email}
+                  image={
+                    doctor.profile_picture ? doctor.profile_picture : DrImage
+                  }
+                />
+              ))}
+            </Slider>
+          </div>
+        )}
       </div>
     </div>
   );
