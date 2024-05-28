@@ -9,6 +9,7 @@
   height: 85vh;
   background-color: transparent !important;
   overflow: hidden;
+  font-size: 30px;
 }
 
 .box-2 {
@@ -83,5 +84,22 @@
     right: auto;
     width: 50%;
     height: auto;
+  }
+}
+.scroll-down-icon {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollAnimation 1.5s infinite alternate;
+
+}
+
+@keyframes scrollAnimation {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10px);
   }
 }
