@@ -4,9 +4,7 @@ import { Form, Input, Button, Typography, Radio } from "antd";
 import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
 import "../assets/css/auth/LoginRegister.css";
 import { useNavigate } from "react-router-dom";
-import fetchCsrfToken from "../api/csrf-token";
-import axios from "axios";
-import signUp from "../api/signUp";
+import {fetchCsrfToken, signUp} from "../api";
 
 const { Title, Link } = Typography;
 const SingUp = () => {

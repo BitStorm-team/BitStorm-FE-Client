@@ -5,7 +5,7 @@ import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../utils/helpers";
-import signUp from "../api/signUp";
+import {signUp} from "../api";
 
 const FormGetInforExpert = () => {
   const [parentValues, setParentValues] = useState({});

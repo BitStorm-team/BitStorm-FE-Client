@@ -70,6 +70,5 @@ export function headerAPI() {
   return headers;
 }
 
-export const API_URL_BACKUP = 'https://bitstormbe.zeabur.app/api'
 export const API_URL = 'http://localhost:8000/api';
 
