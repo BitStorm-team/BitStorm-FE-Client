@@ -1,3 +1,4 @@
+/* Session2.css */
 .session2-container {
   padding: 20px;
   text-align: center;
@@ -19,6 +20,7 @@
 
 .service-card {
   width: 250px;
+  margin-bottom: 20px;
 }
 
 .service-card .card-icon {
@@ -28,4 +30,34 @@
 
 .service-card.active {
   border: 2px solid #40bcd8;
+}
+
+@media (max-width: 768px) {
+  .carousel-item {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .service-card {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .session2-title {
+    font-size: 20px;
+  }
+
+  .service-card {
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: 15px;
+  }
+
+  .service-card .card-icon {
+    font-size: 40px;
+    margin: 15px 0;
+  }
 }

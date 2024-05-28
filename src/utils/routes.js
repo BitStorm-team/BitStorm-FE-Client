@@ -60,4 +60,9 @@ export const privateRoutes = [
     element: <MainLayout main={<Contact />} />,
     exact: true,
   },
+  {
+    path: "/profile",
+    element: <MainLayout main={<Contact />} />,
+    exact: true,
+  },
 ];

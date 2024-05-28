@@ -5,8 +5,8 @@ import NavBar from "./NavBar";
 import "../assets/css/header.css";
 import { useEffect, useState } from "react";
 import { getExpertProfile, getUserProfile } from "../api";
-import { jwtDecode } from "jwt-decode"; // Corrected import
-import { BellOutlined, UserOutlined } from "@ant-design/icons";
+import {jwtDecode} from "jwt-decode";
+import { UserOutlined } from "@ant-design/icons";
 
 const MainHeader = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -69,58 +69,42 @@ const MainHeader = () => {
     navigate("/signin");
   };
 
-  const menuToggle = () => {
-    setMenuActive(!menuActive);
-  };
-
   return (
     <header className="main-header">
       <div className="header-section logo">
         <Logo />
       </div>
       <div className="header-section navbar">
-        <NavBar />
+        <NavBar
+          isLogin={isLogin}
+          handleLogout={handleLogout}
+          menuActive={menuActive}
+          setMenuActive={setMenuActive}
+        />
       </div>
-      <div className="header-section buttons">
-        {!isLogin ? (
-          <>
-            <Button type="primary">
-              <Link to="/signin">Sign In</Link>
-            </Button>
-            <Button type="primary">
-              <Link to="/signup">Sign Up</Link>
-            </Button>
-          </>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div className="action">
-              <div className="profile" onClick={menuToggle}>
-                <Avatar
-                  size={60}
-                  src={userProfile?.profile_picture} // Use optional chaining
-                  icon={<UserOutlined />}
-                />
-              </div>
-              <div className={`menu ${menuActive ? "active" : ""}`}>
-                <ul>
-                  <li>
-                    <a href="#">My profile</a>
-                  </li>
-                  <li onClick={handleLogout}>
-                    <a href="#">Logout</a>
-                  </li>
-                </ul>
-              </div>
+      {isLogin && (
+        <div className="header-section profile">
+          <div className="action">
+            <div className="profile" onClick={() => setMenuActive(!menuActive)}>
+              <Avatar
+                size={60}
+                src={userProfile?.profile_picture}
+                icon={<UserOutlined />}
+              />
+            </div>
+            <div className={`menu ${menuActive ? "active" : ""}`}>
+              <ul>
+                <li>
+                  <Link to="profile">My profile</Link>
+                </li>
+                <li onClick={handleLogout}>
+                  <a href="#">Logout</a>
+                </li>
+              </ul>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 };
