@@ -3,6 +3,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
+import ExpertDetail from "../pages/ExpertsDetail";
 
 export const publicRoutes = [
   {
@@ -28,6 +29,11 @@ export const publicRoutes = [
   {
     path: "/contact",
     element: <MainLayout main={<Contact />} />,
+    exact: true,
+  },
+  {
+    path: "/expert-detail",
+    element: <MainLayout main={<ExpertDetail />} />,
     exact: true,
   },
 ];
