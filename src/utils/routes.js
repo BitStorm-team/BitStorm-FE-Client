@@ -3,6 +3,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
+import FormGetInforExpert from "../pages/FormGetInfoExpert";
 
 export const publicRoutes = [
   {
@@ -13,6 +14,11 @@ export const publicRoutes = [
   {
     path: "/signup",
     element: <SignUp />,
+    exact: true,
+  },
+  {
+    path: "/signup/expert",
+    element: <FormGetInforExpert />,
     exact: true,
   },
   {
