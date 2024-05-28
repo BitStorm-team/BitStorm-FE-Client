@@ -1,20 +1,19 @@
-import { Avatar, Button, message } from "antd";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Avatar, Button } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import NavBar from "./NavBar";
 import "../assets/css/header.css";
 import { useEffect, useState } from "react";
-import { API_URL, API_URL_BACKUP, headerAPI } from "../utils/helpers";
-import { UserOutlined } from "@ant-design/icons";
-import axios from "axios";
-import {jwtDecode} from "jwt-decode"; // Corrected import
 import { getExpertProfile, getUserProfile } from "../api";
+import { jwtDecode } from "jwt-decode"; // Corrected import
+import { BellOutlined, UserOutlined } from "@ant-design/icons";
 
 const MainHeader = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [token, setToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [menuActive, setMenuActive] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +68,11 @@ const MainHeader = () => {
     localStorage.removeItem("expires_in");
     navigate("/signin");
   };
+
+  const menuToggle = () => {
+    setMenuActive(!menuActive);
+  };
+
   return (
     <header className="main-header">
       <div className="header-section logo">
@@ -95,14 +99,25 @@ const MainHeader = () => {
               alignItems: "center",
             }}
           >
-            <Avatar
-              size={60}
-              src={userProfile?.profile_picture} // Use optional chaining
-              icon={<UserOutlined />}
-            />
-            <Button danger onClick={handleLogout}>
-              Logout
-            </Button>
+            <div className="action">
+              <div className="profile" onClick={menuToggle}>
+                <Avatar
+                  size={60}
+                  src={userProfile?.profile_picture} // Use optional chaining
+                  icon={<UserOutlined />}
+                />
+              </div>
+              <div className={`menu ${menuActive ? "active" : ""}`}>
+                <ul>
+                  <li>
+                    <a href="#">My profile</a>
+                  </li>
+                  <li onClick={handleLogout}>
+                    <a href="#">Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         )}
       </div>
