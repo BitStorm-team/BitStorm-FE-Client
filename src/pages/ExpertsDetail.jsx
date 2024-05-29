@@ -4,7 +4,8 @@ import Doctor from "../assets/images/expertDetail/doctor.jpg";
 import Stars from "../assets/images/expertDetail/stars.png"
 import User from "../assets/images/expertDetail/client1.png";
 
-// import { HeartOutlined } from "../../node_modules/@ant-design/icons-svg/es/index.d.ts";
+//import { HeartOutlined } from "../../node_modules/@ant-design/icons-svg/es/index.d.ts";
+
 
 import {
   Layout,
@@ -15,6 +16,7 @@ import {
   Avatar,
   Typography,
 } from "antd";
+
 const { Content } = Layout;
 
 const StarIcon = () => (
@@ -33,7 +35,7 @@ export default function ExpertDetail() {
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
-        
+
         <Content>
           <Row id="cardExpert" className="expert_detail">
             <Col xs={24} md={8} className="doctor_image">
