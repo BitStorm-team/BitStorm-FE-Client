@@ -1,128 +1,220 @@
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
+
 .contact-us {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .banner {
-    background-color: #f4f4f4;
-    padding: 50px 20px;
-    margin-bottom: 20px;
-  }
-  
-  .banner h1 {
-    margin: 0;
-    font-size: 36px;
-  }
-  
-  .banner p {
-    margin: 10px 0 0;
-    font-size: 18px;
-    color: #666;
-  }
-  
-  .contact-form {
-    margin: 0 auto;
-    text-align: left;
-    overflow: hidden;
-  }
-  
-  .contact-form .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .contact-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .contact-form input,
-  .contact-form textarea {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  .contact-form button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .contact-form button:hover {
-    background-color: #0056b3;
-  }
-  .map-contact {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-  }
-  
-  .map-container {
-    flex: 1;
-  }
-  
-  .contact-info {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .contact-info h2 {
-    color: #0056b3;
-  }
-  
-  .contact-info p {
-    margin: 10px 0;
-  }
-  
-  .contact-info a {
-    color: #0056b3;
-    text-decoration: none;
-  }
-  
-  .contact-info a:hover {
-    text-decoration: underline;
-  }
-  .circular-image {
-    width: 200px; /* Đổi kích thước theo nhu cầu */
-    height: 200px; /* Đổi kích thước theo nhu cầu */
-    border-radius: 50%; /* Biến hình ảnh thành hình tròn */
-    overflow: hidden; /* Đảm bảo phần thừa nếu có sẽ bị ẩn */
-  }
-  
-  /* Ví dụ sử dụng */
-  .circular-image img {
-    width: 100%; /* Đảm bảo hình ảnh lấp đầy hình tròn */
-    height: auto; /* Đảm bảo tỷ lệ khung hình không bị méo */
-  }
-  .contact-form {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.banner {
+  background-color: #f4f4f4;
+  padding: 50px 20px;
+  margin-bottom: 20px;
+}
+
+.banner h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.banner p {
+  margin: 10px 0 0;
+  font-size: 18px;
+  color: #666;
+}
+
+.contact-form {
+  margin: 0 auto;
+  text-align: left;
+  overflow: hidden;
+}
+
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+
+.contact-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.contact-form button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background-color: #0056b3;
+}
+
+.map-contact {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.map-container {
+  flex: 1;
+}
+
+.contact-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.contact-info h2 {
+  color: #0056b3;
+}
+
+.contact-info p {
+  margin: 10px 0;
+}
+
+.contact-info a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+.circular-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.circular-image img {
+  width: 100%;
+  height: auto;
+}
+
+.contact-form {
   position: relative;
   max-height: 500px;
   border-radius: 20px;
   overflow: hidden;
 }
-.card-containerr{
-  width: 55%;
+
+.card-containerr {
+  width: 90%;
 }
-.doctor_contact{
+.card-containerr .cardd{
+  margin: 0 0 20px 20px;
+}
+.doctor_contact {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.form_icon_contact{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    gap: 10%;
-    margin-bottom:30px;
-    margin-top: 30px;
+
+.form_icon_contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  gap: 10%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+  .contact-form {
+    flex-direction: column;
+    text-align: center;
+    max-height: 1000px !important;
+  }
+
+  .form_icon_contact {
+    flex-direction: column;
+  }
+
+  .contact-form form {
+    width: 90% !important;
+  }
+
+  .card-containerr {
+    width: 90%;
+  }
+  .card-containerr .cardd{
+    max-width: 190px;
+    margin: 10px;
+  }
+
+  .map-container iframe {
+    max-width: 280px;
+    max-height: 300px;
+  }
+
+  .contact-info p {
+    font-size: 14px;
+  }
+
+  .contact-info h2 {
+    font-size: 19px;
+  }
+
+  .circular-image {
+    display: none
+  }
+}
+
+@media (max-width: 600px) {
+  .banner h1 {
+    font-size: 28px;
+  }
+
+  .banner p {
+    font-size: 16px;
+  }
+
+  .contact-form {
+    padding: 10px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 8px;
+  }
+
+  .contact-form button {
+    padding: 8px 16px;
+  }
+
+  .card-containerr {
+    width: 90%;
+  }
+  .card-containerr .cardd{
+    margin-left: 5px;
+  }
+  .contact-info h2 {
+    font-size: 16px;
+  }
+
+  .contact-info p {
+    font-size: 13px;
+  }
+
+  .map-container iframe {
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 35%;
+  }
 }

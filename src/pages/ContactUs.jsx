@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import "../assets/css/contact/contactUs.css";
 import Banner from "../components/contact/Banner.jsx";
 import ImageContact from "../assets/images/long-haired-girl-watching-through-binoculars (2) 1.svg";
@@ -40,13 +40,13 @@ const ContactUs = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
           dots: true,
@@ -55,7 +55,7 @@ const ContactUs = () => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
@@ -77,9 +77,12 @@ const ContactUs = () => {
         }
       );
       console.log("Response:", response);
-      alert("Success");
+      message.success("Successfully to contact us");
     } catch (error) {
-      alert(error.message);
+      console.error("Contact failed", error);
+      message.error(
+        "Contact failed " + (error.response?.data?.message || error.message)
+      );
     }
   };
 
@@ -97,10 +100,11 @@ const ContactUs = () => {
           maxWidth: "95%",
         }}
       >
-        <div style={{ position: "relative", zIndex: "0" }}>
+        <div style={{ position: "relative", zIndex: "0"}}>
           <div className="form_icon_contact">
             <div style={{ zIndex: "3" }}>
               <div
+                className="text-contact"
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -218,7 +222,7 @@ const ContactUs = () => {
                   image={
                     doctor.profile_picture ? doctor.profile_picture : DrImage
                   }
-                  id = {doctor.id}
+                  id={doctor.id}
                 />
               ))}
             </Slider>

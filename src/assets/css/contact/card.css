@@ -36,9 +36,25 @@
 }
 .btn_card {
     width: 50%;
-    border-radius: 20px;
+    border-radius: 5px;
     border: none;
 }
 .btn_card_box{
     margin-top: 25px;
+}
+@media (max-width: 1024px) {
+    .card-title,.card-name {
+        color: white;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .card-title{
+        font-size: 1em;
+        margin: 15px 0 10px 10px;
+    }
+    .card-name {
+        font-size: 0.8em;
+        margin: 15px 0 10px 10px;
+    }
 }
