@@ -4,7 +4,8 @@ import Doctor from "../assets/images/expertDetail/doctor.jpg";
 import Stars from "../assets/images/expertDetail/stars.png"
 import User from "../assets/images/expertDetail/client1.png";
 
-// import { HeartOutlined } from "../../node_modules/@ant-design/icons-svg/es/index.d.ts";
+//import { HeartOutlined } from "../../node_modules/@ant-design/icons-svg/es/index.d.ts";
+
 
 import {
   Layout,
@@ -15,6 +16,7 @@ import {
   Avatar,
   Typography,
 } from "antd";
+
 const { Content } = Layout;
 
 const StarIcon = () => (
@@ -33,9 +35,9 @@ export default function ExpertDetail() {
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
-        <div className="top_image">
+        {/* <div className="top_image">
           <img src={TopImg} alt="Doctor" />
-        </div>
+        </div> */}
         <Content>
           <Row id="cardExpert" className="expert_detail">
             <Col xs={24} md={8} className="doctor_image">
@@ -296,6 +298,38 @@ export default function ExpertDetail() {
           </div>
         </div>
         <div>
+          <div className="container_review_content">
+            <div className="userAvatar">
+              <Avatar size={64} src={User} />
+            </div>
+            <div style={{ marginLeft: 10, flex: 1 }}>
+              <p style={{ fontWeight: "bold", marginBottom: 5 }}>BQ</p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: 5,
+                }}
+              >
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+              </div>
+              <p style={{ marginBottom: 5 }}>May 2024</p>
+              <p style={{ marginBottom: 0 }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel
+                metus at tellus euismod malesuada. Nulla facilisi. Nulla auctor,
+                lectus et suscipit semper, mi sapien laoreet nibh, sit amet
+                laoreet velit tellus eget lacus. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. In vel metus at tellus euismod
+                malesuada. Nulla facilisi. Nulla auctor, lectus et suscipit
+                semper, mi sapien laoreet nibh, sit amet laoreet velit tellus
+                eget lacus.
+              </p>
+            </div>
+          </div>
           <div className="container_review_content">
             <div className="userAvatar">
               <Avatar size={64} src={User} />

@@ -66,4 +66,9 @@ export const privateRoutes = [
     element: <MainLayout main={<Contact />} />,
     exact: true,
   },
+  {
+    path: "/expert-detail",
+    element: <MainLayout main={<ExpertDetail />} />,
+    exact: true,
+  },
 ];
