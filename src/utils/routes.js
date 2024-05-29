@@ -1,8 +1,9 @@
-import Contact from "../pages/Contact";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
+import ExpertDetail from "../pages/ExpertsDetail";
+import ContactUs from "../pages/ContactUs";
 import Expert from "../pages/Expert";
 import FormGetInforExpert from "../pages/FormGetInfoExpert";
 
@@ -33,8 +34,13 @@ export const publicRoutes = [
     exact: true,
   },
   {
-    path: "/contact",
-    element: <MainLayout main={<Contact />} />,
+    path: "/contactUs",
+    element: <MainLayout main={<ContactUs />} />,
+    exact: true,
+  },
+  {
+    path: "/expert-detail",
+    element: <MainLayout main={<ExpertDetail />} />,
     exact: true,
   },
   {
@@ -56,8 +62,18 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/contact",
-    element: <MainLayout main={<Contact />} />,
+    path: "/contactUs",
+    element: <MainLayout main={<ContactUs />} />,
+    exact: true,
+  },
+  {
+    path: "/expert/:id",
+    element: <MainLayout main={<ExpertDetail />} />,
+    exact: true,
+  },
+  {
+    path: "/expert",
+    element: <MainLayout main={<Expert />} />,
     exact: true,
   },
 ];
