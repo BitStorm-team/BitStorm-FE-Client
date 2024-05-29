@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "../assets/css/navbar.css";
 
 const NavBar = () => {
-  const navItems = ["Home", "Post", "Expert", "About", "Contact"];
+  const navItems = ["Home", "Post", "Expert", "About", "ContactUs"];
 
   return (
     <nav className="navbar">
