@@ -33,9 +33,7 @@ export default function ExpertDetail() {
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
-        <div className="top_image">
-          <img src={TopImg} alt="Doctor" />
-        </div>
+        
         <Content>
           <Row id="cardExpert" className="expert_detail">
             <Col xs={24} md={8} className="doctor_image">
@@ -258,6 +256,23 @@ export default function ExpertDetail() {
                 <button class="custom-btn btn-16">View More</button>
               </div>
             </div>
+            <div className="card">
+              <img
+                className="card-image"
+                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
+                alt=""
+              />
+              <h2>Mr. Mỹ</h2>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Laudantium quis libero exercitationem distinctio facere tenetur
+                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
+                laboriosam, odio aspernatur porro eum consectetur doloribus.
+              </p>
+              <div className="card-button">
+                <button class="custom-btn btn-16">View More</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -296,6 +311,38 @@ export default function ExpertDetail() {
           </div>
         </div>
         <div>
+          <div className="container_review_content">
+            <div className="userAvatar">
+              <Avatar size={64} src={User} />
+            </div>
+            <div style={{ marginLeft: 10, flex: 1 }}>
+              <p style={{ fontWeight: "bold", marginBottom: 5 }}>BQ</p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: 5,
+                }}
+              >
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+              </div>
+              <p style={{ marginBottom: 5 }}>May 2024</p>
+              <p style={{ marginBottom: 0 }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel
+                metus at tellus euismod malesuada. Nulla facilisi. Nulla auctor,
+                lectus et suscipit semper, mi sapien laoreet nibh, sit amet
+                laoreet velit tellus eget lacus. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. In vel metus at tellus euismod
+                malesuada. Nulla facilisi. Nulla auctor, lectus et suscipit
+                semper, mi sapien laoreet nibh, sit amet laoreet velit tellus
+                eget lacus.
+              </p>
+            </div>
+          </div>
           <div className="container_review_content">
             <div className="userAvatar">
               <Avatar size={64} src={User} />
