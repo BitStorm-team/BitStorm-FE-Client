@@ -1,0 +1,472 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.fluid-container {
+    width: 100%;
+}
+.top_image {
+    /* padding-top: 20px; */
+    max-width: 100%;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+}
+
+.top_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctor_image {
+    /* margin-top: 50px; */
+    margin-left: 40px;
+    max-width: 90%;
+    height: 500px;
+}
+
+.img_card {
+    width: 95%;
+    height: 255px;
+    object-fit: cover;
+}
+
+.doctor_image img {
+    width: 90%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+#text {
+    color: rgb(0, 113, 111);
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.text1 {
+    color: rgb(0, 113, 111);
+    font-weight: bold;
+}
+
+.rating {
+    color: #f8cc1b;
+    font-size: larger;
+}
+
+.detailTime {
+    width: 40%;
+    height: 40px;
+    border-radius: 50px;
+    background-color: #d7eaea;
+    color: #057dcd;
+    font-weight: bold;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.feeDetail {
+    width: 40%;
+    height: 40px;
+    border-radius: 50px;
+    background-color: #d7eaea;
+    color: #057dcd;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.checkout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkoutButton {
+    background: linear-gradient(to right, #1677ff, #96deda);
+    margin-top: 30px;
+    border: none;
+    color: white;
+    width: 50%;
+    height: 50px;
+    color: white;
+    border-radius: 50px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: 30px;
+}
+
+.checkoutButton:hover {
+    background: linear-gradient(to right, #de6262, #ffb88c);
+     transform: translateY(-2px)
+
+}
+
+#checkoutBtn {
+    color: white;
+}
+
+.actives {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #76e05e;
+}
+
+.time {
+    justify-content: center;
+    align-items: center;
+}
+
+.aclock {
+    color: #057dcd;
+}
+
+.fee {
+    border-radius: 50px;
+    border: 1px solid #e12729;
+    height: 30px;
+    padding-top: 2px;
+}
+
+.viewMorebtn {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    color: white;
+    border: none;
+    border-radius: 50px !important;
+    background-color: #007bff !important;
+
+}
+
+.viewMorebtn:hover {
+    width: 100%;
+    border: none;
+    background: linear-gradient(to right, rgb(111, 166, 235),
+            rgb(85, 188, 210), rgb(188, 203, 201));
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    /* transition: box-shadow 0.3s ease-in-out;
+    transition: box-shadow 0.3s ease, transform 0.3s ease; */
+    /* Add transition properties */
+    /* Optional: Add a smooth transition effect */
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Change box-shadow on hover */
+    transform: translateY(-4px)
+}
+
+.card_container {
+    padding-left: 10px;
+}
+
+.viewMorebtn a {
+    color: white;
+    text-decoration: none;
+}
+
+#cardExpert{
+    margin-top: 50px;
+}
+
+.doctor_name{
+    color: #007bff;
+}
+
+.review-rating{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.flexStyle{
+    display: flex;
+    align-items: center;
+}
+
+.favoriteIcon{
+    display: flex;
+    align-items: center;
+}
+.oldPrice{
+    text-decoration: line-through;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.currentPrice{
+    font-weight: bold;
+    font-size: 28px;
+    color: #007bff;
+    margin-left: 50px;
+}
+
+.discountAnnouce{
+    background-color: #68D2E8;
+    color: white;
+    border-radius: 50px;
+    padding: 5px;
+    font-weight: bold;
+    margin-left: 50px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.discountAnnouce:hover{
+    background: linear-gradient(to right, rgb(111, 166, 235),
+            rgb(85, 188, 210), rgb(188, 203, 201));
+    cursor: pointer;
+    transform: translateY(-2px)
+}
+
+.shedule_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.expert_shedule{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.favorite_container{
+    display: flex;
+    margin-top: 20px;
+}
+
+.filterRatingBtn{
+    border: 1px solid  #007bff;
+    border-radius: 5px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.filterRatingBtn1 {
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.expert_detail{
+    width: fit-content;
+    border-radius: 30px;
+    background-color: white;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-left: 200;
+    margin-right: 200;
+}
+
+.expert_detail_reviews{
+    width: fit-content;
+    border-radius: 30px;
+    background-color: white;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.containerRelatedExperts{
+<<<<<<< HEAD
+    width: 95vw;
+    border-radius: 30px;
+    /* background-color: rgb(243, 103, 103); */
+    margin: auto;
+
+=======
+    margin-left: 30px;
+    margin-right: 30px;
+    border-radius: 30px;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+>>>>>>> origin/feature/FE-356-UI-Expert-Detail
+}
+
+.doctor_job_title{
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.user_review_container{
+    /* margin-left: 120px; */
+    margin-bottom: 20px;
+}
+
+ .container_filter_rating {
+     display: flex;
+     align-items: center;
+     flex-wrap: wrap;
+ }
+
+ .container_review_content{
+    margin-top: 20px;
+    display: flex;
+ }
+
+ .card-button{
+    display: flex;
+    justify-content: center;}
+
+.titleRelatedExpert{
+    margin-left: 120px;
+}
+
+.wrapper {
+    max-width: 100% !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+}
+@media (max-width: 576px) {
+    .expert_detail {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .top_image {
+        height: auto;
+    }
+    .top_image img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+    }
+    .doctor_image{
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+    }
+
+    #cardExpert {
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+    }
+
+    .doctor_title{
+        font-size: 16px;
+    }
+
+    .doctor_image {
+        width: 80%;
+        height: auto;
+        max-width: 80%;
+    }
+
+    .doctor_job_title {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .flexStyle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .favorite{
+        font-size: 15px;
+    }
+
+    .checkoutButton {
+        width: 80%;
+    }
+
+    .containerRelatedExperts {
+        width: fit-content;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        margin: 0;
+    }
+
+    .wrapper{
+        justify-content: center;
+        flex-wrap: wrap;
+        background-color: #007bff !important;
+    }
+
+    .expert_detail_reviews {
+        width: fit-content;
+        border-radius: 30px;
+        margin-top: 30px;
+        margin: 0;
+        padding-top: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .container_filter_rating{
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+   .filterRatingBtn1{
+    display: none;
+   }
+
+   .userAvatar{
+    display: inline;
+   }
+
+   .titleRelatedExpert{
+    text-align: center;
+   }
+}
