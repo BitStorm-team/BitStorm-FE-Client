@@ -302,19 +302,11 @@
 }
 
 .containerRelatedExperts{
-<<<<<<< HEAD
     width: 95vw;
     border-radius: 30px;
     /* background-color: rgb(243, 103, 103); */
     margin: auto;
 
-=======
-    margin-left: 30px;
-    margin-right: 30px;
-    border-radius: 30px;
-    background-color: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
->>>>>>> origin/feature/FE-356-UI-Expert-Detail
 }
 
 .doctor_job_title{
