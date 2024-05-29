@@ -92,3 +92,6 @@ npm install react-slick slick-carousel
 
 ## install cloudinary for React
 --> npm install @cloudinary/url-gen @cloudinary/react
+
+## install mdb-react-ui-kit
+--> npm install mdb-react-ui-kit
