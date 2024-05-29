@@ -1,0 +1,97 @@
+/* General styling for the container and cards */
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 40px auto;
+    max-width: 95vw;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: rgba(18, 92, 102, 0.533);
+  }
+
+  .form-section, .appointment-details {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  textarea.form-control {
+    height: 100px;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .btn:hover {
+    background-color: #0056b3;
+  }
+
+  .appointment-details .info {
+    margin-bottom: 20px;
+    
+  }
+
+  .qr-code {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Media Queries for Responsiveness */
+
+  /* For tablets and smaller devices */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form-section, .appointment-details {
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
+
+  /* For mobile phones */
+  @media (max-width: 576px) {
+    .form-control {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .btn {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+  }
