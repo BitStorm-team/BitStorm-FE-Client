@@ -4,7 +4,7 @@ import "../assets/css/navbar.css";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
-const NavBar = ({ isLogin, handleLogout, menuActive, setMenuActive }) => {
+const NavBar = ({ isLogin, menuActive, setMenuActive }) => {
   const navItems = ["Home", "Post", "Expert", "About", "Contact"];
 
   const toggleMenu = () => {
@@ -29,7 +29,7 @@ const NavBar = ({ isLogin, handleLogout, menuActive, setMenuActive }) => {
             </NavLink>
           </li>
         ))}
-        {!isLogin ? (
+        {!isLogin && (
           <>
             <li className="nav-item">
               <Button type="primary">
@@ -42,12 +42,6 @@ const NavBar = ({ isLogin, handleLogout, menuActive, setMenuActive }) => {
               </Button>
             </li>
           </>
-        ) : (
-          <li className="nav-item" onClick={handleLogout}>
-            <Button type="primary">
-              <Link to="#">Logout</Link>
-            </Button>
-          </li>
         )}
       </ul>
     </nav>

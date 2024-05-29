@@ -166,6 +166,9 @@
     font-size: 24px;
     color: #555;
   }
+  .action {
+    right: 25%;
+  }
 }
 
 @media (min-width: 769px) {
@@ -183,5 +186,8 @@
 
   .navbar-nav.active {
     display: flex;
+  }
+  .action {
+    right: 25%;
   }
 }

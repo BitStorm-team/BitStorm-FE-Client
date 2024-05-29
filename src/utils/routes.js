@@ -5,6 +5,7 @@ import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
 import Expert from "../pages/Expert";
 import FormGetInforExpert from "../pages/FormGetInfoExpert";
+import Profile from "../pages/Profile";
 
 export const publicRoutes = [
   {
@@ -62,7 +63,12 @@ export const privateRoutes = [
   },
   {
     path: "/profile",
-    element: <MainLayout main={<Contact />} />,
+    element: <MainLayout main={<Profile />} />,
+    exact: true,
+  },
+  {
+    path: "/expert",
+    element: <MainLayout main={<Expert />} />,
     exact: true,
   },
 ];

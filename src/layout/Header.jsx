@@ -1,4 +1,4 @@
-import { Avatar, Button } from "antd";
+import { Avatar } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import NavBar from "./NavBar";
@@ -14,6 +14,7 @@ const MainHeader = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [menuActive, setMenuActive] = useState(false);
+  const [profileMenuActive, setProfileMenuActive] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,6 +63,14 @@ const MainHeader = () => {
     }
   };
 
+  const toggleNavbarMenu = () => {
+    setMenuActive(!menuActive);
+  };
+
+  const toggleProfileMenu = () => {
+    setProfileMenuActive(!profileMenuActive);
+  };
+
   const handleLogout = () => {
     console.log("User logged out");
     localStorage.removeItem("__token__");
@@ -79,23 +88,23 @@ const MainHeader = () => {
           isLogin={isLogin}
           handleLogout={handleLogout}
           menuActive={menuActive}
-          setMenuActive={setMenuActive}
+          setMenuActive={toggleNavbarMenu}
         />
       </div>
       {isLogin && (
         <div className="header-section profile">
           <div className="action">
-            <div className="profile" onClick={() => setMenuActive(!menuActive)}>
+            <div className="profile" onClick={toggleProfileMenu}>
               <Avatar
                 size={60}
                 src={userProfile?.profile_picture}
                 icon={<UserOutlined />}
               />
             </div>
-            <div className={`menu ${menuActive ? "active" : ""}`}>
+            <div className={`menu ${profileMenuActive ? "active" : ""}`}>
               <ul>
                 <li>
-                  <Link to="profile">My profile</Link>
+                  <Link to="/profile">My profile</Link>
                 </li>
                 <li onClick={handleLogout}>
                   <a href="#">Logout</a>
