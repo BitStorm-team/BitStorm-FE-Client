@@ -90,3 +90,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## install cloudinary for React
 --> npm install @cloudinary/url-gen @cloudinary/react
+
+## install mdb-react-ui-kit
+--> npm install mdb-react-ui-kit

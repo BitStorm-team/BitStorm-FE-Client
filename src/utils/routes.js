@@ -62,11 +62,6 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/profile",
-    element: <MainLayout main={<Profile />} />,
-    exact: true,
-  },
-  {
     path: "/expert",
     element: <MainLayout main={<Expert />} />,
     exact: true,
