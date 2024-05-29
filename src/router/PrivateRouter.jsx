@@ -5,7 +5,7 @@ const withPrivateRoute = (props, index) => {
   if (accessToken) {
     return <Route key={index} {...props} />;
   }
-  return <Route path="*" element={<Navigate to="/signin" />} />;
+  // return <Route path="*" element={<Navigate to="/signin" />} />;
 };
 
 export default withPrivateRoute;

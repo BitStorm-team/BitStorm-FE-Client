@@ -87,6 +87,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## install animation lib
 ---> npm install --save aos@next
+## install slide comcponent
+npm install react-slick slick-carousel
 
 ## install cloudinary for React
 --> npm install @cloudinary/url-gen @cloudinary/react

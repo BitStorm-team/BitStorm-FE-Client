@@ -65,7 +65,7 @@
   .navbar-nav.active {
     display: flex;
     width: 50vw !important;
-    left:-30px;
+    left:-90px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   }
 
