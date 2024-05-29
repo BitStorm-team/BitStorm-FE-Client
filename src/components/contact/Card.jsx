@@ -2,6 +2,7 @@
 import React from "react";
 import "../../assets/css/contact/card.css"; // Đảm bảo rằng bạn có file CSS để style cho component
 import { useNavigate } from "react-router-dom";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 const Card = ({ name, email, image, id }) => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Card = ({ name, email, image, id }) => {
         <p className="card-name">{email}</p>
       </div>
       <div className="btn_card_box">
-        <button className="btn_card" onClick={handleDetail}>See Detail</button>
+        <button className="btn_card" onClick={handleDetail}>See Detail<CaretRightOutlined style={{color:"pink"}}/></button>
       </div>
     </div>
   );
