@@ -1,32 +1,31 @@
 .session2-container {
-    padding: 20px;
-    text-align: center;
-    background-color: #40bcd8;
+  padding: 20px;
+  text-align: center;
+  background-color: #40bcd8;
+}
 
-  }
+.session2-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #ffffff;
+}
 
-  .session2-title {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-  }
+.carousel-item {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  flex-wrap: wrap;
+}
 
-  .carousel-item {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
+.service-card {
+  width: 250px;
+}
 
-  }
+.service-card .card-icon {
+  font-size: 48px;
+  margin: 20px 0;
+}
 
-  .service-card {
-    width: 250px;
-  }
-
-  .service-card .card-icon {
-    font-size: 48px;
-    margin: 20px 0;
-  }
-
-  .service-card.active {
-    border: 2px solid #40bcd8;
-  }
+.service-card.active {
+  border: 2px solid #40bcd8;
+}

@@ -4,6 +4,8 @@ import SignUp from "../pages/SignUp";
 import HomePage from "../pages/Home";
 import MainLayout from "../layout/Layout";
 import ExpertDetail from "../pages/ExpertsDetail";
+import Expert from "../pages/Expert";
+import FormGetInforExpert from "../pages/FormGetInfoExpert";
 
 export const publicRoutes = [
   {
@@ -14,6 +16,11 @@ export const publicRoutes = [
   {
     path: "/signup",
     element: <SignUp />,
+    exact: true,
+  },
+  {
+    path: "/signup/expert",
+    element: <FormGetInforExpert />,
     exact: true,
   },
   {
@@ -34,6 +41,11 @@ export const publicRoutes = [
   {
     path: "/expert-detail",
     element: <MainLayout main={<ExpertDetail />} />,
+    exact: true,
+  },
+  {
+    path: "/expert",
+    element: <MainLayout main={<Expert />} />,
     exact: true,
   },
 ];
