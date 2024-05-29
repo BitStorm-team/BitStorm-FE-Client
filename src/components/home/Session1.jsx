@@ -27,7 +27,7 @@ const Session1 = () => {
         <p>Nơi lắng nghe những tâm sự của bạn</p>
         <button className="start-button">Bắt Đầu Ngay</button>
         <div className="scroll-down-icon">
-          <img style={{ width: '30%' }} src={scrollDownImg} alt="" />
+          <img style={{ width: '30%' }} src={scrollDownImg} alt="Scroll Down" />
         </div>
       </div>
     </div>
