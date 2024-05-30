@@ -3,8 +3,6 @@ import { privateRoutes, publicRoutes } from "./utils/routes";
 import withPublicRoute from "./router/PublicRouter";
 import withPrivateRoute from "./router/PrivateRouter";
 import NotFound from "./pages/Notfound";
-import MainLayout from "./layout/Layout";
-
 export default function App() {
   return (
     <BrowserRouter>
