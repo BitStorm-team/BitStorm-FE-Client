@@ -49,12 +49,7 @@ export const publicRoutes = [
     path: "/expert",
     element: <MainLayout main={<Expert />} />,
     exact: true,
-  },
-  {
-    path: "/booking",
-    element: <MainLayout main={<Booking />} />,
-    exact: true,
-  },
+  }
 ];
 
 export const privateRoutes = [
