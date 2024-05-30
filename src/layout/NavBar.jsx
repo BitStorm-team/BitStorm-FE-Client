@@ -1,12 +1,22 @@
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
 import "../assets/css/navbar.css";
+import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
-const NavBar = () => {
-  const navItems = ["Home", "Post", "Expert", "About", "Contact"];
+const NavBar = ({ isLogin, menuActive, setMenuActive }) => {
+  const navItems = ["Home", "Post", "Expert", "About", "ContactUs"];
+
+  const toggleMenu = () => {
+    setMenuActive(!menuActive);
+  };
 
   return (
     <nav className="navbar">
-      <ul className="navbar-nav">
+      <div className="menu-icon" onClick={toggleMenu}>
+        {menuActive ? <CloseOutlined /> : <MenuOutlined />}
+      </div>
+      <ul className={`navbar-nav ${menuActive ? "active" : ""}`}>
         {navItems.map((item, index) => (
           <li className="nav-item" key={index}>
             <NavLink
@@ -19,6 +29,20 @@ const NavBar = () => {
             </NavLink>
           </li>
         ))}
+        {!isLogin && (
+          <>
+            <li className="nav-item">
+              <Button type="primary">
+                <Link to="/signin">Sign In</Link>
+              </Button>
+            </li>
+            <li className="nav-item">
+              <Button type="primary">
+                <Link to="/signup">Sign Up</Link>
+              </Button>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );

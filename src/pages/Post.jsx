@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { CommentOutlined, HeartTwoTone, LikeOutlined, UserOutlined } from '@ant-design/icons';
+import { CommentOutlined, HeartTwoTone, UserOutlined } from '@ant-design/icons';
 import { Gird,Input, Button, List, Avatar, Row, Col } from 'antd';
 import styled from 'styled-components';
 import Comment from '../components/posts/Comment';
-import moment from 'moment';
 const { Search } = Input;
 const posts= [
   {

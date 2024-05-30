@@ -1,20 +1,20 @@
-import { Avatar, Button, message } from "antd";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Avatar } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import NavBar from "./NavBar";
 import "../assets/css/header.css";
 import { useEffect, useState } from "react";
-import { API_URL, API_URL_BACKUP, headerAPI } from "../utils/helpers";
-import { UserOutlined } from "@ant-design/icons";
-import axios from "axios";
-import {jwtDecode} from "jwt-decode"; // Corrected import
 import { getExpertProfile, getUserProfile } from "../api";
+import {jwtDecode} from "jwt-decode";
+import { UserOutlined } from "@ant-design/icons";
 
 const MainHeader = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [token, setToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [menuActive, setMenuActive] = useState(false);
+  const [profileMenuActive, setProfileMenuActive] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,49 +63,57 @@ const MainHeader = () => {
     }
   };
 
+  const toggleNavbarMenu = () => {
+    setMenuActive(!menuActive);
+  };
+
+  const toggleProfileMenu = () => {
+    setProfileMenuActive(!profileMenuActive);
+  };
+
   const handleLogout = () => {
     console.log("User logged out");
     localStorage.removeItem("__token__");
     localStorage.removeItem("expires_in");
     navigate("/signin");
   };
+
   return (
     <header className="main-header">
       <div className="header-section logo">
         <Logo />
       </div>
       <div className="header-section navbar">
-        <NavBar />
+        <NavBar
+          isLogin={isLogin}
+          handleLogout={handleLogout}
+          menuActive={menuActive}
+          setMenuActive={toggleNavbarMenu}
+        />
       </div>
-      <div className="header-section buttons">
-        {!isLogin ? (
-          <>
-            <Button type="primary">
-              <Link to="/signin">Sign In</Link>
-            </Button>
-            <Button type="primary">
-              <Link to="/signup">Sign Up</Link>
-            </Button>
-          </>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Avatar
-              size={60}
-              src={userProfile?.profile_picture} // Use optional chaining
-              icon={<UserOutlined />}
-            />
-            <Button danger onClick={handleLogout}>
-              Logout
-            </Button>
+      {isLogin && (
+        <div className="header-section profile">
+          <div className="action">
+            <div className="profile" onClick={toggleProfileMenu}>
+              <Avatar
+                size={60}
+                src={userProfile?.profile_picture}
+                icon={<UserOutlined />}
+              />
+            </div>
+            <div className={`menu ${profileMenuActive ? "active" : ""}`}>
+              <ul>
+                <li>
+                  <Link to="/profile">My profile</Link>
+                </li>
+                <li onClick={handleLogout}>
+                  <a href="#">Logout</a>
+                </li>
+              </ul>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 };
