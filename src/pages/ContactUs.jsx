@@ -7,7 +7,7 @@ import Card from "../components/contact/Card.jsx";
 import MapContact from "../components/contact/MapContact.jsx";
 import Slider from "react-slick";
 import axios from "axios";
-import { headerAPI } from "../utils/helpers.js";
+import { API_URL, headerAPI } from "../utils/helpers.js";
 import DrImage from "../assets/images/Doctor.jpg";
 
 const ContactUs = () => {
@@ -23,7 +23,7 @@ const ContactUs = () => {
 
   const fetchExpertData = async () => {
     const header = headerAPI();
-    const API = "http://127.0.0.1:8000/api/experts";
+    const API = `${API_URL}/experts`;
     try {
       const response = await axios.get(API, { headers: header });
       if (response) {
