@@ -1,0 +1,48 @@
+.profile-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+.banner {
+    background-color: #f4f4f4;
+    padding: 50px 20px;
+    margin-bottom: 20px;
+  }
+  
+  .banner h1 {
+    margin: 0;
+    font-size: 36px;
+  }
+  
+  .banner p {
+    margin: 10px 0 0;
+    font-size: 18px;
+    color: #666;
+  }
+  .profile_avtar{
+    width: 45%;
+    display: flex;
+    gap: 20px;
+    margin-left: 70px;  
+    /* margin: -70px 0px 0px 200px; */
+  }
+  .profile_avtar .img_box {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+  }
+  .profile_avtar .img_box img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .profile_avtar p{
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 20px;
+  }
+  .name_box_profile{
+    display: flex;
+    align-items: center;
+  }

@@ -104,7 +104,7 @@ const MainHeader = () => {
             <div className={`menu ${profileMenuActive ? "active" : ""}`}>
               <ul>
                 <li>
-                  <Link to="/profile">My profile</Link>
+                <Link to="/profile">My profile</Link>
                 </li>
                 <li onClick={handleLogout}>
                   <a href="#">Logout</a>

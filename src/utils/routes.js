@@ -49,6 +49,11 @@ export const publicRoutes = [
     element: <MainLayout main={<Expert />} />,
     exact: true,
   },
+  {
+    path: "/profile",
+    element: <MainLayout main={<Profile />} />,
+    exact: true,
+  },
 ];
 
 export const privateRoutes = [
@@ -80,6 +85,11 @@ export const privateRoutes = [
   {
     path: "/expert",
     element: <MainLayout main={<Expert />} />,
+    exact: true,
+  },
+  {
+    path: "/profile",
+    element: <MainLayout main={<Profile />} />,
     exact: true,
   },
 ];
