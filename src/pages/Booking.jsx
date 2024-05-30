@@ -1,19 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Card, Typography } from "antd";
 import axios from "axios";
 import "../assets/css/booking/booking.css";
 import { API_URL, headerAPI } from "../utils/helpers";
+import expertVaatar from "../assets/images/expertDetail/doctor.jpg";
+import { getExpertProfile, getUserProfile } from "../api";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 const Booking = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [appointmentTime, setAppointmentTime] = useState("");
-  const [notes, setNotes] = useState("");
+  // state
+  const [user, setUser] = useState(null);
 
-  const handleSubmit = async () => {
+  const getUser = async () => {
+    try {
+      const userProfileData = await getUserProfile();
+      setUser(userProfileData);
+      if (userProfileData.role_id === 3) {
+        getExpertProfile();
+      }
+    } catch (error) {
+      console.error("Error getting user profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const handleSubmit = async (values) => {
+    const { notes } = values;
+    console.log(notes);
+
     try {
       // Call the booking API first
       const bookingResponse = await axios.post(
@@ -21,7 +40,7 @@ const Booking = () => {
         {
           user_id: 1, // Adjust the userId as needed
           calendar_id: 1, // Adjust the calendarId as needed
-          note: notes, // Assuming notes are used for booking
+          note: notes ?? '', // Assuming notes are used for booking
           status: "New",
         }, // Assuming the initial status is 'pending'
         {
@@ -52,40 +71,24 @@ const Booking = () => {
     }
   };
 
+  if (!user) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "85vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div class="loader"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
-      <Card className="form-section" title="Thông tin của bạn">
-        <Form layout="vertical" onFinish={handleSubmit}>
-          <Form.Item label="Họ và tên">
-            <Input
-              placeholder="Họ và tên"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item label="Địa chỉ email">
-            <Input
-              type="email"
-              placeholder="Địa chỉ email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item label="Ghi chú dành cho chuyên gia (nếu có)">
-            <TextArea
-              placeholder="Ghi chú dành cho chuyên gia (nếu có)"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={4}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Đặt lịch
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
       <Card className="appointment-details" title="Lịch hẹn với chuyên gia">
         <div className="info">
           <Text>
@@ -96,7 +99,9 @@ const Booking = () => {
             <strong>Thời gian gặp với chuyên gia:</strong> 11h-12h, 03/01/2024
           </Text>
           <br />
-          <Text>
+          <Text
+            style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
+          >
             <strong>Tổng tiền:</strong> 10,000 VND
           </Text>
         </div>
@@ -106,17 +111,66 @@ const Booking = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            height: "400px",
+            backgroundColor: "red",
+            overflow: "hidden",
           }}
         >
-          <h1 className="special-text">
-            Scan mã QR code dưới đây để thanh toán
-          </h1>
           <img
-            src="https://c1.img2qr.com/images/simple_qrcode.png?x-oss-process=image/quality,Q_80"
-            alt="QR Code"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+            src={expertVaatar}
+            alt=""
             className="qr-code"
           />
         </div>
+      </Card>
+      <Card className="form-section" title="Thông tin của bạn">
+        <Form layout="vertical" onFinish={handleSubmit} initialValues={{ name: user.name, email: user.email }}>
+          <Form.Item
+            name="name"
+            label="Họ và tên"
+            rules={[
+              { required: true, message: "Vui lòng nhập họ và tên của bạn" },
+            ]}
+          >
+            <Input placeholder="Họ và tên" />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            label="Địa chỉ email"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập địa chỉ email của bạn",
+                type: "email",
+              },
+            ]}
+          >
+            <Input type="email" placeholder="Địa chỉ email" />
+          </Form.Item>
+          <Form.Item name="notes" label="Ghi chú dành cho chuyên gia (nếu có)">
+            <TextArea
+              placeholder="Ghi chú dành cho chuyên gia (nếu có)"
+              rows={4}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              style={{
+                float: "right",
+                width: "100%",
+              }}
+              htmlType="submit"
+            >
+              Đặt lịch
+            </Button>
+          </Form.Item>
+        </Form>
       </Card>
     </div>
   );

@@ -7,7 +7,7 @@
     max-width: 95vw;
     padding: 20px;
     border-radius: 20px;
-    background-color: rgba(18, 92, 102, 0.533);
+    background-color: rgba(53, 113, 121, 0.533);
   }
 
   .form-section, .appointment-details {
@@ -55,7 +55,7 @@
 
   .appointment-details .info {
     margin-bottom: 20px;
-    
+
   }
 
   .qr-code {
@@ -93,5 +93,50 @@
 
     h2 {
       font-size: 18px;
+    }
+  }
+
+
+  /* loading */
+  .loader {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    margin:15px auto;
+    position: relative;
+    color: #3dc5ff;
+    left: -100px;
+    box-sizing: border-box;
+    animation: shadowRolling 2s linear infinite;
+  }
+
+  @keyframes shadowRolling {
+    0% {
+      box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+    }
+    12% {
+      box-shadow: 100px 0 #3dc5ff, 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+    }
+    25% {
+      box-shadow: 110px 0 #3dc5ff, 100px 0 #3dc5ff, 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+    }
+    36% {
+      box-shadow: 120px 0 #3dc5ff, 110px 0 #3dc5ff, 100px 0 #3dc5ff, 0px 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+      box-shadow: 130px 0 #3dc5ff, 120px 0 #3dc5ff, 110px 0 #3dc5ff, 100px 0 #3dc5ff;
+    }
+    62% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 #3dc5ff, 120px 0 #3dc5ff, 110px 0 #3dc5ff;
+    }
+    75% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 130px 0 #3dc5ff, 120px 0 #3dc5ff;
+    }
+    87% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 130px 0 #3dc5ff;
+    }
+    100% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
     }
   }
