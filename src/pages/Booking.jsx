@@ -40,7 +40,7 @@ const Booking = () => {
         {
           user_id: 1, // Adjust the userId as needed
           calendar_id: 1, // Adjust the calendarId as needed
-          note: notes ?? '', // Assuming notes are used for booking
+          note: notes, // Assuming notes are used for booking
           status: "New",
         }, // Assuming the initial status is 'pending'
         {
@@ -112,7 +112,7 @@ const Booking = () => {
             alignItems: "center",
             flexDirection: "column",
             height: "400px",
-            backgroundColor: "red",
+            backgroundColor: "gray",
             overflow: "hidden",
           }}
         >
