@@ -1,7 +1,7 @@
 import "../../assets/css/profile/action.css";
 export default function Action(props) {
   return (
-    <div class="card" style={{ width: "18rem" }}>
+    <div class="card_profile" style={{ width: "18rem" }}>
       <div class="card-body">
         <p class="card-icon">{props.icon}</p>
         <p class="card-title">{props.title}</p>

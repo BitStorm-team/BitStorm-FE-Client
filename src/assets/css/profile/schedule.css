@@ -1,0 +1,69 @@
+.card_profile_schedule .card-body .card-title {
+    color: #1678F2;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    height: 40px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+}
+
+.card_profile_schedule {
+    width: 18rem;
+    margin: 0 auto;
+    display: flex;
+}
+
+.card_profile_schedule .card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.menu-button{
+    margin-left: 10px;
+    font-size: 16px;
+    color: lightcoral;
+    border: none;
+    background: rgba(0, 0, 0, 0);
+}
+.menu_schedule button{
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0);
+    color: white;
+    border: none;
+    width: 60px;
+}
+.menu_schedule button :hover{
+    /* box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2); */
+    background: rgba(0, 0, 0, 0);
+    width: 60px;
+    height: 30px;
+}
+.menu_schedule .delete_shedule :hover{
+    color: red;
+}
+.menu_schedule .detail_shedule :hover{
+    color: blue;
+}
+.menu_schedule {
+    background-color: lightcoral;
+    border-radius: 5px;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.menu_schedule .detail_shedule, .menu_schedule .delete_shedule{
+    width: 60px;
+}
+.menu_schedule .delete_shedule{
+    margin-top: 10px;
+}
+.menu-container{
+    display: flex;
+    margin-left: -5%;
+}

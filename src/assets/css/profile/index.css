@@ -1,48 +1,100 @@
-.profile-container {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
+.main-profile {
+  overflow-x: hidden;
 }
+
+.profile-container {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
 .banner {
-    background-color: #f4f4f4;
-    padding: 50px 20px;
-    margin-bottom: 20px;
-  }
-  
-  .banner h1 {
-    margin: 0;
-    font-size: 36px;
-  }
-  
-  .banner p {
-    margin: 10px 0 0;
-    font-size: 18px;
-    color: #666;
-  }
-  .profile_avtar{
-    width: 45%;
-    display: flex;
-    gap: 20px;
-    margin-left: 70px;  
-    /* margin: -70px 0px 0px 200px; */
-  }
-  .profile_avtar .img_box {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-  }
-  .profile_avtar .img_box img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  .profile_avtar p{
-    font-size: 25px;
-    font-weight: bold;
-    margin-left: 20px;
-  }
-  .name_box_profile{
-    display: flex;
-    align-items: center;
-  }
+  background-color: #f4f4f4;
+  padding: 50px 20px;
+  margin-bottom: 20px;
+}
+
+.banner h1 {
+  margin-left: 20px;
+  font-size: 36px;
+}
+
+.banner p {
+  margin-left: 20px;
+  font-size: 18px;
+  color: #666;
+}
+
+.profile_avtar {
+  width: 45%;
+  display: flex;
+  gap: 20px;
+  margin-left: 70px;
+  /* margin: -70px 0px 0px 200px; */
+}
+
+.profile_avtar .img_box {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.profile_avtar .img_box img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile_avtar p {
+  font-size: 25px;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.name_box_profile {
+  display: flex;
+  align-items: center;
+}
+
+.action_box {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn_create_schedule_btn {
+  background-color: #1678F2;
+  width: 200px;
+  height: 40px;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.schedule_item_box {
+  display: flex;
+  width: 90%;
+  flex-wrap: wrap;
+  gap: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.examination_schedule_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.examination_schedule_box h5, .examination_booking_history h5 {
+  margin: 20px;
+  font-weight: 600;
+  font-size: 20px;
+  display: flex;
+  align-self: flex-start;
+  margin-left: 5%;
+  color:#1678F2;
+}

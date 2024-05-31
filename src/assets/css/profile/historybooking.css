@@ -1,0 +1,43 @@
+.schedule-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8); /* Nền trắng với độ trong suốt 80% */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .schedule-info {
+    flex: 1;
+  }
+  
+  .username {
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .schedule-date,
+  .schedule-price,
+  .schedule-link {
+    margin: 5px 0;
+  }
+  
+  .schedule-link-button {
+    color: #3D93FF;
+    text-decoration: none;
+    margin-left: 15px;
+  }
+  
+  .schedule-link-button:hover {
+    text-decoration: underline;
+  }
+  

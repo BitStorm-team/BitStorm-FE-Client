@@ -95,3 +95,5 @@ npm install react-slick slick-carousel
 
 ## install mdb-react-ui-kit
 --> npm install mdb-react-ui-kit
+## install icons-react
+npm install react-icons

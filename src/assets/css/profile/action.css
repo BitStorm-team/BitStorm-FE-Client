@@ -1,4 +1,31 @@
-.card{
+.card_profile {
     height: 200px;
     width: 30%;
+    margin: 50px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+.card_profile:hover{
+    transform: scale(1.05);
+    background-color: lightsteelblue;
+}
+.card_profile:hover .card-title, .card_profile:hover .card-icon{
+    color: white;
+}
+.card_profile .card-title{
+    color: #1678F2;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.card_profile .card-icon {
+    color: #1678F2;
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.card_profile  .card-body{
+    height: 200px;
+    width: 100%;
+    border-radius: 10px;
 }
