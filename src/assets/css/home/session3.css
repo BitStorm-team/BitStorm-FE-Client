@@ -28,11 +28,21 @@
   }
 
   .podcast-card {
-    width: 300px;
+    width: 200px;
+    height: 200px;
+    gap: 0 !important;
+    border-radius: 20px;
+    background-color: #1890ff;
+    transition: transform 0.3s; /* Adding transition for smooth scaling */
+  }
+
+  .session3-container .podcast-card:hover {
+    transform: scale(1.05); /* Increase scale on hover */
   }
 
   .podcast-image {
-    height: 180px;
+    height: 200px;
+    border-radius: 20px !important;
     object-fit: cover;
   }
 
