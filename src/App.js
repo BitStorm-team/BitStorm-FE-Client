@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./utils/routes";
 import withPublicRoute from "./router/PublicRouter";
 import withPrivateRoute from "./router/PrivateRouter";
-import NotFound from "./pages/Notfound";
+import NotFound from "./pages/NotFound.jsx";
 export default function App() {
   return (
     <BrowserRouter>
