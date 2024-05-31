@@ -1,6 +1,6 @@
 .wrapper {
-    width: 96%;
-    max-width: 1140px;
+    /* width: 96%; */
+    /* max-width: 1140px; */
     margin: 0 auto;
     display: flex;
 }
@@ -120,7 +120,6 @@ select:focus + .focus {
     align-items: flex-start;
       justify-content: center;
   }
-  
   .card {
     background: #fff;
     width: 20em;
@@ -135,14 +134,12 @@ select:focus + .focus {
     transform: scale(1.03);
     box-shadow: 0 13px 40px -5px hsla(240, 30.1%, 28%, 0.12), 0 8px 32px -8px hsla(0, 0%, 0%, 0.14), 0 -6px 32px -6px hsla(0, 0%, 0%, 0.02);
   }
-  
   .card img {
     width: 100%;
     height: 300px;
     object-fit: cover;
     object-position: top;
   }
-  
   .card h2 {
     color: #222;
     margin-top: -0.2em;
@@ -152,20 +149,19 @@ select:focus + .focus {
     font-family: 'Montserrat', sans-serif;
     transition: all ease-in 100ms;
   }
+
   
   .card p {
     color: #777;
   }
-  
+
   .card h5 {
     color: #bbb;
     font-weight: 700;
     font-size: 0.7em;
-    letter-spacing: 0.04em;
     margin: 1.4em 0 0 0;
     text-transform: uppercase;
   }
-  
   .card-body {
     padding: 1.2em;
   }
@@ -199,7 +195,7 @@ select:focus + .focus {
   }
   .btn-16:active {
     top: 2px;
-  }     
+  }
   .custom-btn {
     width: 130px;
     height: 40px;
@@ -214,9 +210,6 @@ select:focus + .focus {
     transition: all 0.3s ease;
     position: relative;
     display: inline-block;
-     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-     7px 7px 20px 0px rgba(0,0,0,.1),
-     4px 4px 5px 0px rgba(0,0,0,.1);
     outline: none;
   }
   .card h2 {
@@ -229,9 +222,9 @@ select:focus + .focus {
 .card p {
     margin-left: 30px;
     font-size: 18px;
-    white-space: nowrap;       
-    overflow: hidden;            
-    text-overflow: ellipsis; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .background {
   /* background-color: antiquewhite; */
@@ -281,13 +274,12 @@ select:focus + .focus {
   text-align: center !important;
   font-size: 1.2rem !important;
   width: 900px;
-  margin: 0 auto; 
+  margin: 0 auto;
   margin-bottom: 20px;
 }
 .card-comment {
   text-align: center;
   justify-content: center;
-  
 }
 .card-comment .card-details:hover {
   transition: 0.5s;
@@ -303,17 +295,18 @@ select:focus + .focus {
   text-align: center;
   justify-content: center;
   width: 1300px;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 .btn {
   color: #1678F2;
   font-size: 15px;
   font-weight: bold;
-  display: block; /* Chuyển nút sang khối để margin auto có hiệu lực */
-  width: 200px; /* Chiều rộng nút để dễ nhìn */
-  margin: 0 auto; /* Căn giữa theo chiều ngang */
-  text-align: center; 
+  display: block; 
+  width: 20px; 
+  margin: 0 auto;
+  text-align: center;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 .stats-container {
   display: flex;
