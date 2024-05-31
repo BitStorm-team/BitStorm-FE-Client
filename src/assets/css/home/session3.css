@@ -25,6 +25,8 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
+    background-color: #3787d720;
+    padding: 20px;
   }
 
   .podcast-card {
@@ -34,6 +36,9 @@
     border-radius: 20px;
     background-color: #1890ff;
     transition: transform 0.3s; /* Adding transition for smooth scaling */
+  }
+  .podcast-card:hover {
+    transform: scale(1.05) !important; /* Increase scale on hover */
   }
 
   .session3-container .podcast-card:hover {
@@ -55,4 +60,10 @@
     margin-top: 20px;
     width: 150px;
     margin:  0 auto;
+  }
+  @media (max-width: 768px) {
+    .podcast-card{
+       width: 400px;
+       margin: 10px;
+    }
   }
