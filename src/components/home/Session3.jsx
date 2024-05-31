@@ -6,6 +6,10 @@ import session3image1 from "../../assets/images/session3imagge1.jpg";
 import session3image2 from "../../assets/images/session3imagge2.jpg";
 import session3image3 from "../../assets/images/session3imagge3.jpg";
 import session3image4 from "../../assets/images/session3imagge4.jpg";
+import session3image6 from "../../assets/images/session3imagge6.jpg";
+import session3image7 from "../../assets/images/session3imagge7.jpg";
+
+
 
 const { Meta } = Card;
 const podcastData = [
@@ -32,12 +36,12 @@ const podcastData = [
   {
     title: "Effective Learning Methods...",
     duration: "45m",
-    image: session3image4,
+    image: session3image6,
   },
   {
     title: "Effective Learning Methods...",
     duration: "45m",
-    image: session3image4,
+    image: session3image7,
   },
 
 ];
