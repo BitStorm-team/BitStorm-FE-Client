@@ -1,32 +1,63 @@
+/* Session2.css */
 .session2-container {
-    padding: 20px;
-    text-align: center;
-    background-color: #40bcd8;
+  padding: 20px;
+  text-align: center;
+  background-color: #40bcd8;
+}
 
-  }
+.session2-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #ffffff;
+}
 
-  .session2-title {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-  }
+.carousel-item {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  flex-wrap: wrap;
+}
 
+.service-card {
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+.service-card .card-icon {
+  font-size: 48px;
+  margin: 20px 0;
+}
+
+.service-card.active {
+  border: 2px solid #40bcd8;
+}
+
+@media (max-width: 768px) {
   .carousel-item {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-
+    flex-direction: column;
+    align-items: center;
   }
 
   .service-card {
-    width: 250px;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .session2-title {
+    font-size: 20px;
+  }
+
+  .service-card {
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: 15px;
   }
 
   .service-card .card-icon {
-    font-size: 48px;
-    margin: 20px 0;
+    font-size: 40px;
+    margin: 15px 0;
   }
-
-  .service-card.active {
-    border: 2px solid #40bcd8;
-  }
+}
