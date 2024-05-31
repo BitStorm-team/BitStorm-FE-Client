@@ -35,9 +35,7 @@ export default function ExpertDetail() {
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
-        {/* <div className="top_image">
-          <img src={TopImg} alt="Doctor" />
-        </div> */}
+
         <Content>
           <Row id="cardExpert" className="expert_detail">
             <Col xs={24} md={8} className="doctor_image">
@@ -192,6 +190,23 @@ export default function ExpertDetail() {
         <div className="containerRelatedExperts">
           <h1 className="titleRelatedExpert">Related experts</h1>
           <div className="wrapper">
+            <div className="card">
+              <img
+                className="card-image"
+                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
+                alt=""
+              />
+              <h2>Mr. Mỹ</h2>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Laudantium quis libero exercitationem distinctio facere tenetur
+                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
+                laboriosam, odio aspernatur porro eum consectetur doloribus.
+              </p>
+              <div className="card-button">
+                <button class="custom-btn btn-16">View More</button>
+              </div>
+            </div>
             <div className="card">
               <img
                 className="card-image"

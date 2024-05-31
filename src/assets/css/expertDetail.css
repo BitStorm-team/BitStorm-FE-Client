@@ -109,7 +109,7 @@
 .checkoutButton:hover {
     background: linear-gradient(to right, #de6262, #ffb88c);
      transform: translateY(-2px)
-        
+
 }
 
 #checkoutBtn {
@@ -302,11 +302,12 @@
 }
 
 .containerRelatedExperts{
-    margin-left: 30px;
-    margin-right: 30px;
+
+    width: 95vw;
     border-radius: 30px;
-    background-color: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* background-color: rgb(243, 103, 103); */
+    margin: auto;
+
 }
 
 .doctor_job_title{
@@ -432,6 +433,7 @@
     .wrapper{
         justify-content: center;
         flex-wrap: wrap;
+        background-color: #007bff !important;
     }
 
     .expert_detail_reviews {
@@ -456,7 +458,7 @@
    .userAvatar{
     display: inline;
    }
-   
+
    .titleRelatedExpert{
     text-align: center;
    }

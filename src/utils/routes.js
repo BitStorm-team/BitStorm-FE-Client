@@ -6,7 +6,9 @@ import ExpertDetail from "../pages/ExpertsDetail";
 import ContactUs from "../pages/ContactUs";
 import Expert from "../pages/Expert";
 import FormGetInforExpert from "../pages/FormGetInfoExpert";
-import ExpertDetail from '../pages/ExpertsDetail'
+import Profile from "../pages/Profile";
+import Booking from "../pages/Booking";
+import Post from "../pages/Post";
 
 export const publicRoutes = [
   {
@@ -48,7 +50,7 @@ export const publicRoutes = [
     path: "/expert",
     element: <MainLayout main={<Expert />} />,
     exact: true,
-  },
+  }
 ];
 
 export const privateRoutes = [
@@ -73,8 +75,18 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/expert-detail",
-    element: <MainLayout main={<ExpertDetail />} />,
+    path: "/expert",
+    element: <MainLayout main={<Expert />} />,
+    exact: true,
+  },
+  {
+    path: "/booking",
+    element: <MainLayout main={<Booking />} />,
+    exact: true,
+  },
+  {
+    path: "/post",
+    element: <MainLayout main={<Post />} />,
     exact: true,
   },
 ];
