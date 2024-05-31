@@ -13,30 +13,30 @@ import AOS from "aos";
 const cardsData = [
   {
     icon: <TeamOutlined style={{ fontSize: "64px", color: "#1890ff" }} />,
-    title: "Tư Vấn Online",
+    title: "Online Consultation",
     description:
-      "Được sự hỗ trợ nhiệt tình từ các chuyên gia trong lĩnh vực tư vấn.",
+      "Receive enthusiastic support from experts in the consulting field.",
   },
   {
     icon: <BuildOutlined style={{ fontSize: "64px", color: "#52c41a" }} />,
-    title: "Xây Dựng Cộng Đồng",
+    title: "Community Building",
     description:
-      "Xây dựng một cộng đồng văn minh để mọi người cùng nhau phát triển.",
+      "Build a civilized community for everyone to develop together.",
   },
   {
     icon: (
       <CheckCircleOutlined style={{ fontSize: "64px", color: "#eb2f96" }} />
     ),
-    title: "Kiểm duyệt thông tin",
+    title: "Information Moderation",
     description:
-      "Có một điều bạn chưa biết phần kiểm duyệt thông tin khá là hay.",
+      "There's something you don't know: information moderation is quite interesting.",
   },
   {
     icon: (
       <DollarCircleOutlined style={{ fontSize: "64px", color: "#faad14" }} />
     ),
-    title: "Hoàn toàn miễn phí",
-    description: "Nhận được sự tư vấn từ mọi người hoàn toàn miễn phí.",
+    title: "Completely Free",
+    description: "Get advice from everyone completely free of charge.",
   },
 ];
 
@@ -47,8 +47,8 @@ const Session4 = () => {
 
   return (
     <div className="session4">
-      <h2>Tại sao lại lựa chọn chúng tôi</h2>
-      <h1>Sự Lựa Chọn Đúng Đắn Dành Cho Bạn</h1>
+      <h2>Why Choose Us</h2>
+      <h1>The Right Choice for You</h1>
       <Row className="box-card" gutter={16}>
         {cardsData.map((card, index) => (
           <Col xs={24} sm={12} md={8} lg={6} key={index}>

@@ -1,8 +1,30 @@
 /* Session2.css */
 .session2-container {
-  padding: 20px;
+  position: relative;
+  padding: 50px;
   text-align: center;
-  background-color: #40bcd8;
+  background-image: url('../../images/—Pngtree—ppt\ grid\ background_2498802.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #2196F3;
+  overflow: hidden; /* Ensure pseudo-element doesn't overflow the container */
+}
+
+.session2-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(66, 170, 255, 0.693); /* Adjust opacity and color as needed */
+  z-index: 0; /* Place the overlay behind the content */
+}
+
+.session2-container > * {
+  position: relative;
+  z-index: 1; /* Ensure content is above the overlay */
 }
 
 .session2-title {
@@ -42,6 +64,9 @@
     width: 100%;
     max-width: 300px;
     margin-bottom: 20px;
+  }
+  .session2-title{
+    margin-top: 100px;
   }
 }
 
