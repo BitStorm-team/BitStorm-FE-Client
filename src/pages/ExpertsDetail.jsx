@@ -1,22 +1,22 @@
 import "../assets/css/expertDetail.css";
-import TopImg from "../assets/images/expertDetail/topExpertImg.png";
 import Doctor from "../assets/images/expertDetail/doctor.jpg";
 import Stars from "../assets/images/expertDetail/stars.png"
-import User from "../assets/images/expertDetail/client1.png";
-
+import ExpertDetailReview from "../components/expertDetail/ExpertDetailReview";
+import CardExpert from "../components/expertDetail/CardExpert";
+import ScheduleButton from "../components/expertDetail/ScheduleButton";
+import { API_URL, fetchAPIUserExpert, headerAPI } from "../utils/helpers";
+import Loading from "../components/expertDetail/Loading";
+import axios from "axios";
 //import { HeartOutlined } from "../../node_modules/@ant-design/icons-svg/es/index.d.ts";
-
-
 import {
   Layout,
-  Card,
   Row,
   Col,
   Button,
-  Avatar,
   Typography,
 } from "antd";
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 const { Content } = Layout;
 
 const StarIcon = () => (
@@ -32,140 +32,132 @@ const StarIcon = () => (
   </svg>
 );
 export default function ExpertDetail() {
+  const { id } = useParams(); // Lấy id từ URL
+  const [expert, setExpert] = useState({});
+  const [listExpert, setListExpert] = useState([]);
+  const [randomExperts, setRandomExperts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  //get detailed information about the selected expert
+  useEffect(() => {
+    const token = localStorage.getItem("__token__");
+    const fetchExpert = async () => {
+      try {
+        const response = await axios.get(API_URL + `/experts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.success) {
+          setExpert(response.data.data);
+          console.log(response.data.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchExpert();
+  }, [id]);
+
+  //get list suggest expert
+    useEffect(() => {
+      const token = localStorage.getItem("__token__");
+      const fetchListExpert = async () => {
+        try {
+          const response = await axios.get(API_URL + `/experts/`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.data.success) {
+            setListExpert(response.data.data);
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
+      };
+      fetchListExpert();
+    }, []);
+  console.log("list expert",listExpert);
+  
+  if (loading) {
+     return <Loading/>;
+  }
+  if (!expert || !expert.expertDetail) {
+    return <div>Error: Data not found</div>;
+  }
+   const { expertDetail, schedules} = expert;
+   const { average_rating, certificate, experience, user } = expertDetail;
+   const { name, email, profile_picture } = user;
+  const rating = parseInt(average_rating, 10);
+  // console.log(expert);
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
-
         <Content>
           <Row id="cardExpert" className="expert_detail">
             <Col xs={24} md={8} className="doctor_image">
-              <img src={Doctor} alt="Doctor" />
+              <img
+                src={
+                  profile_picture
+                    ? profile_picture // Sử dụng profile_picture nếu tồn tại
+                    : "https://img.freepik.com/free-vector/isolated-young-handsome-man-set-different-poses-white-background-illustration_632498-649.jpg?w=740&t=st=1716713290~exp=1716713890~hmac=3528b47af850651d9c3bafab98d8a0bc83f46cc56d8c17cf4d626aff86848b7d"
+                  // Sử dụng hình ảnh mặc định nếu profile_picture không tồn tại
+                }
+                alt="Doctor"
+              />
             </Col>
             <Col sm={14} xs={24} md={15} className="container_content">
               <h2 className="doctor_job_title">
-                Psychologist - <span className="doctor_name">Dr. John Doe</span>{" "}
+                Psychologist - <span className="doctor_name">{name}</span>{" "}
               </h2>
 
               <div class="flexStyle">
                 <div style={{ paddingRight: 15 }}>
-                  <p class="review-rating">4.5</p>
+                  <p class="review-rating" style={{ marginRight: 10 }}>
+                    {average_rating}
+                  </p>
                 </div>
-                <img src={Stars} alt="Stars" />
-                <span
-                  style={{
-                    width: 2,
-                    backgroundColor: "#686D76",
-                    height: 22,
-                    marginLeft: 15,
-                    marginRight: 15,
-                  }}
-                ></span>
+                {Array.from({ length: rating }, (v, i) => (
+                  <StarIcon key={i} />
+                ))}
                 <p class="review-rating">100 reviews</p>
               </div>
-              <div
-                class="flexStyle"
-                style={{
-                  paddingLeft: 50,
-                  marginTop: 20,
-                  backgroundColor: "#fff0f6",
-                  height: 80,
-                  borderRadius: 10,
-                  marginBottom: 20,
-                }}
-              >
-                <p className="oldPrice">15$</p>
-                <p className="currentPrice">10$</p>
-                <div class="discountAnnouce">Apply special discount now!</div>
-              </div>
-              <h2>Experience</h2>
-              <p style={{ marginTop: 20 }}>
+
+              <h2 style={{ marginTop: 20 }}>Experience</h2>
+              <p>
                 {" "}
-                <Typography.Paragraph>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-                  vel metus at tellus euismod malesuada. Nulla facilisi. Nulla
-                  auctor, lectus et suscipit semper, mi sapien laoreet nibh, sit
-                  amet laoreet velit tellus eget lacus. Lorem ipsum dolor sit
-                  amet, consectetur adipiscing elit. In vel metus at tellus
-                  euismod malesuada. Nulla facilisi. Nulla auctor, lectus et
-                  suscipit semper, mi sapien laoreet nibh, sit amet laoreet
-                  velit tellus eget lacus.
-                </Typography.Paragraph>
+                <Typography.Paragraph>{experience}.</Typography.Paragraph>
               </p>
+              <div className="flexStyle" style={{ marginTop: 20, marginBottom: 20 }}>
+                <h3 style={{marginRight: 10}}>Email</h3>
+                <h3 style={{ color: " #007bff" }}>{email}</h3>
+              </div>
               <h2>All schedules</h2>
               <div>
-                <div className="expert_shedule">
-                  <Button className="shedule_button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      style={{ fill: "#007bff", marginRight: 5 }}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm1 17h-1v-6l4.25-2.54.75 1.23-3.5 2.11z" />
-                    </svg>
-                    13 pm - 14 pm
-                  </Button>
-                  <Button className="shedule_button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      style={{ fill: "#007bff", marginRight: 5 }}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm1 17h-1v-6l4.25-2.54.75 1.23-3.5 2.11z" />
-                    </svg>
-                    13 pm - 14 pm
-                  </Button>
-                  <Button className="shedule_button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      style={{ fill: "#007bff", marginRight: 5 }}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm1 17h-1v-6l4.25-2.54.75 1.23-3.5 2.11z" />
-                    </svg>
-                    13 pm - 14 pm
-                  </Button>
-                  <Button className="shedule_button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      style={{ fill: "#007bff", marginRight: 5 }}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm1 17h-1v-6l4.25-2.54.75 1.23-3.5 2.11z" />
-                    </svg>
-                    13 pm - 14 pm
-                  </Button>
-                  <Button className="shedule_button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      style={{ fill: "#007bff", marginRight: 5 }}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm1 17h-1v-6l4.25-2.54.75 1.23-3.5 2.11z" />
-                    </svg>
-                    13 pm - 14 pm
-                  </Button>
+                <div>
+                  {schedules.map((schedule, index) => {
+                    return (
+                      <ScheduleButton
+                        key={index}
+                        start_time={schedule.start_time}
+                        end_time={schedule.end_time}
+                        calendar_id={schedules.id}
+                      />
+                    );
+                  })}
                 </div>
               </div>
               <div className="favorite_container">
-                <h2 style={{ marginRight: 50 }} className="favorite">
+                <h2
+                  style={{ marginRight: 50, marginTop: 20 }}
+                  className="favorite"
+                >
                   Add this expert to your favorites list
                 </h2>
-                <div class="favoriteIcon">
+                <div className="favoriteIcon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -179,9 +171,6 @@ export default function ExpertDetail() {
                   <p style={{ paddingLeft: 5, fontWeight: "bold" }}>20 tyms</p>
                 </div>
               </div>
-              <div className="checkout">
-                <button className="checkoutButton">Go to checkout</button>
-              </div>
             </Col>
             <Row></Row>
           </Row>
@@ -190,91 +179,10 @@ export default function ExpertDetail() {
         <div className="containerRelatedExperts">
           <h1 className="titleRelatedExpert">Related experts</h1>
           <div className="wrapper">
-            <div className="card">
-              <img
-                className="card-image"
-                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
-                alt=""
-              />
-              <h2>Mr. Mỹ</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Laudantium quis libero exercitationem distinctio facere tenetur
-                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
-                laboriosam, odio aspernatur porro eum consectetur doloribus.
-              </p>
-              <div className="card-button">
-                <button class="custom-btn btn-16">View More</button>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-image"
-                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
-                alt=""
-              />
-              <h2>Mr. Mỹ</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Laudantium quis libero exercitationem distinctio facere tenetur
-                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
-                laboriosam, odio aspernatur porro eum consectetur doloribus.
-              </p>
-              <div className="card-button">
-                <button class="custom-btn btn-16">View More</button>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-image"
-                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
-                alt=""
-              />
-              <h2>Mr. Mỹ</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Laudantium quis libero exercitationem distinctio facere tenetur
-                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
-                laboriosam, odio aspernatur porro eum consectetur doloribus.
-              </p>
-              <div className="card-button">
-                <button class="custom-btn btn-16">View More</button>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-image"
-                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
-                alt=""
-              />
-              <h2>Mr. Mỹ</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Laudantium quis libero exercitationem distinctio facere tenetur
-                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
-                laboriosam, odio aspernatur porro eum consectetur doloribus.
-              </p>
-              <div className="card-button">
-                <button class="custom-btn btn-16">View More</button>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-image"
-                src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
-                alt=""
-              />
-              <h2>Mr. Mỹ</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Laudantium quis libero exercitationem distinctio facere tenetur
-                dolore officia aspernatur, eligendi assumenda. Optio possimus ab
-                laboriosam, odio aspernatur porro eum consectetur doloribus.
-              </p>
-              <div className="card-button">
-                <button class="custom-btn btn-16">View More</button>
-              </div>
-            </div>
+            {<CardExpert></CardExpert>}
+            {<CardExpert></CardExpert>}
+            {<CardExpert></CardExpert>}
+            {<CardExpert></CardExpert>}
           </div>
         </div>
       </div>
@@ -313,70 +221,8 @@ export default function ExpertDetail() {
           </div>
         </div>
         <div>
-          <div className="container_review_content">
-            <div className="userAvatar">
-              <Avatar size={64} src={User} />
-            </div>
-            <div style={{ marginLeft: 10, flex: 1 }}>
-              <p style={{ fontWeight: "bold", marginBottom: 5 }}>BQ</p>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: 5,
-                }}
-              >
-                <StarIcon />
-                <StarIcon />
-                <StarIcon />
-                <StarIcon />
-                <StarIcon />
-              </div>
-              <p style={{ marginBottom: 5 }}>May 2024</p>
-              <p style={{ marginBottom: 0 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel
-                metus at tellus euismod malesuada. Nulla facilisi. Nulla auctor,
-                lectus et suscipit semper, mi sapien laoreet nibh, sit amet
-                laoreet velit tellus eget lacus. Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit. In vel metus at tellus euismod
-                malesuada. Nulla facilisi. Nulla auctor, lectus et suscipit
-                semper, mi sapien laoreet nibh, sit amet laoreet velit tellus
-                eget lacus.
-              </p>
-            </div>
-          </div>
-          <div className="container_review_content">
-            <div className="userAvatar">
-              <Avatar size={64} src={User} />
-            </div>
-            <div style={{ marginLeft: 10, flex: 1 }}>
-              <p style={{ fontWeight: "bold", marginBottom: 5 }}>BQ</p>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: 5,
-                }}
-              >
-                <StarIcon />
-                <StarIcon />
-                <StarIcon />
-                <StarIcon />
-                <StarIcon />
-              </div>
-              <p style={{ marginBottom: 5 }}>May 2024</p>
-              <p style={{ marginBottom: 0 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel
-                metus at tellus euismod malesuada. Nulla facilisi. Nulla auctor,
-                lectus et suscipit semper, mi sapien laoreet nibh, sit amet
-                laoreet velit tellus eget lacus. Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit. In vel metus at tellus euismod
-                malesuada. Nulla facilisi. Nulla auctor, lectus et suscipit
-                semper, mi sapien laoreet nibh, sit amet laoreet velit tellus
-                eget lacus.
-              </p>
-            </div>
-          </div>
+          {<ExpertDetailReview></ExpertDetailReview>}
+          {<ExpertDetailReview></ExpertDetailReview>}
         </div>
       </div>
     </Layout>
