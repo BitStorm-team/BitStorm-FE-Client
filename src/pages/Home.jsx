@@ -5,11 +5,15 @@ import Session3 from '../components/home/Session3';
 import Session4 from '../components/home/Session4';
 import { useInView } from 'react-intersection-observer';
 
+import Session5 from '../components/home/Session5';
+
 const HomePage = () => {
   const [ref1, inView1] = useInView({ threshold: 0.5 });
   const [ref2, inView2] = useInView({ threshold: 0.5 });
   const [ref3, inView3] = useInView({ threshold: 0.5 });
   const [ref4, inView4] = useInView({ threshold: 0.5 });
+  const [ref5, inView5] = useInView({ threshold: 0.5 });
+
 
   return (
     <div className="main-home">
@@ -19,11 +23,14 @@ const HomePage = () => {
       <div ref={ref2}>
         <Session2 animate={inView2} />
       </div>
-      <div ref={ref3}>
-        <Session3 animate={inView3} />
+      <div ref={ref5}>
+        <Session5 animate={inView5} />
       </div>
       <div ref={ref4}>
         <Session4 animate={inView4} />
+      </div>
+      <div ref={ref3}>
+        <Session3 animate={inView3} />
       </div>
     </div>
   );
