@@ -7,11 +7,13 @@ import {
   TwitterOutlined,
 } from "@ant-design/icons";
 import "../assets/css/auth/LoginRegister.css";
-import { useNavigate } from "react-router-dom";
+import "../assets/css/auth/Login.css";
+
 import { fetchCsrfToken, signIn } from "../api";
 import { setStorage } from "../utils/helpers";
-
-const { Title, Link } = Typography;
+import { Link, useNavigate } from "react-router-dom";
+import imagLLogin from "../assets/images/signupimage.jpg";
+const { Title } = Typography;
 
 const SignIn = () => {
   const [csrfToken, setCsrfToken] = useState("");
@@ -49,49 +51,63 @@ const SignIn = () => {
   };
 
   return (
-    <div className="form-container">
-      <Title level={2} className="form-title">
-        Đăng nhập
-      </Title>
-      <Form name="login" onFinish={onFinish}>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ email!" }]}
-        >
-          <Input placeholder="Địa chỉ email" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-        >
-          <Input.Password placeholder="Mật khẩu" />
-        </Form.Item>
-        <Form.Item>
-          <Link href="#" className="forgot-password">
-            Quên mật khẩu?
-          </Link>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="form-button">
-            Đăng nhập
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <div className="social-login">
-            <span>Hoặc đăng nhập bằng</span>
-            <div className="social-icons">
-              <FacebookOutlined className="social-icon" />
-              <GoogleOutlined className="social-icon" />
-              <TwitterOutlined className="social-icon" />
-            </div>
+    <div className="login-container">
+      <main className="login-box">
+        <div className="login-container-item">
+          <div className="form-container">
+            <Title level={1} className="form-title">
+              Login
+            </Title>
+            <Form name="login" onFinish={onFinish}>
+              <Form.Item
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your email address!",
+                  },
+                ]}
+              >
+                <Input placeholder="Email address" className="input-form" />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please enter your password!" },
+                ]}
+              >
+                <Input.Password
+                  id="Password"
+                  placeholder="Password"
+                  className="input-form"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Link href="#" className="forgot-password">
+                  Forgot password?
+                </Link>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="form-button"
+                >
+                  Login
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <span>
+                  Don't have an account? <Link to="/signup">Sign Up</Link>
+                </span>
+              </Form.Item>
+            </Form>
           </div>
-        </Form.Item>
-        <Form.Item>
-          <span>
-            Bạn chưa có tài khoản? <Link href="/signup">Đăng Ký</Link>
-          </span>
-        </Form.Item>
-      </Form>
+        </div>
+        <div className="login-container-item">
+          <img src={imagLLogin} alt="Login" />
+        </div>
+      </main>
     </div>
   );
 };
