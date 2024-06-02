@@ -1,9 +1,10 @@
 import {Card,Pagination, message } from "antd";
 import '../assets/css/expert.css';
 import { StarTwoTone } from "@ant-design/icons";
-import { useState,useEffect,useParams } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 import { useInView } from 'react-intersection-observer';
+import { useNavigate } from 'react-router-dom';
 const Expert = () =>{
     const [ref1, inView1] = useInView({ threshold: 0.5 });
     const [experts, setExperts] = useState([]);
@@ -11,7 +12,7 @@ const Expert = () =>{
     const itemsPerPage = 4;
     const [expertName, setExpertName] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-
+    const navigate = useNavigate();
     const searchExpert = async (term) => {
         try {
             const res = await axios.post("http://127.0.0.1:8000/api/experts/search", { searchTerm: term });
@@ -52,6 +53,10 @@ const Expert = () =>{
     const handleChange = (page) => {
         setCurrentPage(page);
     };
+    const onChangeItem = (id) => {
+        console.log(id)
+        navigate(`/expert/${id}`);
+    }
     // Calculate the items to display on the current page
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -87,13 +92,13 @@ const Expert = () =>{
                     </div>
                 </div>
             </div>
-            <div className="wrapper">
+            <div className="wrapper search-item">
                 {expertName.map(item => (
                         <div className="card" key={item.id}  animate={inView1}>
                             <img className="card-image" src={item.profile_picture} alt={item.name} />
                             <h2>{item.name}</h2>
                             <p>{item.email}</p>
-                            <button className="custom-btn btn-16" >Read More</button>
+                            <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
                         </div>
                     ))}
             </div>
@@ -103,7 +108,9 @@ const Expert = () =>{
                         <img className="card-image" src={item.profile_picture} alt={item.name} />
                         <h2>{item.name}</h2>
                         <p>{item.email}</p>
-                        <button className="custom-btn btn-16" >Read More</button>
+                        <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>
+                            Read more
+                        </button>
                     </div>
                 ))}
             </div>
@@ -176,15 +183,15 @@ const Expert = () =>{
         <div className="stats-container">
         <div className="stat-item">
             <span className="stat-number">+3.500</span>
-            <span className="stat-label">Người dùng</span>
+            <span className="stat-label">Users</span>
         </div>
         <div className="stat-item">
             <span className="stat-number">+15</span>
-            <span className="stat-label">Chuyên gia tâm lý hàng đầu</span>
+            <span className="stat-label">Leading psychologist</span>
         </div>
         <div className="stat-item">
             <span className="stat-number">+10</span>
-            <span className="stat-label">Cuộc gặp mặt trên một tháng</span>
+            <span className="stat-label">Meeting over a month</span>
         </div>
     </div>
     </div>

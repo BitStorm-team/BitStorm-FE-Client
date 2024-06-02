@@ -16,7 +16,10 @@
     margin-left: auto;
     margin-right: auto;
 }
-
+.search-item {
+  flex-wrap:wrap;
+  gap: 20
+}
 /* search input */
 .search-wrapper {
     margin: 48px 0;
@@ -343,4 +346,7 @@ select:focus + .focus {
   font-size: 1rem;
   color: #666;
   margin-top: 10px;
+}
+.search-item {
+
 }
