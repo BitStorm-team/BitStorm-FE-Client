@@ -20,14 +20,14 @@ const formatDate = (timestamp) => {
 
 export default function ScheduleButton({ start_time, end_time, calendar_id }) {
   const navigate = useNavigate();
-  const handleDetail = () => {
+  const handleBookingDetail = () => {
     navigate(`/booking/${calendar_id}`);
   };
   const formattedStartTime = formatTime(start_time);
   const formattedEndDate = formatDate(end_time);
 
   return (
-    <Button className="shedule_button" onClick={handleDetail}>
+    <Button className="shedule_button" onClick={handleBookingDetail}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

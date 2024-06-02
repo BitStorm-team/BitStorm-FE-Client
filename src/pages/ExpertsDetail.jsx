@@ -16,7 +16,8 @@ import {
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import NotFound from "./NotFound";
 const { Content } = Layout;
 
 const StarIcon = () => (
@@ -59,7 +60,7 @@ export default function ExpertDetail() {
     };
     fetchExpert();
   }, [id]);
-
+  console.log("expert detail: ",expert);
   //get list suggest expert
   useEffect(() => {
     const token = localStorage.getItem("__token__");
@@ -72,10 +73,9 @@ export default function ExpertDetail() {
         });
         if (response.data.success) {
           setListExpert(response.data.data);
-          
           setRandomExperts(
             response.data.data[0]
-              .filter((exp) => exp.id !== expert.id)
+              .filter((exp) => exp.id !== id)
               .sort(() => Math.random() - 0.5)
               .slice(0, 4)
           );
@@ -86,20 +86,22 @@ export default function ExpertDetail() {
       }
     };
     fetchListExpert();
-  }, []);
-console.log(randomExperts);
+  }, [id]);
+// console.log("expert id: ",id)
+// console.log("list expert: ",listExpert);
+// console.log("list random expert: ",randomExperts);
   
   if (loading) {
     return <Loading />;
   }
   if (!expert || !expert.expertDetail) {
-    return <div>Error: Data not found</div>;
+    return (<NotFound></NotFound>);
   }
   const { expertDetail, schedules } = expert;
   const { average_rating, certificate, experience, user } = expertDetail;
   const { name, email, profile_picture } = user;
   const rating = parseInt(average_rating, 10);
-  // console.log(expert);
+
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
@@ -146,20 +148,25 @@ console.log(randomExperts);
                 <h3 style={{ color: " #007bff" }}>{email}</h3>
               </div>
               <h2>All schedules</h2>
-              <div>
+              {schedules.length === 0 ? (
+                <div>No schedule avalable</div>
+              ) : (
                 <div>
-                  {schedules.map((schedule, index) => {
-                    return (
-                      <ScheduleButton
-                        key={index}
-                        start_time={schedule.start_time}
-                        end_time={schedule.end_time}
-                        calendar_id={schedules.id}
-                      />
-                    );
-                  })}
+                  <div className="schedule_container">
+                    {schedules.map((schedule, index) => {
+                      return (
+                        <ScheduleButton
+                          key={index}
+                          start_time={schedule.start_time}
+                          end_time={schedule.end_time}
+                          calendar_id={schedules.id}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
+
               <div className="favorite_container">
                 <h2
                   style={{ marginRight: 50, marginTop: 20 }}
@@ -190,7 +197,15 @@ console.log(randomExperts);
           <h1 className="titleRelatedExpert">Related experts</h1>
           <div className="wrapper">
             {randomExperts.map((expert, index) => {
-              return <CardExpert key={index} name={expert.name} experience={expert.experience} id={expert.id} />;
+              return (
+                <CardExpert
+                  key={index}
+                  name={expert.name}
+                  experience={expert.experience}
+                  id={expert.id}
+                  img={expert.profile_picture}
+                />
+              );
             })}
           </div>
         </div>

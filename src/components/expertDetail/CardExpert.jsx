@@ -1,18 +1,21 @@
-export default function cardExpert({name, experience, id}) {
-    return (
-      <div className="card">
-        <img
-          className="card-image"
-          src="https://htmediagroup.vn/wp-content/uploads/2023/03/Anh-bac-si-nam-8-min.jpg"
-          alt=""
-        />
-        <h2>{ name }</h2>
-        <p>
-          { experience }
-        </p>
-        <div className="card-button">
-          <button class="custom-btn btn-16">View More</button>
-        </div>
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+export default function CardExpert({ name, experience, id, img }) {
+  const navigate = useNavigate();
+  const handleExpertDetail = () => {
+    navigate(`/expert-detail/${id}`);
+  };
+  return (
+    <div className="card">
+      <img className="card-image" src={img} alt={img} />
+      <h2>{name}</h2>
+      <p>{experience}</p>
+      <div className="card-button">
+        <button class="custom-btn btn-16" onClick={handleExpertDetail}>
+          View More
+        </button>
       </div>
-    );
+    </div>
+  );
 }
