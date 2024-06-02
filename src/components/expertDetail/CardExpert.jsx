@@ -1,4 +1,4 @@
-export default function cardExpert({name, experience}) {
+export default function cardExpert({name, experience, id}) {
     return (
       <div className="card">
         <img

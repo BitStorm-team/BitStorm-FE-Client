@@ -61,36 +61,43 @@ export default function ExpertDetail() {
   }, [id]);
 
   //get list suggest expert
-    useEffect(() => {
-      const token = localStorage.getItem("__token__");
-      const fetchListExpert = async () => {
-        try {
-          const response = await axios.get(API_URL + `/experts/`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.data.success) {
-            setListExpert(response.data.data);
-            setLoading(false);
-          }
-        } catch (error) {
-          console.error("Error fetching users:", error);
+  useEffect(() => {
+    const token = localStorage.getItem("__token__");
+    const fetchListExpert = async () => {
+      try {
+        const response = await axios.get(API_URL + `/experts/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.success) {
+          setListExpert(response.data.data);
+          
+          setRandomExperts(
+            response.data.data[0]
+              .filter((exp) => exp.id !== expert.id)
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 4)
+          );
+          setLoading(false);
         }
-      };
-      fetchListExpert();
-    }, []);
-  console.log("list expert",listExpert);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchListExpert();
+  }, []);
+console.log(randomExperts);
   
   if (loading) {
-     return <Loading/>;
+    return <Loading />;
   }
   if (!expert || !expert.expertDetail) {
     return <div>Error: Data not found</div>;
   }
-   const { expertDetail, schedules} = expert;
-   const { average_rating, certificate, experience, user } = expertDetail;
-   const { name, email, profile_picture } = user;
+  const { expertDetail, schedules } = expert;
+  const { average_rating, certificate, experience, user } = expertDetail;
+  const { name, email, profile_picture } = user;
   const rating = parseInt(average_rating, 10);
   // console.log(expert);
   return (
@@ -114,16 +121,16 @@ export default function ExpertDetail() {
                 Psychologist - <span className="doctor_name">{name}</span>{" "}
               </h2>
 
-              <div class="flexStyle">
+              <div className="flexStyle">
                 <div style={{ paddingRight: 15 }}>
-                  <p class="review-rating" style={{ marginRight: 10 }}>
+                  <p className="review-rating" style={{ marginRight: 10 }}>
                     {average_rating}
                   </p>
                 </div>
                 {Array.from({ length: rating }, (v, i) => (
                   <StarIcon key={i} />
                 ))}
-                <p class="review-rating">100 reviews</p>
+                <p className="review-rating">100 reviews</p>
               </div>
 
               <h2 style={{ marginTop: 20 }}>Experience</h2>
@@ -131,8 +138,11 @@ export default function ExpertDetail() {
                 {" "}
                 <Typography.Paragraph>{experience}.</Typography.Paragraph>
               </p>
-              <div className="flexStyle" style={{ marginTop: 20, marginBottom: 20 }}>
-                <h3 style={{marginRight: 10}}>Email</h3>
+              <div
+                className="flexStyle"
+                style={{ marginTop: 20, marginBottom: 20 }}
+              >
+                <h3 style={{ marginRight: 10 }}>Email</h3>
                 <h3 style={{ color: " #007bff" }}>{email}</h3>
               </div>
               <h2>All schedules</h2>
@@ -179,10 +189,9 @@ export default function ExpertDetail() {
         <div className="containerRelatedExperts">
           <h1 className="titleRelatedExpert">Related experts</h1>
           <div className="wrapper">
-            {<CardExpert></CardExpert>}
-            {<CardExpert></CardExpert>}
-            {<CardExpert></CardExpert>}
-            {<CardExpert></CardExpert>}
+            {randomExperts.map((expert, index) => {
+              return <CardExpert key={index} name={expert.name} experience={expert.experience} id={expert.id} />;
+            })}
           </div>
         </div>
       </div>
