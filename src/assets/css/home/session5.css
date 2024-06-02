@@ -1,0 +1,46 @@
+/* src/Session5.css */
+.session5-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+
+  }
+
+  .session5-card{
+    border: none;
+    padding: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: none;
+    width:100% ;
+    gap: 50px;
+    flex-wrap: wrap;
+  }
+
+  .session5-image {
+    width: 100%;
+    margin-right: 20px;
+  }
+
+  .session5-content {
+    max-width: 500px;
+  }
+
+  .session5-title {
+    margin-bottom: 0;
+  }
+
+  .session5-subtitle {
+    margin: 10px 0;
+  }
+
+  .session5-paragraph {
+    margin: 20px 0;
+  }
+
+  .session5-button {
+    margin-top: 20px;
+  }

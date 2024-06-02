@@ -25,14 +25,29 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
+    background-color: #3787d720;
+    padding: 20px;
   }
 
   .podcast-card {
-    width: 300px;
+    width: 200px;
+    height: 200px;
+    gap: 0 !important;
+    border-radius: 20px;
+    background-color: #1890ff;
+    transition: transform 0.3s; /* Adding transition for smooth scaling */
+  }
+  .podcast-card:hover {
+    transform: scale(1.05) !important; /* Increase scale on hover */
+  }
+
+  .session3-container .podcast-card:hover {
+    transform: scale(1.05); /* Increase scale on hover */
   }
 
   .podcast-image {
-    height: 180px;
+    height: 200px;
+    border-radius: 20px !important;
     object-fit: cover;
   }
 
@@ -45,4 +60,10 @@
     margin-top: 20px;
     width: 150px;
     margin:  0 auto;
+  }
+  @media (max-width: 768px) {
+    .podcast-card{
+       width: 400px;
+       margin: 10px;
+    }
   }
