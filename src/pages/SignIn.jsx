@@ -40,11 +40,11 @@ const SignIn = () => {
       setStorage("expires_in", expires_in);
       navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
-      message.error(
-        "Đăng nhập không thành công: " +
-          (error.response?.data?.message || error.message)
-      );
+        console.error("Login failed:", error);
+        message.error(
+          "Đăng nhập không thành công: " +
+            (error.response?.data?.message || error.message)
+        );
     }
   };
 

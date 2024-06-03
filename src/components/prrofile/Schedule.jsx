@@ -32,29 +32,31 @@ export default function Schedule(props) {
           <p className="card-title">{props.time}</p>
         </div>
         <div className="menu-container">
-            <button className="menu-button" onClick={toggleMenu}>
-              <FaEllipsisV />
-            </button>
-            {showMenu && (
-              <div className="menu_schedule">
-                <button className="detail_shedule" onClick={openDetailModal}>
-                  <FaEye />
-                </button>
-                <button className="delete_shedule" onClick={deleteSchedule}>
-                  <FaTrash />
-                </button>
-              </div>
-            )}
-          </div>
+          <button className="menu-button" onClick={toggleMenu}>
+            <FaEllipsisV />
+          </button>
+          {showMenu && (
+            <div className="menu_schedule">
+              <button className="detail_shedule" onClick={openDetailModal}>
+                <FaEye />
+              </button>
+              <button className="delete_shedule" onClick={deleteSchedule}>
+                <FaTrash />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {showDetailModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeDetailModal}>
-              &times;
-            </span>
-            <p>Detail information here...</p>
+        <div className="modal-overlay">
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeDetailModal}>
+                &times;
+              </span>
+              <p>Detail information here...</p>
+            </div>
           </div>
         </div>
       )}

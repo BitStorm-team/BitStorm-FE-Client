@@ -7,7 +7,7 @@
 }
 .card_profile:hover{
     transform: scale(1.05);
-    background-color: lightsteelblue;
+    background-color: #1678F2;
 }
 .card_profile:hover .card-title, .card_profile:hover .card-icon{
     color: white;

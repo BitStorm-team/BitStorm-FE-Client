@@ -90,11 +90,20 @@
 }
 
 .examination_schedule_box h5, .examination_booking_history h5 {
-  margin: 20px;
+  margin: 30px;
   font-weight: 600;
   font-size: 20px;
   display: flex;
   align-self: flex-start;
   margin-left: 5%;
   color:#1678F2;
+}
+.booking_history_item{
+  width: 80%;
+}
+.examination_booking_history{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
