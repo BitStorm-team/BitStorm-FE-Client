@@ -6,29 +6,29 @@ import AOS from 'aos';
 import '../../assets/css/home/session2.css';
 
 const { Meta } = Card;
-
 const cardsData = [
   {
     icon: <InfoCircleOutlined className="card-icon" />,
     title: "About us",
-    description: "Ở đây chúng tôi sẽ nói về app này, bên cạnh đó có thể giới thiệu cho bạn một số bí mật và kĩ năng sử dụng tốt app nhất.",
+    description: "Here we will talk about this app, and we can also introduce you to some secrets and tips to use the app effectively.",
   },
   {
     icon: <HomeOutlined className="card-icon" />,
     title: "Home page",
-    description: "Nơi cung cấp cho các bạn về các thông tin liên quan về app, bạn có thể viết status để tâm sự cùng người lạ trên nền này.",
+    description: "This is where you can find information related to the app, and you can write statuses to share your thoughts with strangers on this platform.",
   },
   {
     icon: <TeamOutlined className="card-icon" />,
     title: "Contact expert",
-    description: "Trang web này cho phép bạn chat 1 1 với chuyên gia, với những người đã vượt qua trầm cảm hoặc có kinh nghiệm, có những lời khuyên hữu ích.",
+    description: "This website allows you to chat one-on-one with experts, people who have overcome depression or have experience and useful advice.",
   },
   {
     icon: <ReadOutlined className="card-icon" />,
     title: "Blog",
-    description: "Nơi để đọc những bài viết về trầm cảm và tâm sự từ những người khác, đồng thời cũng là nơi bạn có thể viết bài chia sẻ.",
+    description: "A place to read articles about depression and confessions from others, and it's also a place where you can share your own articles.",
   },
 ];
+
 
 const Session2 = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const Session2 = () => {
 
   return (
     <div className="session2-container">
-      <h2 className="session2-title">Một Số Dịch Vụ</h2>
+      <h2 className="session2-title">Some Services</h2>
       <Carousel dotPosition="bottom">
         <div>
           <div className="carousel-item">
