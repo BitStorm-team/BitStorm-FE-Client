@@ -12,39 +12,60 @@ import Schedule from "../components/prrofile/Schedule";
 import HistoryBooking from "../components/prrofile/HistoryBooking";
 import { getUserProfile } from "../api";
 import axios from "axios";
+import { API_URL, headerAPI } from "../utils/helpers.js";
 
 export default function Profile() {
   const [user, setUser] = useState("user");
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
+  const [allSchedules, setAllSchedules] = useState([{}]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Gọi hàm getUserProfile để lấy thông tin user đang đăng nhập
-        const data = await getUserProfile();
-        console.log(data);
-        if (data) {
-          const loggedInUser = data;
-          setUser("user");
-          setUserData(loggedInUser);
-
-          // Kiểm tra role_id và gọi API tiếp theo nếu cần thiết
-          if (loggedInUser.role_id === 3) {
+  const fetchUserData = async () => {
+    try {
+      const data = await getUserProfile();
+      console.log(data);
+      if (data) {
+        const loggedInUser = data;
+        console.log(loggedInUser);
+        if (loggedInUser.role_id === 3) {
+          try {
             const expertResponse = await axios.get(
-              `http://localhost:8000/api/experts/profile/${loggedInUser.id}`
+              `${API_URL}/experts/profile/${loggedInUser.id}`,
+              { headers: headerAPI }
             );
             setUser("expert");
             setUserData(expertResponse.data.data);
-            // const allBookings = await axios.get
-          } 
-        }
-      } catch (error) {
-        console.error("Error fetching user data", error);
-      }
-    };
+            console.log(expertResponse.data.data);
+          } catch (error) {
+            console.error("Error fetching expert profile", error);
+            // Handle expert profile error specifically
+          }
 
-    fetchUserData();
-  }, []);
+          try {
+            const calendarsResponse = await axios.get(
+              `${API_URL}/experts/${loggedInUser.id}/calendars`,
+              { headers: headerAPI }
+            );
+            console.log("hoho", calendarsResponse);
+            // setAllSchedules(calendarsResponse.data.data);
+            // console.log(calendarsResponse.data.data);
+          } catch (error) {
+            console.error("Error fetching expert calendars", error);
+            // Handle expert calendars error specifically
+          }
+        } else {
+          setUser("user");
+          setUserData(loggedInUser);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user data", error);
+    }
+  };
+
+  fetchUserData();
+}, []);
+
 
   const schedules = [
     {
@@ -141,9 +162,7 @@ export default function Profile() {
                 Create a new schedule
               </button>
             </div>
-            <div
-              className="examination_schedule_box"
-            >
+            <div className="examination_schedule_box">
               <h5>Your examination schedule</h5>
               <div className="schedule_item_box">
                 <Schedule time="12pm-13pm" />
