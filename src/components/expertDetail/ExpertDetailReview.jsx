@@ -12,14 +12,14 @@ const StarIcon = () => (
     <path d="M12 17.27l-6.18 3.73 1.59-7.02L2.56 9.98l7.08-.61L12 2l2.36 7.37 7.08.61-5.85 4.01 1.59 7.02z" />
   </svg>
 );
-export default function ExpertDetailReview() {
+export default function ExpertDetailReview({content, rating, name, profile_img, time}) {
   return (
     <div className="container_review_content">
       <div className="userAvatar">
-        <Avatar size={64} src={User} />
+        <Avatar size={64} src={profile_img} alt="profile_img" />
       </div>
       <div style={{ marginLeft: 10, flex: 1 }}>
-        <p style={{ fontWeight: "bold", marginBottom: 5 }}>BQ</p>
+        <p style={{ fontWeight: "bold", marginBottom: 5 }}>{name}</p>
         <div
           style={{
             display: "flex",
@@ -27,22 +27,12 @@ export default function ExpertDetailReview() {
             marginBottom: 5,
           }}
         >
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
+          {Array.from({ length: rating }, (v, i) => (
+            <StarIcon key={i} />
+          ))}
         </div>
-        <p style={{ marginBottom: 5 }}>May 2024</p>
-        <p style={{ marginBottom: 0 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel metus
-          at tellus euismod malesuada. Nulla facilisi. Nulla auctor, lectus et
-          suscipit semper, mi sapien laoreet nibh, sit amet laoreet velit tellus
-          eget lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          In vel metus at tellus euismod malesuada. Nulla facilisi. Nulla
-          auctor, lectus et suscipit semper, mi sapien laoreet nibh, sit amet
-          laoreet velit tellus eget lacus.
-        </p>
+        <p style={{ marginBottom: 5 }}>{time}</p>
+        <p style={{ marginBottom: 0 }}>{content}</p>
       </div>
     </div>
   );
