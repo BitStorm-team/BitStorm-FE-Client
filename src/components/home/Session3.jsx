@@ -1,39 +1,56 @@
-import React from 'react';
-import { Card, Button } from 'antd';
-import { PlayCircleOutlined, StarOutlined } from '@ant-design/icons';
-import '../../assets/css/home/session3.css';
+import React from "react";
+import { Card, Button } from "antd";
+import { PlayCircleOutlined, StarOutlined } from "@ant-design/icons";
+import "../../assets/css/home/session3.css";
+import session3image1 from "../../assets/images/session3imagge1.jpg";
+import session3image2 from "../../assets/images/session3imagge2.jpg";
+import session3image3 from "../../assets/images/session3imagge3.jpg";
+import session3image4 from "../../assets/images/session3imagge4.jpg";
+import session3image6 from "../../assets/images/session3imagge6.jpg";
+import session3image7 from "../../assets/images/session3imagge7.jpg";
+
 
 
 const { Meta } = Card;
-
 const podcastData = [
   {
-    title: 'Chữa lành tâm hồn những người đang âu lo...',
-    duration: '10h30',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShQqPNKkb3VIP2yuPwTbHsZdDcttdAk6x-wqc9kM0muP0tgmdErQtQy2DscNBv13XIsKg&usqp=CAU', // Ensure you have the image or replace it with your image URL
+    title: "Healing the Souls of Those Who Worry...",
+    duration: "10h30",
+    image: session3image1, // Ensure you have the image or replace it with your image URL
   },
   {
-    title: 'Hãy cảm ơn cuộc đời vì đã cho bạn sống...',
-    duration: '11h15',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsNP78273Z1SwMYy0rcTRkCF3dK87tykat6vyu3Dm9BRiSmOSroWukrezjQ3xnuzWh81g&usqp=CAU',
+    title: "Be Grateful for Life Giving You the Chance to Live...",
+    duration: "11h15",
+    image: session3image2,
   },
   {
-    title: 'Hãy giúp những người khác để thay đổi bản thân',
-    duration: '30p',
-    image: 'https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg',
+    title: "Help Others to Change Yourself",
+    duration: "30m",
+    image: session3image3,
   },
   {
-    title: 'Cách học sao cho hiệu quả bằng phương pháp...',
-    duration: '45p',
-    image: 'https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg',
+    title: "Effective Learning Methods...",
+    duration: "45m",
+    image: session3image4,
   },
+  {
+    title: "Effective Learning Methods...",
+    duration: "45m",
+    image: session3image6,
+  },
+  {
+    title: "Effective Learning Methods...",
+    duration: "45m",
+    image: session3image7,
+  },
+
 ];
 
 const Session3 = () => {
   return (
     <div className="session3-container">
-      <h3 className="session3-subtitle">Giới Thiệu Cho Bạn</h3>
-      <h2 className="session3-title">Một Vài Podcast Tâm Hồn</h2>
+      <h3 className="session3-subtitle">Recommended for You</h3>
+      <h2 className="session3-title">A Few Soulful Podcasts</h2>
       <div className="podcast-grid">
         {podcastData.map((podcast, index) => (
           <Card
@@ -41,24 +58,17 @@ const Session3 = () => {
             key={index}
             hoverable
             className="podcast-card"
-            cover={<img alt={podcast.title} src={podcast.image} className="podcast-image" />}
-            actions={[<StarOutlined key="star" />]}
-          >
-            <Meta
-              title={podcast.title}
-              description={
-                <>
-                  <div className="podcast-duration">
-                    <PlayCircleOutlined /> {podcast.duration}
-                  </div>
-                  <div className="podcast-rating">★★★★★</div>
-                </>
-              }
-            />
-          </Card>
+            cover={
+              <img
+                alt={podcast.title}
+                src={podcast.image}
+                className="podcast-image"
+              />
+            }
+          ></Card>
         ))}
       </div>
-      <Button type="primary" className="see-more-button">Xem Thêm →</Button>
+
     </div>
   );
 };
