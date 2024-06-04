@@ -5,6 +5,7 @@ import "../assets/css/booking/booking.css";
 import { API_URL, headerAPI } from "../utils/helpers";
 import expertVaatar from "../assets/images/expertDetail/doctor.jpg";
 import { getExpertProfile, getUserProfile } from "../api";
+import Loading from "../components/expertDetail/Loading";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -72,19 +73,7 @@ const Booking = () => {
   };
 
   if (!user) {
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "85vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div class="loader"></div>
-      </div>
-    );
+    return <Loading />
   }
 
   return (
@@ -129,7 +118,11 @@ const Booking = () => {
         </div>
       </Card>
       <Card className="form-section" title="Thông tin của bạn">
-        <Form layout="vertical" onFinish={handleSubmit} initialValues={{ name: user.name, email: user.email }}>
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ name: user.name, email: user.email }}
+        >
           <Form.Item
             name="name"
             label="Họ và tên"
