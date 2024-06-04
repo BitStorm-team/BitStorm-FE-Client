@@ -5,6 +5,7 @@ export default function CardExpert({ name, experience, id, img }) {
   const navigate = useNavigate();
   const handleExpertDetail = () => {
     navigate(`/expert-detail/${id}`);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Cuộn lên đầu trang
   };
   return (
     <div className="card">
