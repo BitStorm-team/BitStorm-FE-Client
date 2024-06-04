@@ -193,7 +193,8 @@
 
 .review-rating{
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
+    margin-left: 10px;
 }
 
 .flexStyle{
@@ -242,14 +243,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 20px;
+}
+
+.schedule_container{
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .expert_shedule{
     display: flex;
     justify-content: space-between;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     flex-wrap: wrap;
-    gap: 20px;
 }
 
 .favorite_container{
@@ -278,25 +285,24 @@
 }
 
 .expert_detail{
-    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    width: 90%;
     border-radius: 30px;
     background-color: white;
     margin-top: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
+    margin: auto;
     padding: 20px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    margin-left: 200;
-    margin-right: 200;
 }
 
 .expert_detail_reviews{
-    width: fit-content;
+    width: 90%;
     border-radius: 30px;
     background-color: white;
-    margin-top: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
+    /* margin-top: 30px; */
+    margin: auto;
     padding: 20px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
