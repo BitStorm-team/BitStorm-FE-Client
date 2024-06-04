@@ -102,97 +102,98 @@ const Booking = () => {
     return <Loading />;
   }
 
-  return (
-    <div className="container">
-      <Card className="appointment-details" title="Lịch hẹn với chuyên gia">
-        <div className="info">
-          <Text>
-            <strong>Họ và tên chuyên gia:</strong> {expertInfo.name}
-          </Text>
-          <br />
-          <Text>
-            <strong>Thời gian gặp với chuyên gia:</strong> {start_time} - {end_time}
-          </Text>
-          <br />
-          <Text
-            style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
-          >
-            <strong>Tổng tiền:</strong> {price},000 VND
-          </Text>
-        </div>
-        <div
+ return (
+  <div className="container">
+    <Card className="appointment-details" title="Appointment with Expert">
+      <div className="info">
+        <Text>
+          <strong>Expert's Full Name:</strong> {expertInfo.name}
+        </Text>
+        <br />
+        <Text>
+          <strong>Appointment Time with Expert:</strong> {start_time} - {end_time}
+        </Text>
+        <br />
+        <Text
+          style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
+        >
+          <strong>Total Amount:</strong> {price},000 VND
+        </Text>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          height: "400px",
+          backgroundColor: "gray",
+          overflow: "hidden",
+        }}
+      >
+        <img
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            height: "400px",
-            backgroundColor: "gray",
-            overflow: "hidden",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
           }}
+          src={expertInfo.profile_picture}
+          alt=""
+          className="qr-code"
+        />
+      </div>
+    </Card>
+    <Card className="form-section" title="Your Information">
+      <Form
+        layout="vertical"
+        onFinish={handleSubmit}
+        initialValues={{ name: user.name, email: user.email }}
+      >
+        <Form.Item
+          name="name"
+          label="Full Name"
+          rules={[
+            { required: true, message: "Please enter your full name" },
+          ]}
         >
-          <img
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-            src={expertInfo.profile_picture}
-            alt=""
-            className="qr-code"
+          <Input placeholder="Full Name" />
+        </Form.Item>
+        <Form.Item
+          name="email"
+          label="Email Address"
+          rules={[
+            {
+              required: true,
+              message: "Please enter your email address",
+              type: "email",
+            },
+          ]}
+        >
+          <Input type="email" placeholder="Email Address" />
+        </Form.Item>
+        <Form.Item name="notes" label="Notes for the Expert (if any)">
+          <TextArea
+            placeholder="Notes for the Expert (if any)"
+            rows={4}
           />
-        </div>
-      </Card>
-      <Card className="form-section" title="Thông tin của bạn">
-        <Form
-          layout="vertical"
-          onFinish={handleSubmit}
-          initialValues={{ name: user.name, email: user.email }}
-        >
-          <Form.Item
-            name="name"
-            label="Họ và tên"
-            rules={[
-              { required: true, message: "Vui lòng nhập họ và tên của bạn" },
-            ]}
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            style={{
+              float: "right",
+              width: "100%",
+            }}
+            htmlType="submit"
           >
-            <Input placeholder="Họ và tên" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Địa chỉ email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập địa chỉ email của bạn",
-                type: "email",
-              },
-            ]}
-          >
-            <Input type="email" placeholder="Địa chỉ email" />
-          </Form.Item>
-          <Form.Item name="notes" label="Ghi chú dành cho chuyên gia (nếu có)">
-            <TextArea
-              placeholder="Ghi chú dành cho chuyên gia (nếu có)"
-              rows={4}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              style={{
-                float: "right",
-                width: "100%",
-              }}
-              htmlType="submit"
-            >
-              Đặt lịch
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
-  );
+            Book Appointment
+          </Button>
+        </Form.Item>
+      </Form>
+    </Card>
+  </div>
+);
+
 };
 
 export default Booking;

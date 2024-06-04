@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function CardExpert({ name, experience, id, img }) {
   const navigate = useNavigate();
   const handleExpertDetail = () => {
-    navigate(`/expert-detail/${id}`);
+    navigate(`/expert/${id}`);
   };
   return (
     <div className="card">
