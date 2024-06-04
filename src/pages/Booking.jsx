@@ -6,13 +6,20 @@ import { API_URL, headerAPI } from "../utils/helpers";
 import expertVaatar from "../assets/images/expertDetail/doctor.jpg";
 import { getExpertProfile, getUserProfile } from "../api";
 import Loading from "../components/expertDetail/Loading";
+import { useParams } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 const Booking = () => {
   // state
+  const { expert_id, calendar_id, start_time, end_time ,price } = useParams(); // Lấy id từ URL
+
   const [user, setUser] = useState(null);
+  const [expert, setExpert] = useState({});
+  const [expertInfo, setExpertInfo] = useState({});
+
+  const token = localStorage.getItem("__token__");
 
   const getUser = async () => {
     try {
@@ -26,7 +33,26 @@ const Booking = () => {
     }
   };
 
+  const getExpert = async () => {
+    try {
+      const response = await axios.get(API_URL + `/experts/${expert_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        setExpert(response.data.data);
+        // console.log(response.data.data);
+        setExpertInfo(response.data.data.expertDetail.user);
+        console.log(response.data.data.expertDetail.user)
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   useEffect(() => {
+    getExpert();
     getUser();
   }, []);
 
@@ -37,10 +63,10 @@ const Booking = () => {
     try {
       // Call the booking API first
       const bookingResponse = await axios.post(
-        `${API_URL}/user/book-calendar/2`,
+        `${API_URL}/user/book-calendar/${calendar_id}`,
         {
-          user_id: 1, // Adjust the userId as needed
-          calendar_id: 1, // Adjust the calendarId as needed
+          user_id: user.id, // Adjust the userId as needed
+          calendar_id: calendar_id, // Adjust the calendarId as needed
           note: notes, // Assuming notes are used for booking
           status: "New",
         }, // Assuming the initial status is 'pending'
@@ -52,7 +78,7 @@ const Booking = () => {
       // If booking is successful, proceed to VNPAY API
       if (bookingResponse.status === 200 || bookingResponse.status === 201) {
         const paymentResponse = await axios.post(`${API_URL}/payment`, {
-          total: 1000,
+          total: price*100,
         }); // Adjust the amount here
         const { data } = paymentResponse;
         if (data.code === "00") {
@@ -73,7 +99,7 @@ const Booking = () => {
   };
 
   if (!user) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -81,17 +107,17 @@ const Booking = () => {
       <Card className="appointment-details" title="Lịch hẹn với chuyên gia">
         <div className="info">
           <Text>
-            <strong>Họ và tên chuyên gia:</strong> Phạm Gia Bảo
+            <strong>Họ và tên chuyên gia:</strong> {expertInfo.name}
           </Text>
           <br />
           <Text>
-            <strong>Thời gian gặp với chuyên gia:</strong> 11h-12h, 03/01/2024
+            <strong>Thời gian gặp với chuyên gia:</strong> {start_time} - {end_time}
           </Text>
           <br />
           <Text
             style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
           >
-            <strong>Tổng tiền:</strong> 10,000 VND
+            <strong>Tổng tiền:</strong> {price},000 VND
           </Text>
         </div>
         <div
@@ -111,7 +137,7 @@ const Booking = () => {
               height: "100%",
               objectFit: "cover",
             }}
-            src={expertVaatar}
+            src={expertInfo.profile_picture}
             alt=""
             className="qr-code"
           />

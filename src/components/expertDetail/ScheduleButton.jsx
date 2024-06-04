@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+
 const formatTime = (timestamp) => {
   const date = new Date(timestamp);
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -18,16 +19,18 @@ const formatDate = (timestamp) => {
   }
 };
 
-export default function ScheduleButton({ start_time, end_time, calendar_id }) {
+export default function ScheduleButton({ start_time, end_time, calendar_id, expert_id, price }) {
   const navigate = useNavigate();
+
   const handleBookingDetail = () => {
-    navigate(`/booking/${calendar_id}`);
+    navigate(`/booking/${expert_id}/calendar/${calendar_id}/time/${start_time}/${end_time}/${price}`);
   };
+
   const formattedStartTime = formatTime(start_time);
   const formattedEndDate = formatDate(end_time);
 
   return (
-    <Button className="shedule_button" onClick={handleBookingDetail}>
+    <Button className="schedule_button" onClick={handleBookingDetail}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -42,3 +45,4 @@ export default function ScheduleButton({ start_time, end_time, calendar_id }) {
     </Button>
   );
 }
+

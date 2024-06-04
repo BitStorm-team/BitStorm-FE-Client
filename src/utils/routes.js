@@ -80,7 +80,7 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/booking",
+    path: "/booking/:expert_id/calendar/:calendar_id/time/:start_time/:end_time/:price",
     element: <MainLayout main={<Booking />} />,
     exact: true,
   },

@@ -90,7 +90,7 @@ export default function ExpertDetail() {
 // console.log("expert id: ",id)
 // console.log("list expert: ",listExpert);
 // console.log("list random expert: ",randomExperts);
-  
+
   if (loading) {
     return <Loading />;
   }
@@ -101,7 +101,6 @@ export default function ExpertDetail() {
   const { average_rating, certificate, experience, user } = expertDetail;
   const { name, email, profile_picture } = user;
   const rating = parseInt(average_rating, 10);
-// console.log("feedback",feedback)
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
@@ -159,7 +158,9 @@ export default function ExpertDetail() {
                           key={index}
                           start_time={schedule.start_time}
                           end_time={schedule.end_time}
-                          calendar_id={schedules.id}
+                          calendar_id={schedule.id}
+                          expert_id={id}
+                          price={schedule.price}
                         />
                       );
                     })}
