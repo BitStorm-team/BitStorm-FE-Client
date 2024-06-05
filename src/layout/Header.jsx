@@ -136,8 +136,8 @@ const MainHeader = () => {
                 <li>
                   <Link to="/profile">My profile</Link>
                 </li>
-                <li onClick={handleLogout}>
-                  <a href="#">Logout</a>
+                <li style={{cursor : "pointer",}} onClick={handleLogout}>
+                  <Link>Logout</Link>
                 </li>
               </ul>
             </div>

@@ -51,6 +51,11 @@ export const publicRoutes = [
     element: <MainLayout main={<Expert />} />,
     exact: true,
   },
+  {
+    path: "/post",
+    element: <MainLayout main={<Post />} />,
+    exact: true,
+  },
 ];
 
 export const privateRoutes = [

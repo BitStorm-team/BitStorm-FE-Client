@@ -6,7 +6,6 @@ const withPublicRoute = (props, index) => {
   if (!accessToken) {
     return <Route key={index} {...props} />;
   }
-  return <Route path="*" element={<Navigate to="/" />} />;
 };
 
 export default withPublicRoute;
