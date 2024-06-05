@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 import axios from "axios";
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+
 const Expert = () =>{
     const [ref1, inView1] = useInView({ threshold: 0.5 });
     const [experts, setExperts] = useState([]);
@@ -12,19 +13,35 @@ const Expert = () =>{
     const itemsPerPage = 4;
     const [expertName, setExpertName] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [price, setPrice] = useState([]);
     const navigate = useNavigate();
+    const [currentPrice, setCurrentPrice] = useState(0);
+    const minPrice = 0;
+    const maxPrice = 1000;
+    useEffect(() => {
+        const fetchExperts = async () => {
+            try {
+                const res = await axios.get("http://127.0.0.1:8000/api/experts"); // Log the entire response
+                setExperts(res.data.data[0]); // Adjust this based on actual API response structure
+            } catch (error) {
+                console.error("Error", error);
+            }
+        };
+
+        fetchExperts();
+    }, []);
     const searchExpert = async (term) => {
         try {
             const res = await axios.post("http://127.0.0.1:8000/api/experts/search", { searchTerm: term });
             setExpertName(res.data.data);
-            console.log(res.data.data);
         } catch (error) {
             console.error("Error fetching data", error);
         }
     }
     useEffect(() => {
-        searchExpert()
+       
     },[])
+
     const onSubmit = (e) => {
         e.preventDefault();
         if (searchTerm === "") {
@@ -36,31 +53,40 @@ const Expert = () =>{
     }
 
     const onChange = (e) => setSearchTerm(e.target.value);
-    useEffect(() => {
-        const fetchExperts = async () => {
-            try {
-                const res = await axios.get("http://127.0.0.1:8000/api/experts");
-                console.log(res.data); // Log the entire response
-                setExperts(res.data.data[0]); // Adjust this based on actual API response structure
-            } catch (error) {
-                console.error("Error", error);
-            }
-        };
-
-        fetchExperts();
-    }, []);
-
     const handleChange = (page) => {
         setCurrentPage(page);
     };
     const onChangeItem = (id) => {
         console.log(id)
-        navigate(`/expert/${id}`);
+        navigate(`/expert-detail/${id}`);
     }
+
+    const handleRangeChange = (event) => {
+        setCurrentPrice(parseInt(event.target.value)); 
+      };
+    const fetchExpertsByPrice = async (price) => {
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/experts/filter", { price: price });
+            setPrice(response.data.data);
+            console.log("ewfrefef",price);
+        } catch (error) {
+            console.error("Error fetching experts:", error);
+        }
+    }
+    const onSubmitFilter = (e) => {
+        e.preventDefault();
+        setCurrentPrice(0);  // Đặt lại giá trị sau khi fetch
+    };
+
+    useEffect(() => {
+        fetchExpertsByPrice(currentPrice);
+    }, [currentPrice]); 
+    
     // Calculate the items to display on the current page
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItem = experts.slice(indexOfFirstItem,indexOfLastItem);
+
     return (
         <div className="Expert">
             <div className="search">
@@ -80,17 +106,30 @@ const Expert = () =>{
                         </form>
                             {/* <span className="sr-only">Search countries here</span> */}
                         </label>
-                        <div className="select">
-                            <select
-                                className="custom-select"
-                                aria-label="Filter Countries By Region"
-                            >
-                                <option value="">Filter By Money</option>
-                            </select>
-                            <span className="focus"></span>
-                        </div>
+                        <label>
+                            <form onSubmit={onSubmitFilter}>
+                                <input 
+                                    type="range"
+                                    min={minPrice}
+                                    max={maxPrice}
+                                    onChange={handleRangeChange}
+                                    value={currentPrice}
+                                    name="price"
+                                />
+                                <p> Filter by price  {currentPrice}</p>
+                            </form>
+                        </label>
                     </div>
                 </div>
+            </div>
+            <div className="wrapper search-item">
+            {price.map(item => (
+                <div className="card" key={item.id}>
+                    <h2>{item.expert_detail.user_id}</h2>
+                    <p>Your price {item.price}</p>
+                    <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
+                </div>
+            ))}
             </div>
             <div className="wrapper search-item">
                 {expertName.map(item => (
