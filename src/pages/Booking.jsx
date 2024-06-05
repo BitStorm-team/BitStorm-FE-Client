@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { Form, Input, Button, Card, Typography, message } from "antd";
 import axios from "axios";
 import "../assets/css/booking/booking.css";
 import { API_URL, headerAPI } from "../utils/helpers";
@@ -7,13 +7,14 @@ import expertVaatar from "../assets/images/expertDetail/doctor.jpg";
 import { getExpertProfile, getUserProfile } from "../api";
 import Loading from "../components/expertDetail/Loading";
 import { useParams } from "react-router-dom";
+import { base64Encode } from "@cloudinary/url-gen/internal/utils/base64Encode";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 const Booking = () => {
   // state
-  const { expert_id, calendar_id, start_time, end_time ,price } = useParams(); // Lấy id từ URL
+  const { expert_id, calendar_id, start_time, end_time, price } = useParams(); // Lấy id từ URL
 
   const [user, setUser] = useState(null);
   const [expert, setExpert] = useState({});
@@ -44,7 +45,7 @@ const Booking = () => {
         setExpert(response.data.data);
         // console.log(response.data.data);
         setExpertInfo(response.data.data.expertDetail.user);
-        console.log(response.data.data.expertDetail.user)
+        console.log(response.data.data.expertDetail.user);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -60,37 +61,28 @@ const Booking = () => {
     const { notes } = values;
     console.log(notes);
 
-    try {
-      // Call the booking API first
-      const bookingResponse = await axios.post(
-        `${API_URL}/user/book-calendar/${calendar_id}`,
-        {
-          user_id: user.id, // Adjust the userId as needed
-          calendar_id: calendar_id, // Adjust the calendarId as needed
-          note: notes, // Assuming notes are used for booking
-          status: "New",
-        }, // Assuming the initial status is 'pending'
-        {
-          headers: headerAPI(), // Include headers
-        }
-      );
+    const dataBooking = {
+      user_id: user.id, // Adjust the userId as needed
+      calendar_id: calendar_id, // Adjust the calendarId as needed
+      note: notes, // Assuming notes are used for booking
+      status: "New",
+    };
 
-      // If booking is successful, proceed to VNPAY API
-      if (bookingResponse.status === 200 || bookingResponse.status === 201) {
-        const paymentResponse = await axios.post(`${API_URL}/payment`, {
-          total: price*100,
-        }); // Adjust the amount here
-        const { data } = paymentResponse;
-        if (data.code === "00") {
-          // If payment URL is received successfully, redirect to the payment page
-          window.location.href = data.data;
-        } else {
-          // Handle error if needed
-          console.error("Failed to get payment URL");
-        }
+    localStorage.setItem("dataBooking", JSON.stringify(dataBooking));
+
+    try {
+      const paymentResponse = await axios.post(`${API_URL}/payment`, {
+        total: price * 100,
+      }); // Adjust the amount here
+      const { data } = paymentResponse;
+
+      if (data.code === "00") {
+
+        // If payment URL is received successfully, redirect to the payment page
+        window.location.href = data.data;
       } else {
-        // Handle booking error if needed
-        console.error("Failed to book calendar");
+        // Handle error if needed
+        console.error("Failed to get payment URL");
       }
     } catch (error) {
       // Handle error if needed
@@ -102,98 +94,93 @@ const Booking = () => {
     return <Loading />;
   }
 
- return (
-  <div className="container">
-    <Card className="appointment-details" title="Appointment with Expert">
-      <div className="info">
-        <Text>
-          <strong>Expert's Full Name:</strong> {expertInfo.name}
-        </Text>
-        <br />
-        <Text>
-          <strong>Appointment Time with Expert:</strong> {start_time} - {end_time}
-        </Text>
-        <br />
-        <Text
-          style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
-        >
-          <strong>Total Amount:</strong> {price},000 VND
-        </Text>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          height: "400px",
-          backgroundColor: "gray",
-          overflow: "hidden",
-        }}
-      >
-        <img
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-          src={expertInfo.profile_picture}
-          alt=""
-          className="qr-code"
-        />
-      </div>
-    </Card>
-    <Card className="form-section" title="Your Information">
-      <Form
-        layout="vertical"
-        onFinish={handleSubmit}
-        initialValues={{ name: user.name, email: user.email }}
-      >
-        <Form.Item
-          name="name"
-          label="Full Name"
-          rules={[
-            { required: true, message: "Please enter your full name" },
-          ]}
-        >
-          <Input placeholder="Full Name" />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email Address"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your email address",
-              type: "email",
-            },
-          ]}
-        >
-          <Input type="email" placeholder="Email Address" />
-        </Form.Item>
-        <Form.Item name="notes" label="Notes for the Expert (if any)">
-          <TextArea
-            placeholder="Notes for the Expert (if any)"
-            rows={4}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            style={{
-              float: "right",
-              width: "100%",
-            }}
-            htmlType="submit"
+  return (
+    <div className="container">
+      <Card className="appointment-details" title="Appointment with Expert">
+        <div className="info">
+          <Text>
+            <strong>Expert's Full Name:</strong> {expertInfo.name}
+          </Text>
+          <br />
+          <Text>
+            <strong>Appointment Time with Expert:</strong> {start_time} -{" "}
+            {end_time}
+          </Text>
+          <br />
+          <Text
+            style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
           >
-            Book Appointment
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
-  </div>
-);
-
+            <strong>Total Amount:</strong> {price},000 VND
+          </Text>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            height: "400px",
+            backgroundColor: "gray",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+            src={expertInfo.profile_picture}
+            alt=""
+            className="qr-code"
+          />
+        </div>
+      </Card>
+      <Card className="form-section" title="Your Information">
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ name: user.name, email: user.email }}
+        >
+          <Form.Item
+            name="name"
+            label="Full Name"
+            rules={[{ required: true, message: "Please enter your full name" }]}
+          >
+            <Input placeholder="Full Name" />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email Address"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your email address",
+                type: "email",
+              },
+            ]}
+          >
+            <Input type="email" placeholder="Email Address" />
+          </Form.Item>
+          <Form.Item name="notes" label="Notes for the Expert (if any)">
+            <TextArea placeholder="Notes for the Expert (if any)" rows={4} />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              style={{
+                float: "right",
+                width: "100%",
+              }}
+              htmlType="submit"
+            >
+              Book Appointment
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
+  );
 };
 
 export default Booking;

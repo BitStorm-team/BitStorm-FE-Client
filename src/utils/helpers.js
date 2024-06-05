@@ -1,3 +1,4 @@
+// import crypto from 'crypto-browserify';
 import {jwtDecode} from 'jwt-decode' // Correctly import jwtDecode
 import axios from 'axios'
 
@@ -69,6 +70,17 @@ export function headerAPI() {
   };
   return headers;
 }
+
+// Function to parse URL parameters and check transaction status
+export function checkTransactionStatus(urlParams) {
+  const params = new URLSearchParams(urlParams);
+  const responseCode = params.get('vnp_ResponseCode');
+  const transactionStatus = params.get('vnp_TransactionStatus');
+  // Check if either responseCode or transactionStatus indicates success
+  return responseCode === '00' || transactionStatus === '00';
+}
+
+
 
 export const API_URL = 'http://localhost:8000/api';
 

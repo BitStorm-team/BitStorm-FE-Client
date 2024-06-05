@@ -95,3 +95,6 @@ npm install react-slick slick-carousel
 
 ## install mdb-react-ui-kit
 --> npm install mdb-react-ui-kit
+
+## istall npm install crypto-browserify stream-browserify
+--> npm install crypto-browserify stream-browserify

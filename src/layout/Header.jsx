@@ -1,12 +1,13 @@
-import { Avatar } from "antd";
+import { Avatar, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import NavBar from "./NavBar";
 import "../assets/css/header.css";
 import { useEffect, useState } from "react";
-import { getExpertProfile, getUserProfile } from "../api";
-import {jwtDecode} from "jwt-decode";
+import { bookCalendar, getExpertProfile, getUserProfile } from "../api";
+import { jwtDecode } from "jwt-decode";
 import { UserOutlined } from "@ant-design/icons";
+import { checkTransactionStatus } from "../utils/helpers";
 
 const MainHeader = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -15,6 +16,7 @@ const MainHeader = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [menuActive, setMenuActive] = useState(false);
   const [profileMenuActive, setProfileMenuActive] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +25,8 @@ const MainHeader = () => {
       setToken(storedToken);
       setIsLogin(true);
     }
-  }, []);
+    fetchDataAndBook(); // Call the async function immediately
+  }, []); // Empty dependency array to run the effect only once
 
   useEffect(() => {
     if (token) {
@@ -40,6 +43,31 @@ const MainHeader = () => {
     }
   }, [userInfo]);
 
+  const fetchDataAndBook = async () => {
+    const currentUrlParams = window.location.search;
+    const transaction = checkTransactionStatus(currentUrlParams);
+    if (transaction) {
+      const dataBooking = JSON.parse(localStorage.getItem("dataBooking"));
+      console.log(dataBooking);
+      try {
+        const bookingSuccess = await bookCalendar(dataBooking);
+        if (bookingSuccess) {
+          console.log("Booking successful");
+          message.success("Booking successful");
+          navigate("/");
+        } else {
+          console.error("Booking failed");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error during booking:", error);
+        navigate("/");
+      }
+    } else {
+      message.error("Booking failed");
+      navigate("/");
+    }
+  };
   const getUser = async () => {
     try {
       const userProfileData = await getUserProfile();
