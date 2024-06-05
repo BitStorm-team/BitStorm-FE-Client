@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Card, Typography, message } from "antd";
 import axios from "axios";
 import "../assets/css/booking/booking.css";
-import { API_URL, headerAPI } from "../utils/helpers";
-import expertVaatar from "../assets/images/expertDetail/doctor.jpg";
+import { API_URL } from "../utils/helpers";
 import { getExpertProfile, getUserProfile } from "../api";
 import Loading from "../components/expertDetail/Loading";
 import { useParams } from "react-router-dom";
-import { base64Encode } from "@cloudinary/url-gen/internal/utils/base64Encode";
-
 const { TextArea } = Input;
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Booking = () => {
   // state
@@ -19,6 +16,7 @@ const Booking = () => {
   const [user, setUser] = useState(null);
   const [expert, setExpert] = useState({});
   const [expertInfo, setExpertInfo] = useState({});
+  const [isExpert, setIsExpert] = useState(false);
 
   const token = localStorage.getItem("__token__");
 
@@ -27,7 +25,7 @@ const Booking = () => {
       const userProfileData = await getUserProfile();
       setUser(userProfileData);
       if (userProfileData.role_id === 3) {
-        getExpertProfile();
+        setIsExpert(true);
       }
     } catch (error) {
       console.error("Error getting user profile:", error);
@@ -43,7 +41,6 @@ const Booking = () => {
       });
       if (response.data.success) {
         setExpert(response.data.data);
-        // console.log(response.data.data);
         setExpertInfo(response.data.data.expertDetail.user);
         console.log(response.data.data.expertDetail.user);
       }
@@ -56,6 +53,11 @@ const Booking = () => {
     getExpert();
     getUser();
   }, []);
+
+
+  const handleErrorIsExpert = () => {
+    alert('You are not allowed to book')
+  }
 
   const handleSubmit = async (values) => {
     const { notes } = values;
@@ -139,7 +141,7 @@ const Booking = () => {
       <Card className="form-section" title="Your Information">
         <Form
           layout="vertical"
-          onFinish={handleSubmit}
+          onFinish={isExpert ? handleErrorIsExpert : handleSubmit}
           initialValues={{ name: user.name, email: user.email }}
         >
           <Form.Item

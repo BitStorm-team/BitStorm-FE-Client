@@ -63,6 +63,8 @@ const MainHeader = () => {
         console.error("Error during booking:", error);
         navigate("/");
       }
+    } else if (transaction === null) {
+      navigate("/");
     } else {
       message.error("Booking failed");
       navigate("/");

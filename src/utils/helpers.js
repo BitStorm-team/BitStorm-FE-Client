@@ -77,7 +77,11 @@ export function checkTransactionStatus(urlParams) {
   const responseCode = params.get('vnp_ResponseCode');
   const transactionStatus = params.get('vnp_TransactionStatus');
   // Check if either responseCode or transactionStatus indicates success
-  return responseCode === '00' || transactionStatus === '00';
+  if(responseCode){
+    return responseCode === '00' || transactionStatus === '00';
+  }else{
+    return null
+  }
 }
 
 
