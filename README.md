@@ -98,3 +98,6 @@ npm install react-slick slick-carousel
 
 ## istall npm install crypto-browserify stream-browserify
 --> npm install crypto-browserify stream-browserify
+
+## text animation
+--> npm install animate.css --save

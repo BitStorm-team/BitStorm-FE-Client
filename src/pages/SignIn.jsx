@@ -44,7 +44,7 @@ const SignIn = () => {
     } catch (error) {
       console.error("Login failed:", error);
       message.error(
-        "Đăng nhập không thành công: " +
+        "Login failed: " +
           (error.response?.data?.message || error.message)
       );
     }

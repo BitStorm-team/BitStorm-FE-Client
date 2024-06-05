@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Session1 from '../components/home/Session1';
 import Session2 from '../components/home/Session2';
 import Session3 from '../components/home/Session3';
 import Session4 from '../components/home/Session4';
 import { useInView } from 'react-intersection-observer';
-
 import Session5 from '../components/home/Session5';
+import Loading from '../components/expertDetail/Loading';
 
 const HomePage = () => {
+  const [loading, setLoading] = useState(true);
+
   const [ref1, inView1] = useInView({ threshold: 0.5 });
   const [ref2, inView2] = useInView({ threshold: 0.5 });
   const [ref3, inView3] = useInView({ threshold: 0.5 });
   const [ref4, inView4] = useInView({ threshold: 0.5 });
   const [ref5, inView5] = useInView({ threshold: 0.5 });
 
+  useEffect(() => {
+    // Simulate resource loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Adjust the time as needed
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="main-home">
