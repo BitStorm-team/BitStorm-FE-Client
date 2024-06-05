@@ -8,7 +8,7 @@ const Card = ({ name, email, image, id }) => {
   const navigate = useNavigate();
 
   const handleDetail = () => {
-    navigate(`/expert/${id}`);
+    navigate(`/expert-detail/${id}`);
   };
   return (
     <div className="cardd">
