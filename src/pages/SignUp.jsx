@@ -1,6 +1,6 @@
 // Register.js
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Typography, Radio } from "antd";
+import { Form, Input, Button, Typography, Radio, message } from "antd";
 import "../assets/css/auth/LoginRegister.css";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchCsrfToken, signUp } from "../api";
@@ -13,6 +13,7 @@ const SignUp = () => {
   // states
   const [csrfToken, setCsrfToken] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // 1. Introduce loading state
 
   // effects
   useEffect(() => {
@@ -20,13 +21,21 @@ const SignUp = () => {
   }, []);
 
   const onFinish = async (values) => {
-    console.log("Success:", values);
-    // if expert
-    if (values.role_id === 3 || values.role_id === "3") {
-      localStorage.setItem("values", JSON.stringify(values));
-      navigate("/signup/expert");
-    } else {
-      signUp(values, navigate);
+    setLoading(true); // 2. Start loading when sign-up process starts
+    try {
+      console.log("Success:", values);
+      // if expert
+      if (values.role_id === 3 || values.role_id === "3") {
+        localStorage.setItem("values", JSON.stringify(values));
+        navigate("/signup/expert");
+      } else {
+        signUp(values, navigate);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Failed to sign up");
+    } finally {
+      setLoading(false); // 3. Stop loading when sign-up process completes
     }
   };
 
@@ -106,6 +115,7 @@ const SignUp = () => {
               </Form.Item>
               <Form.Item>
                 <Button
+                  loading={loading}
                   type="primary"
                   htmlType="submit"
                   className="form-button"
