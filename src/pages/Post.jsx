@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
-import {Input, Button, List, Avatar, Row, Col, Modal, Form, message, Switch, Select } from 'antd';
-// import styled from 'styled-components';
-// import Comment from '../components/posts/Comment';
+import { Input, Button, List, Avatar, Row, Col, Modal, Form, message, Switch, Select } from 'antd';
 import PostCart from '../components/posts/PostCart';
-import { getUserProfile } from '../api';
+import { getUserProfile } from '../api'; // Ensure this import is correct
 import axios from 'axios';
 import { API_URL } from '../utils/helpers';
 
@@ -13,62 +10,60 @@ const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 6 },
-    lg:{ span:4}
+    lg: { span: 4 }
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 16 },
-    lg:{span:20}
+    lg: { span: 20 }
   },
 };
 
-export default function Post(){
+export default function Post() {
   const [isModalCreatePostOpen, setIsModalCreatePostOpen] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
-  const [posts, setPosts] = useState([]); 
+  const [posts, setPosts] = useState([]);
   const [form] = Form.useForm();
 
-  
-
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const userProfile = await getUserProfile();
-  //       console.log("User Profile:", userProfile);
-  //       setUserProfile(userProfile);
-  //     } catch (error) {
-  //       console.error("Failed to fetch user profile:", error);
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, []);
-
-  // console.log(userProfile);
+  // Fetch user profile data
   useEffect(() => {
-    const token = localStorage.getItem("__token__");
+    const fetchUserData = async () => {
+      try {
+        const userProfile = await getUserProfile();
+        console.log("User Profile:", userProfile);
+        setUserProfile(userProfile);
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('__token__');
 
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(
-          API_URL + "/posts",
-          {
-            method: "GET",
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/posts`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         if (response.data.success) {
           setPosts(response.data.data);
+        } else {
+          message.error(`Error fetching posts: ${response.data.message}`);
         }
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error('Error fetching posts:', error);
+        message.error('Failed to fetch posts');
       }
     };
 
     fetchPosts();
   }, []);
+
   const handleFormCreatePost = async () => {
     const token = localStorage.getItem('__token__');
     if (!token) {
@@ -80,67 +75,58 @@ export default function Post(){
       const values = form.getFieldsValue();
       console.log('Form values:', values);
 
-      const response = await axios.post(
-        `${API_URL}/posts/create`,
-        values,
-        {
+      const createResponse = await axios.post(`${API_URL}/posts/create`, 
+      values, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (createResponse.data.success) {
+        message.success('Post created successfully!');
+        form.resetFields();
+        setIsModalCreatePostOpen(false);
+
+        // Fetch posts again to update the table
+        const fetchResponse = await axios.get(`${API_URL}/posts`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-        }
-      );
+        });
 
-      if (response.data.success) {
-        message.success('Post created successfully!');
-        form.resetFields();
-        setIsModalCreatePostOpen(false);
-        // Fetch posts again to update the table
-        const response = await axios.get(
-          API_URL + "/posts/create",
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.data.success) {
-          setPosts(response.data.data);
+        if (fetchResponse.data.success) {
+          setPosts(fetchResponse.data.data);
+          
+        } else {
+          message.error(`Error fetching posts: ${fetchResponse.data.message}`);
         }
       } else {
-        message.error(`Error: ${response.data.message}`);
+        message.error(`Error: ${createResponse.data.message}`);
       }
     } catch (error) {
       console.error('Error creating post:', error);
       message.error('Failed to create post');
     }
   };
-    return (
-        <>  
-          {/* modal create */}
+
+  return (
+    <>
+      {/* Modal for creating post */}
       <Modal
         title="Create Post"
         open={isModalCreatePostOpen}
-        onCancel={() => {
-          setIsModalCreatePostOpen(false);
-          
-        }}
+        onCancel={() => setIsModalCreatePostOpen(false)}
         footer={[
-          <Button key="back" onClick={() => {
-            setIsModalCreatePostOpen(false);
-            
-          }}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleFormCreatePost}>
-            Submit
-          </Button>,
+          <Button key="back" onClick={() => setIsModalCreatePostOpen(false)}>Cancel</Button>,
+          <Button key="submit" type="primary" onClick={handleFormCreatePost}>Submit</Button>,
         ]}
       >
         <Form
           {...formItemLayout}
           form={form}
+          initialValues={{ is_anonymous: false }}
           variant="filled"
           style={{ maxWidth: 600 }}
         >
@@ -158,42 +144,46 @@ export default function Post(){
           <Form.Item
             label="Anonymous"
             name="is_anonymous"
+            
             valuePropName="checked"
           >
             <Switch />
           </Form.Item>
         </Form>
       </Modal>
-          <Row style={{margin:'10px 50px'}} justify="center">
-              <Col span={24}>
-                <Search placeholder="input search text" enterButton />
-              </Col>
-              <Col>
-              <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px 0' }}>
-                <Col xs={3} lg={1}>
-                  {/* <Avatar 
-                    size={50} 
-                    src={userProfile.profile_picture} 
-                    alt={userProfile.name} 
-                  /> */}
-                </Col>
-                  <Col xs={21} lg={23}>
-                    <Input 
-                      placeholder="Hôm nay, bạn ổn không?" 
-                      style={{borderRadius: '40px', flex: 1 }} 
-                      //không cho nhập khi hover thì hiển thị bàn tay. và khi click thì hiển thị modal Create 
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  {posts.map(post => (
-                  <Col span={24} key={post.id}>
-                    <PostCart post={post} />
-                  </Col>
-                  ))}
-                </Row>
-              </Col>
+
+      <Row style={{ margin: '10px 50px' }} justify="center">
+        <Col span={24}>
+          <Search placeholder="input search text" enterButton />
+        </Col>
+        <Col span={24}>
+          <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px 0' }}>
+            <Col xs={3} lg={1}>
+              {userProfile && (
+                <Avatar 
+                  size={50} 
+                  src={userProfile.profile_picture} 
+                  alt={userProfile.name} 
+                />
+              )}
+            </Col>
+            <Col xs={21} lg={23}>
+              <Input
+                placeholder="Hôm nay, bạn ổn không?"
+                style={{ borderRadius: '40px', flex: 1 }}
+                onClick={() => setIsModalCreatePostOpen(true)}
+              />
+            </Col>
           </Row>
-        </>
-    )
+          <Row>
+            {posts.map(post => (
+              <Col span={24} key={post.id}>
+                <PostCart post={post} />
+              </Col>
+            ))}
+          </Row>
+        </Col>
+      </Row>
+    </>
+  );
 }
