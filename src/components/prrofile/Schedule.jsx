@@ -37,7 +37,7 @@ export default function Schedule({schedule}) {
     <>
       <div className="card_profile_schedule">
         <div className="card-body">
-          <p className={schedule.status === 1 ? "card_title_booked" : "card-title"}>{formattedStartTime} - {formattedEndTime}</p>
+          <p className={schedule.status === 0 ? "card_title_booked" : "card-title"}>{formattedStartTime} - {formattedEndTime}</p>
         </div>
         <div className="menu-container">
           <button className="menu-button_profile" onClick={toggleMenu}>

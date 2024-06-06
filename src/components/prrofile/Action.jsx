@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../assets/css/profile/action.css";
 
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    if (props.infor) {
+      setFormData(props.infor);
+    }
+  }, [props.infor]);
 
   const openDetailModal = () => {
     setShowDetailModal(true);
@@ -10,6 +17,31 @@ export default function Action(props) {
 
   const closeDetailModal = () => {
     setShowDetailModal(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleExpertChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      expert: {
+        ...prevData.expert,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic here, such as making an API call
+    console.log('Form data submitted:', formData);
   };
 
   return (
@@ -36,9 +68,9 @@ export default function Action(props) {
               {props.infor ? (
                 <>
                   <h2>Personal Information</h2>
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <img
-                      src={props.infor.profile_picture}
+                      src={formData.profile_picture}
                       alt="Profile"
                       className="profile-picture"
                     />
@@ -46,46 +78,50 @@ export default function Action(props) {
                       <label>
                         <strong>Name</strong>
                       </label>
-                      <input type="text" value={props.infor.name} readOnly />
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name || ""}
+                        onChange={handleChange}
+                      />
                     </div>
                     <div className="input-group">
                       <label>
                         <strong>Email</strong>
                       </label>
-                      <input type="email" value={props.infor.email} readOnly />
-                    </div>
-                    <div className="input-group">
-                      <label>
-                        <strong>Experience</strong>
-                      </label>
                       <input
-                        type="text"
-                        value={props.infor.expert?.experience || "..."}
-                        readOnly
+                        type="email"
+                        name="email"
+                        value={formData.email || ""}
+                        onChange={handleChange}
                       />
                     </div>
-                    <div className="input-group">
-                      <label>
-                        <strong>Certificate</strong>
-                      </label>
-                      <input
-                        type="text"
-                        value={props.infor.expert?.certificate || "..."}
-                        readOnly
-                      />
-                    </div>
-                    <div className="input-group">
-                      <label>
-                        <strong>Address</strong>
-                      </label>
-                      <input type="text" value={props.infor.expert?.address || "..."} readOnly />
-                    </div>
-                    <div className="input-group">
-                      <label>
-                        <strong>Upload:</strong>
-                      </label>
-                      <input type="text" value="Problem" readOnly />
-                    </div>
+                    {formData.role_id === 3 && (
+                      <>
+                        <div className="input-group">
+                          <label>
+                            <strong>Experience</strong>
+                          </label>
+                          <input
+                            type="text"
+                            name="experience"
+                            value={formData.experience || ""}
+                            onChange={handleExpertChange}
+                          />
+                        </div>
+                        <div className="input-group">
+                          <label>
+                            <strong>Certificate</strong>
+                          </label>
+                          <input
+                            type="text"
+                            name="certificate"
+                            value={formData.certificate || ""}
+                            onChange={handleExpertChange}
+                          />
+                        </div>
+                      </>
+                    )}
                     <div className="input-group">
                       <button type="submit" className="update-button">
                         Update
