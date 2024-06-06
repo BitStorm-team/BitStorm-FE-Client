@@ -1,0 +1,25 @@
+.btnschedule {
+    /* background-color: rgb/(223, 188, 255); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 0px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out; /* Changed to ease-in-out and reduced to 0.3s for a smoother transition */
+}
+
+.btnschedule:hover {
+    transform: scale(1.03);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    cursor: pointer;
+}
+
+.btn-danger{
+    background-color: #f443368b !important;
+}
+
+.btn-info{
+    background-color: rgba(54, 195, 246, 0.481) !important;
+
+}
