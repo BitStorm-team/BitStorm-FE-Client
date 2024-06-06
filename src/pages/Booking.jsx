@@ -1,69 +1,90 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { Form, Input, Button, Card, Typography, message } from "antd";
 import axios from "axios";
 import "../assets/css/booking/booking.css";
-import { API_URL, headerAPI } from "../utils/helpers";
-import expertVaatar from "../assets/images/expertDetail/doctor.jpg";
+import { API_URL } from "../utils/helpers";
 import { getExpertProfile, getUserProfile } from "../api";
-
+import Loading from "../components/expertDetail/Loading";
+import { useParams } from "react-router-dom";
 const { TextArea } = Input;
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Booking = () => {
   // state
+  const { expert_id, calendar_id, start_time, end_time, price } = useParams(); // Lấy id từ URL
+
   const [user, setUser] = useState(null);
+  const [expert, setExpert] = useState({});
+  const [expertInfo, setExpertInfo] = useState({});
+  const [isExpert, setIsExpert] = useState(false);
+
+  const token = localStorage.getItem("__token__");
 
   const getUser = async () => {
     try {
       const userProfileData = await getUserProfile();
       setUser(userProfileData);
       if (userProfileData.role_id === 3) {
-        getExpertProfile();
+        setIsExpert(true);
       }
     } catch (error) {
       console.error("Error getting user profile:", error);
     }
   };
 
+  const getExpert = async () => {
+    try {
+      const response = await axios.get(API_URL + `/experts/${expert_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        setExpert(response.data.data);
+        setExpertInfo(response.data.data.expertDetail.user);
+        console.log(response.data.data.expertDetail.user);
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   useEffect(() => {
+    getExpert();
     getUser();
   }, []);
+
+
+  const handleErrorIsExpert = () => {
+    alert('You are not allowed to book')
+  }
 
   const handleSubmit = async (values) => {
     const { notes } = values;
     console.log(notes);
 
-    try {
-      // Call the booking API first
-      const bookingResponse = await axios.post(
-        `${API_URL}/user/book-calendar/2`,
-        {
-          user_id: 1, // Adjust the userId as needed
-          calendar_id: 1, // Adjust the calendarId as needed
-          note: notes, // Assuming notes are used for booking
-          status: "New",
-        }, // Assuming the initial status is 'pending'
-        {
-          headers: headerAPI(), // Include headers
-        }
-      );
+    const dataBooking = {
+      user_id: user.id, // Adjust the userId as needed
+      calendar_id: calendar_id, // Adjust the calendarId as needed
+      note: notes, // Assuming notes are used for booking
+      status: "New",
+    };
 
-      // If booking is successful, proceed to VNPAY API
-      if (bookingResponse.status === 200 || bookingResponse.status === 201) {
-        const paymentResponse = await axios.post(`${API_URL}/payment`, {
-          total: 1000,
-        }); // Adjust the amount here
-        const { data } = paymentResponse;
-        if (data.code === "00") {
-          // If payment URL is received successfully, redirect to the payment page
-          window.location.href = data.data;
-        } else {
-          // Handle error if needed
-          console.error("Failed to get payment URL");
-        }
+    localStorage.setItem("dataBooking", JSON.stringify(dataBooking));
+
+    try {
+      const paymentResponse = await axios.post(`${API_URL}/payment`, {
+        total: price * 100,
+      }); // Adjust the amount here
+      const { data } = paymentResponse;
+
+      if (data.code === "00") {
+
+        // If payment URL is received successfully, redirect to the payment page
+        window.location.href = data.data;
       } else {
-        // Handle booking error if needed
-        console.error("Failed to book calendar");
+        // Handle error if needed
+        console.error("Failed to get payment URL");
       }
     } catch (error) {
       // Handle error if needed
@@ -72,37 +93,26 @@ const Booking = () => {
   };
 
   if (!user) {
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "85vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div class="loader"></div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
     <div className="container">
-      <Card className="appointment-details" title="Lịch hẹn với chuyên gia">
+      <Card className="appointment-details" title="Appointment with Expert">
         <div className="info">
           <Text>
-            <strong>Họ và tên chuyên gia:</strong> Phạm Gia Bảo
+            <strong>Expert's Full Name:</strong> {expertInfo.name}
           </Text>
           <br />
           <Text>
-            <strong>Thời gian gặp với chuyên gia:</strong> 11h-12h, 03/01/2024
+            <strong>Appointment Time with Expert:</strong> {start_time} -{" "}
+            {end_time}
           </Text>
           <br />
           <Text
             style={{ fontWeight: "bold", fontSize: "1.2em", color: "#d9534f" }}
           >
-            <strong>Tổng tiền:</strong> 10,000 VND
+            <strong>Total Amount:</strong> {price},000 VND
           </Text>
         </div>
         <div
@@ -122,41 +132,40 @@ const Booking = () => {
               height: "100%",
               objectFit: "cover",
             }}
-            src={expertVaatar}
+            src={expertInfo.profile_picture}
             alt=""
             className="qr-code"
           />
         </div>
       </Card>
-      <Card className="form-section" title="Thông tin của bạn">
-        <Form layout="vertical" onFinish={handleSubmit} initialValues={{ name: user.name, email: user.email }}>
+      <Card className="form-section" title="Your Information">
+        <Form
+          layout="vertical"
+          onFinish={isExpert ? handleErrorIsExpert : handleSubmit}
+          initialValues={{ name: user.name, email: user.email }}
+        >
           <Form.Item
             name="name"
-            label="Họ và tên"
-            rules={[
-              { required: true, message: "Vui lòng nhập họ và tên của bạn" },
-            ]}
+            label="Full Name"
+            rules={[{ required: true, message: "Please enter your full name" }]}
           >
-            <Input placeholder="Họ và tên" />
+            <Input placeholder="Full Name" />
           </Form.Item>
           <Form.Item
             name="email"
-            label="Địa chỉ email"
+            label="Email Address"
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập địa chỉ email của bạn",
+                message: "Please enter your email address",
                 type: "email",
               },
             ]}
           >
-            <Input type="email" placeholder="Địa chỉ email" />
+            <Input type="email" placeholder="Email Address" />
           </Form.Item>
-          <Form.Item name="notes" label="Ghi chú dành cho chuyên gia (nếu có)">
-            <TextArea
-              placeholder="Ghi chú dành cho chuyên gia (nếu có)"
-              rows={4}
-            />
+          <Form.Item name="notes" label="Notes for the Expert (if any)">
+            <TextArea placeholder="Notes for the Expert (if any)" rows={4} />
           </Form.Item>
           <Form.Item>
             <Button
@@ -167,7 +176,7 @@ const Booking = () => {
               }}
               htmlType="submit"
             >
-              Đặt lịch
+              Book Appointment
             </Button>
           </Form.Item>
         </Form>

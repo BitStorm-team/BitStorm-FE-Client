@@ -38,6 +38,10 @@ export default function ExpertDetail() {
   const [listExpert, setListExpert] = useState([]);
   const [randomExperts, setRandomExperts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isFilter, setIsFilter] = useState(false);
+  const [filterRating, setFilterRating] = useState(null);
+  const [feedbacks, setFeedbacks] = useState([]);
+
 
   //get detailed information about the selected expert
   useEffect(() => {
@@ -90,7 +94,15 @@ export default function ExpertDetail() {
 // console.log("expert id: ",id)
 // console.log("list expert: ",listExpert);
 // console.log("list random expert: ",randomExperts);
-  
+
+
+   useEffect(() => {
+     if (expert.feedback) {
+       setFeedbacks(expert.feedback.slice(0, 2));
+     }
+   }, [expert]);
+
+
   if (loading) {
     return <Loading />;
   }
@@ -101,7 +113,24 @@ export default function ExpertDetail() {
   const { average_rating, certificate, experience, user } = expertDetail;
   const { name, email, profile_picture } = user;
   const rating = parseInt(average_rating, 10);
-// console.log("feedback",feedback)
+
+   const handleFilterClick = (rating) => {
+     setIsFilter(true);
+     setFilterRating(rating);
+     const filteredFeedbacks = expert.feedback.filter(
+       (feedback) => feedback.rating === rating
+     );
+     setFeedbacks(filteredFeedbacks);
+   };
+
+   const handleShowAllClick = (e) => {
+     setIsFilter(false);
+     setFilterRating(null);
+     setFeedbacks(feedback);
+   };
+
+   console.log("feedback", feedbacks.slice(0, 2));
+
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
       <div>
@@ -156,10 +185,13 @@ export default function ExpertDetail() {
                     {schedules.map((schedule, index) => {
                       return (
                         <ScheduleButton
+                          status = {schedule.status}
                           key={index}
                           start_time={schedule.start_time}
                           end_time={schedule.end_time}
-                          calendar_id={schedules.id}
+                          calendar_id={schedule.id}
+                          expert_id={id}
+                          price={schedule.price}
                         />
                       );
                     })}
@@ -216,29 +248,61 @@ export default function ExpertDetail() {
           <h2 className="user_review_container"> Reviews from users</h2>
           {feedback.length > 0 ? (
             <div className="container_filter_rating">
-              <Button className="filterRatingBtn">See all</Button>
+              <Button className="filterRatingBtn" onClick={handleShowAllClick}>
+                See all
+              </Button>
               <Button className="filterRatingBtn1">
-                <span style={{ marginRight: 5 }}> 5 stars</span>
+                <span
+                  style={{ marginRight: 5 }}
+                  onClick={() => handleFilterClick(5)}
+                >
+                  {" "}
+                  5 stars
+                </span>
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon>
               </Button>
               <Button className="filterRatingBtn1">
-                <span style={{ marginRight: 5 }}> 4 stars</span>
+                <span
+                  style={{ marginRight: 5 }}
+                  onClick={() => handleFilterClick(4)}
+                >
+                  {" "}
+                  4 stars
+                </span>
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>
               </Button>
               <Button className="filterRatingBtn1">
-                <span style={{ marginRight: 5 }}> 3 stars</span>{" "}
+                <span
+                  style={{ marginRight: 5 }}
+                  onClick={() => handleFilterClick(3)}
+                >
+                  {" "}
+                  3 stars
+                </span>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon>
               </Button>
               <Button className="filterRatingBtn1">
-                <span style={{ marginRight: 5 }}> 2 stars</span>{" "}
+                <span
+                  style={{ marginRight: 5 }}
+                  onClick={() => handleFilterClick(2)}
+                >
+                  {" "}
+                  2 stars
+                </span>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>
               </Button>
               <Button className="filterRatingBtn1">
-                <span style={{ marginRight: 5 }}> 1 star</span>
+                <span
+                  style={{ marginRight: 5 }}
+                  onClick={() => handleFilterClick(1)}
+                >
+                  {" "}
+                  1 star
+                </span>
                 <StarIcon></StarIcon>
               </Button>
             </div>
@@ -250,18 +314,31 @@ export default function ExpertDetail() {
           )}
         </div>
         <div>
-          {feedback.map((feedback, index) => {
-            return (
+          {!isFilter ? (
+            feedbacks.map((feedback, index) => (
               <ExpertDetailReview
                 key={index}
                 rating={feedback.rating}
                 content={feedback.content}
                 time={feedback.created_at}
-                profile_img={feedback.profile_picuture}
+                profile_img={feedback.profile_picture}
                 name={feedback.name}
               />
-            );
-          })}
+            ))
+          ) : feedbacks.length > 0 ? (
+            feedbacks.map((feedback, index) => (
+              <ExpertDetailReview
+                key={index}
+                rating={feedback.rating}
+                content={feedback.content}
+                time={feedback.created_at}
+                profile_img={feedback.profile_picture}
+                name={feedback.name}
+              />
+            ))
+          ) : (
+            <p style={{ marginTop: 20 }}>This expert has no reviews for this rating yet.</p>
+          )}
         </div>
       </div>
     </Layout>
