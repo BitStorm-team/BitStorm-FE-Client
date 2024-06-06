@@ -58,7 +58,7 @@ const Expert = () =>{
     };
     const onChangeItem = (id) => {
         console.log(id)
-        navigate(`/expert-detail/${id}`);
+        navigate(`/expert/${id}`);
     }
 
     const handleRangeChange = (event) => {
