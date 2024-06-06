@@ -1,10 +1,18 @@
+import { useEffect, useState } from "react";
 import { Navigate, Route } from "react-router-dom";
 
-const withPrivateRoute = (props, index) => {
-  const accessToken = localStorage.getItem('__token__');
+const WithPrivateRoute = (props, index) => {
+  const [accessToken, setAccessToken] = useState("");
+  const accessLocalStorage = localStorage.getItem("__token__");
+
+  useEffect(() => {
+    setAccessToken(accessLocalStorage);
+  }, [accessLocalStorage]);
+
   if (accessToken) {
     return <Route key={index} {...props} />;
   }
+
 };
 
-export default withPrivateRoute;
+export default WithPrivateRoute;

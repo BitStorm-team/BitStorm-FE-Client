@@ -75,7 +75,7 @@ export default function Post() {
       const values = form.getFieldsValue();
       console.log('Form values:', values);
 
-      const createResponse = await axios.post(`${API_URL}/posts/create`, 
+      const createResponse = await axios.post(`${API_URL}/posts/create`,
       values, {
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export default function Post() {
 
         if (fetchResponse.data.success) {
           setPosts(fetchResponse.data.data);
-          
+
         } else {
           message.error(`Error fetching posts: ${fetchResponse.data.message}`);
         }
@@ -144,7 +144,7 @@ export default function Post() {
           <Form.Item
             label="Anonymous"
             name="is_anonymous"
-            
+
             valuePropName="checked"
           >
             <Switch />
@@ -160,10 +160,10 @@ export default function Post() {
           <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px 0' }}>
             <Col xs={3} lg={1}>
               {userProfile && (
-                <Avatar 
-                  size={50} 
-                  src={userProfile.profile_picture} 
-                  alt={userProfile.name} 
+                <Avatar
+                  size={50}
+                  src={userProfile.profile_picture}
+                  alt={userProfile.name}
                 />
               )}
             </Col>
