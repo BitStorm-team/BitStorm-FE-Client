@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Upload, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../utils/helpers";
-import {signUp} from "../api";
+import { signUp } from "../api";
 
-const FormGetInforExpert = () => {
+const FormGetInfoExpert = () => {
   const [parentValues, setParentValues] = useState({});
   const [fileList, setFileList] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false); // 1. Add loading state
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -22,14 +21,21 @@ const FormGetInforExpert = () => {
   }, []);
 
   const onFinish = async (values) => {
+    setLoading(true); // 2. Start loading when sign-up process starts
     const { experience } = values;
     const formData = {
       experience: experience,
       certificate: imageUrl,
       ...parentValues
     };
-    // reister here
-    signUp(formData,navigate)
+    try {
+      await signUp(formData, navigate);
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Failed to sign up");
+    } finally {
+      setLoading(false); // 3. Stop loading when sign-up process completes
+    }
   };
 
   const handleChange = (info) => {
@@ -64,7 +70,7 @@ const FormGetInforExpert = () => {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <h2 style={{ textAlign: "center" }}>Vui lòng cung cấp thêm thông tin</h2>
+        <h2 style={{ textAlign: "center" }}>Please provide additional information</h2>
         <Form
           form={form}
           name="basic"
@@ -73,7 +79,7 @@ const FormGetInforExpert = () => {
           layout="vertical"
         >
           <Form.Item
-            label="Kinh nghiệm"
+            label="Experience"
             name="experience"
             rules={[{ required: true, message: "Please input your experience!" }]}
           >
@@ -106,8 +112,8 @@ const FormGetInforExpert = () => {
           )}
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-              Hoàn Tất
+            <Button type="primary" htmlType="submit" style={{ width: "100%" }} loading={loading}>
+              Submit
             </Button>
           </Form.Item>
         </Form>
@@ -116,4 +122,4 @@ const FormGetInforExpert = () => {
   );
 };
 
-export default FormGetInforExpert;
+export default FormGetInfoExpert;

@@ -1,18 +1,19 @@
 // Register.js
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Typography, Radio } from "antd";
-import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Typography, Radio, message } from "antd";
 import "../assets/css/auth/LoginRegister.css";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchCsrfToken, signUp } from "../api";
 import "../assets/css/auth/Login.css";
-import imagLLogin from "../assets/images/session1image.png";
+import signUpImage from "../assets/images/session1image.png";
 
 const { Title } = Typography;
-const SingUp = () => {
+
+const SignUp = () => {
   // states
   const [csrfToken, setCsrfToken] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // 1. Introduce loading state
 
   // effects
   useEffect(() => {
@@ -20,13 +21,21 @@ const SingUp = () => {
   }, []);
 
   const onFinish = async (values) => {
-    console.log("Success:", values);
-    // if expert
-    if (values.role_id === 3 || values.role_id === "3") {
-      localStorage.setItem("values", JSON.stringify(values));
-      navigate("/signup/expert");
-    } else {
-      signUp(values, navigate);
+    setLoading(true); // 2. Start loading when sign-up process starts
+    try {
+      console.log("Success:", values);
+      // if expert
+      if (values.role_id === 3 || values.role_id === "3") {
+        localStorage.setItem("values", JSON.stringify(values));
+        navigate("/signup/expert");
+      } else {
+        signUp(values, navigate);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Failed to sign up");
+    } finally {
+      setLoading(false); // 3. Stop loading when sign-up process completes
     }
   };
 
@@ -37,88 +46,98 @@ const SingUp = () => {
         <div className="login-container-item">
           <div className="form-container">
             <Title level={2} className="form-title">
-              Đăng ký
+              Sign Up
             </Title>
             <Form name="register" onFinish={onFinish}>
               <Form.Item
                 name="name"
                 rules={[
-                  { required: true, message: "Vui lòng nhập tên đăng nhập!" },
+                  { required: true, message: "Please enter your username!" },
                 ]}
               >
-                <Input placeholder="Tên đăng nhập" />
+                <Input placeholder="Username" />
               </Form.Item>
               <Form.Item
                 name="email"
                 rules={[
-                  { required: true, message: "Vui lòng nhập địa chỉ email!" },
+                  {
+                    required: true,
+                    message: "Please enter your email address!",
+                  },
                 ]}
               >
-                <Input placeholder="Địa chỉ email" />
+                <Input placeholder="Email address" />
               </Form.Item>
               <Form.Item
                 name="password"
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập mật khẩu!",
+                    message: "Please enter your password!",
                     min: 8,
-                    message: "Mật khẩu ít nhất 8 ký tự!",
+                    message: "Password must be at least 8 characters!",
                   },
                 ]}
               >
-                <Input.Password placeholder="Mật khẩu (ít nhất 8 kí tự)" />
+                <Input.Password placeholder="Password (at least 8 characters)" />
               </Form.Item>
               <Form.Item
                 name="password_confirmation"
                 dependencies={["password"]}
                 hasFeedback
                 rules={[
-                  { required: true, message: "Vui lòng nhập lại mật khẩu!" },
+                  { required: true, message: "Please confirm your password!" },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue("password") === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(
-                        new Error("Hai mật khẩu bạn nhập không khớp!")
+                        new Error(
+                          "The two passwords that you entered do not match!"
+                        )
                       );
                     },
                   }),
                 ]}
               >
-                <Input.Password placeholder="Nhập lại mật khẩu" />
+                <Input.Password placeholder="Confirm password" />
               </Form.Item>
               <Form.Item name="role_id" className="role-selector">
-                <Radio.Group>
-                  <Radio.Button  value={2}>Người nhận tư vấn</Radio.Button>
-                  <Radio.Button  value={3}>Người tư vấn</Radio.Button>
+                <Radio.Group style={{ width: "100%" }}>
+                  <Radio.Button style={{ width: "50%" }} value={2}>
+                    Advice Receiver
+                  </Radio.Button>
+                  <Radio.Button style={{ width: "50%" }} value={3}>
+                    Advisor
+                  </Radio.Button>
                 </Radio.Group>
               </Form.Item>
               <Form.Item>
                 <Button
+                  loading={loading}
                   type="primary"
                   htmlType="submit"
                   className="form-button"
                 >
-                  Đăng ký
+                  Sign Up
                 </Button>
               </Form.Item>
 
               <Form.Item>
                 <span>
-                  Đã có tài khoản? <Link to='/signin'>Đăng Nhập</Link>
+                  Already have an account? <Link to="/signin">Sign In</Link>
                 </span>
               </Form.Item>
             </Form>
           </div>
         </div>
         <div className="login-container-item">
-          <img src={imagLLogin} alt="Login" />
+          <img src={signUpImage} alt="Sign Up" />
         </div>
       </main>
     </div>
   );
 };
 
-export default SingUp;
+export default SignUp;

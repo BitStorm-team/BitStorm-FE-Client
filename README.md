@@ -100,3 +100,9 @@ npm install react-icons
 ##
 npm install react-datepicker
 npm install --save moment react-moment
+
+## istall npm install crypto-browserify stream-browserify
+--> npm install crypto-browserify stream-browserify
+
+## text animation
+--> npm install animate.css --save
