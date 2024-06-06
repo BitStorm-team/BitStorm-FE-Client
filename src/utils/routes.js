@@ -42,7 +42,7 @@ export const publicRoutes = [
     exact: true,
   },
   {
-    path: "/expert-detail",
+    path: "/expert-detail/:id",
     element: <MainLayout main={<ExpertDetail />} />,
     exact: true,
   },
@@ -70,7 +70,7 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/expert/:id",
+    path: "/expert-detail/:id",
     element: <MainLayout main={<ExpertDetail />} />,
     exact: true,
   },
