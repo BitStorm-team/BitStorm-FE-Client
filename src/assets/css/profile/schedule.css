@@ -6,9 +6,19 @@
     display: flex;
     justify-content: center;
     align-items:center;
-    background-color: lightcoral;
+    background-color: #3D93FF;
 }
-
+.card_profile_schedule .card-body .card_title_booked{
+    color: white;
+    border-radius: 10px;
+    height: 40px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    border:1px solid #3D93FF;
+    color: #3D93FF;
+}
 .card_profile_schedule {
     width: 18rem;
     margin: 0 auto;
@@ -22,7 +32,7 @@
     height: 100%;
 }
 
-.menu-button {
+.menu-button_profile {
     margin-left: 10px;
     font-size: 16px;
     color: lightcoral;

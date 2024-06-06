@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { FaEllipsisV, FaEye, FaTrash } from "react-icons/fa";
 import "../../assets/css/profile/schedule.css";
 
-export default function Schedule(props) {
+const formatTime = (timestamp) => {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+};
+
+export default function Schedule({schedule}) {
   const [showMenu, setShowMenu] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
@@ -25,14 +30,17 @@ export default function Schedule(props) {
     setShowMenu(false);
   };
 
+  const formattedStartTime = formatTime(schedule.start_time);
+  const formattedEndTime = formatTime(schedule.end_time);
+
   return (
     <>
       <div className="card_profile_schedule">
         <div className="card-body">
-          <p className="card-title">{props.time}</p>
+          <p className={schedule.status === 1 ? "card_title_booked" : "card-title"}>{formattedStartTime} - {formattedEndTime}</p>
         </div>
         <div className="menu-container">
-          <button className="menu-button" onClick={toggleMenu}>
+          <button className="menu-button_profile" onClick={toggleMenu}>
             <FaEllipsisV />
           </button>
           {showMenu && (
