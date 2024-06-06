@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Col, Popover, Row, Tooltip } from 'antd';
-import { LikeOutlined, LikeFilled, CommentOutlined, UserOutlined, MoreOutlined, Modal } from '@ant-design/icons';
+import { Avatar, Button, Col, Row, Tooltip } from 'antd';
+import { UserOutlined, MoreOutlined, Modal } from '@ant-design/icons';
 import styled from 'styled-components';
 
 const CommentContent = styled.div`
@@ -9,31 +9,23 @@ const CommentContent = styled.div`
   margin-top:10px;
 `;
 
-const CommentActions = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ActionButton = styled(Button)`
-  color: #1890ff;
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-`;
 const Comment = ({ comment }) => {
   return (
     
       <CommentContent>
         <div style={{ display: 'flex', justifyContent: 'start' }}>
             <Col lg={1} xs={3}>
-                <Avatar style={{ backgroundColor: '#87d068',}} icon={<UserOutlined />} />
+                <Avatar 
+                    size={40} 
+                    src={comment.user.profile_picture}
+                    alt={comment.user.name}
+                />
             </Col>  
             <Col>
                 <Row style={{ padding:'0.5em', margin: '0px 10px 0px 10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', borderRadius:'0.5em ' }}>
                     <Col xs={23}>
-                        <strong>{comment.user_id}</strong>
+                        
+                        <strong>{comment.user.name}</strong>
                         <p style={{marginBottom:'0px'}}>{comment.content}</p>
                     </Col>
                     <Col xs={1}>
