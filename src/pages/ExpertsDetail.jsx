@@ -91,6 +91,10 @@ export default function ExpertDetail() {
     };
     fetchListExpert();
   }, [id]);
+// console.log("expert id: ",id)
+// console.log("list expert: ",listExpert);
+// console.log("list random expert: ",randomExperts);
+
 
    useEffect(() => {
      if (expert.feedback) {
@@ -98,20 +102,18 @@ export default function ExpertDetail() {
      }
    }, [expert]);
 
-  
+
   if (loading) {
     return <Loading />;
   }
   if (!expert || !expert.expertDetail) {
     return (<NotFound></NotFound>);
   }
+  const { expertDetail, schedules, feedback } = expert;
+  const { average_rating, certificate, experience, user } = expertDetail;
+  const { name, email, profile_picture } = user;
+  const rating = parseInt(average_rating, 10);
 
-   let { expertDetail, schedules, feedback } = expert;
-   const { average_rating, certificate, experience, user } = expertDetail;
-   const { name, email, profile_picture } = user;
-   const rating = parseInt(average_rating, 10);
-  // console.log("feedback",feedback)
-  
    const handleFilterClick = (rating) => {
      setIsFilter(true);
      setFilterRating(rating);
@@ -120,7 +122,7 @@ export default function ExpertDetail() {
      );
      setFeedbacks(filteredFeedbacks);
    };
-  
+
    const handleShowAllClick = (e) => {
      setIsFilter(false);
      setFilterRating(null);
@@ -183,10 +185,13 @@ export default function ExpertDetail() {
                     {schedules.map((schedule, index) => {
                       return (
                         <ScheduleButton
+                          status = {schedule.status}
                           key={index}
                           start_time={schedule.start_time}
                           end_time={schedule.end_time}
-                          calendar_id={schedules.id}
+                          calendar_id={schedule.id}
+                          expert_id={id}
+                          price={schedule.price}
                         />
                       );
                     })}

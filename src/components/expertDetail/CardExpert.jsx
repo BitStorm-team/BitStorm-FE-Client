@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function CardExpert({ name, experience, id, img }) {
   const navigate = useNavigate();
   const handleExpertDetail = () => {
-    navigate(`/expert-detail/${id}`);
+    navigate(`/expert/${id}`);
     window.scrollTo({ top: 0, behavior: "smooth" }); // Cuộn lên đầu trang
   };
   return (

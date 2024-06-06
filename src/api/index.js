@@ -32,7 +32,8 @@ export const signIn = async (values, csrfToken) => {
   }
 };
 
-export const signUp = async (data, navigate) => { // Pass 'navigate' as a parameter
+export const signUp = async (data, navigate) => {
+  // Pass 'navigate' as a parameter
   try {
     // First attempt with the primary URL
     const response = await axios.post(`${API_URL}/auth/register`, data, {
@@ -45,10 +46,9 @@ export const signUp = async (data, navigate) => { // Pass 'navigate' as a parame
     message.success("Registration successful");
   } catch (error) {
     console.error("Primary server error:", error);
-    throw(error);
+    throw error;
   }
 };
-
 
 export const getUserProfile = async () => {
   const header = headerAPI();
@@ -60,7 +60,7 @@ export const getUserProfile = async () => {
     return response.data;
   } catch (error) {
     console.error("Primary server error:", error);
-    throw(error);
+    throw error;
   }
 };
 
@@ -72,5 +72,29 @@ export const getExpertProfile = async (userId) => {
     return response.data;
   } catch (error) {
     throw error;
+  }
+};
+
+export const bookCalendar = async (dataBooking) => {
+  try {
+    const bookingResponse = await axios.post(
+      `${API_URL}/user/book-calendar/${dataBooking.calendar_id}`,
+      dataBooking,
+      {
+        headers: headerAPI(), // Include headers
+      }
+    );
+
+    // Assuming the booking is considered successful if there's a response
+    return bookingResponse.status === 200; // Return true if status code is 200 (OK)
+  } catch (error) {
+    if (error.response && error.response.status === 409) {
+      // Handle conflict error
+      console.error("Conflict error:", error.response.data);
+    } else {
+      // Handle other errors
+      console.error("Error during booking:", error);
+    }
+    return false; // Return false for other errors or conflict
   }
 };

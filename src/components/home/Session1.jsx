@@ -18,7 +18,7 @@ const Session1 = () => {
               fontSize: "50px",
             }}
           >
-            Well come to
+            Welcome to
           </h2>
 
           <div className="box-animation">
@@ -38,6 +38,7 @@ const Session1 = () => {
         </div>
         <div className="session1-content" data-aos="zoom-in-left">
           <img src={session1image} alt="Doctor" className="session1-image" />
+          
         </div>
       </div>
     </div>

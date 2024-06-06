@@ -42,13 +42,18 @@ export const publicRoutes = [
     exact: true,
   },
   {
-    path: "/expert-detail/:id",
+    path: "/expert/:id",
     element: <MainLayout main={<ExpertDetail />} />,
     exact: true,
   },
   {
     path: "/expert",
     element: <MainLayout main={<Expert />} />,
+    exact: true,
+  },
+  {
+    path: "/post",
+    element: <MainLayout main={<Post />} />,
     exact: true,
   },
 ];
@@ -70,7 +75,7 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/expert-detail/:id",
+    path: "/expert/:id",
     element: <MainLayout main={<ExpertDetail />} />,
     exact: true,
   },
@@ -80,13 +85,18 @@ export const privateRoutes = [
     exact: true,
   },
   {
-    path: "/booking",
+    path: "/booking/:expert_id/calendar/:calendar_id/time/:start_time/:end_time/:price",
     element: <MainLayout main={<Booking />} />,
     exact: true,
   },
   {
     path: "/post",
     element: <MainLayout main={<Post />} />,
+    exact: true,
+  },
+  {
+    path: "/profile",
+    element: <MainLayout main={<Profile />} />,
     exact: true,
   },
 ];

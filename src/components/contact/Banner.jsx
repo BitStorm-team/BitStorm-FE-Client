@@ -4,10 +4,9 @@ export default function Banner(props) {
   return (
     <div className="banner">
       <div className="banner-item">
-        <h1 className="title-banner">CONTACT US</h1>
+        <h1 className="title-banner">{props.title}</h1>
         <p className="text-banner">
-          We'd love to hear from you!
-          Please fill out the form below and we will get in touch with you shortly.
+          {props.description}
         </p>
       </div>
     </div>
