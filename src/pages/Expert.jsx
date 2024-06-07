@@ -1,4 +1,4 @@
-import {Card,Pagination, message } from "antd";
+import {Card,Pagination, message,Button } from "antd";
 import '../assets/css/expert.css';
 import { StarTwoTone } from "@ant-design/icons";
 import { useState,useEffect } from "react";
@@ -13,11 +13,28 @@ const Expert = () =>{
     const itemsPerPage = 4;
     const [expertName, setExpertName] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [price, setPrice] = useState([]);
     const navigate = useNavigate();
-    const [currentPrice, setCurrentPrice] = useState(0);
-    const minPrice = 0;
-    const maxPrice = 1000;
+    const [min_price, setMinPrice] = useState(0);
+    const [max_price, setMaxPrice] = useState(100);
+    const [response, setResponse] = useState([]);
+  
+    const handleMinPriceChange = (event) => {
+      setMinPrice(event.target.value);
+    };
+  
+    const handleMaxPriceChange = (event) => {
+      setMaxPrice(event.target.value);
+    };
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      try {
+        const response = await axios.post("http://127.0.0.1:8000/api/experts/filter", { min_price:min_price, max_price:max_price });
+        setResponse(response.data.data);
+      } catch (error) {
+        console.error("There was an error making the request:", error);
+      }
+    };
     useEffect(() => {
         const fetchExperts = async () => {
             try {
@@ -59,28 +76,8 @@ const Expert = () =>{
     const onChangeItem = (id) => {
         console.log(id)
         navigate(`/expert/${id}`);
-    }
-
-    const handleRangeChange = (event) => {
-        setCurrentPrice(parseInt(event.target.value)); 
-      };
-    const fetchExpertsByPrice = async (price) => {
-        try {
-            const response = await axios.post("http://127.0.0.1:8000/api/experts/filter", { price: price });
-            setPrice(response.data.data);
-            console.log("ewfrefef",price);
-        } catch (error) {
-            console.error("Error fetching experts:", error);
-        }
-    }
-    const onSubmitFilter = (e) => {
-        e.preventDefault();
-        setCurrentPrice(0);  // Đặt lại giá trị sau khi fetch
-    };
-
-    useEffect(() => {
-        fetchExpertsByPrice(currentPrice);
-    }, [currentPrice]); 
+    }    
+  
     
     // Calculate the items to display on the current page
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -107,33 +104,51 @@ const Expert = () =>{
                             {/* <span className="sr-only">Search countries here</span> */}
                         </label>
                         <label>
-                            <form onSubmit={onSubmitFilter}>
-                                <input 
+                        <form onSubmit={handleSubmit}>
+                            <label>
+                            Min Price:
+                                <input
                                     type="range"
-                                    min={minPrice}
-                                    max={maxPrice}
-                                    onChange={handleRangeChange}
-                                    value={currentPrice}
-                                    name="price"
+                                    value={min_price}
+                                    min="0"
+                                    max="1000"
+                                    onChange={handleMinPriceChange}
                                 />
-                                <p> Filter by price  {currentPrice}</p>
-                            </form>
+                                <span>{min_price}</span>
+                                </label>
+                                <br />
+                            <label>
+                            Max Price:
+                                <input
+                                    type="range"
+                                    value={max_price}
+                                    min="0"
+                                    max="1000"
+                                    onChange={handleMaxPriceChange}
+                                />
+                                <span>{max_price}</span>
+                            </label>
+                            <br />
+                            <button type="submit">Filter</button>
+                        </form>
                         </label>
                     </div>
                 </div>
             </div>
             <div className="wrapper search-item">
-            {price.map(item => (
-                <div className="card" key={item.id}>
-                    <h2>{item.expert_detail.user_id}</h2>
-                    <p>Your price {item.price}</p>
-                    <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
-                </div>
-            ))}
+                {response.map((item,index) => (
+                    <div className="card" key={index}>
+                        <h2>{item.name}</h2>
+                        <p  style={{color:'red'}}> {item.price}.000 VNĐ</p>
+                        <p>{item.email}</p>
+                        
+                        <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
+                    </div>
+                ))}
             </div>
             <div className="wrapper search-item">
-                {expertName.map(item => (
-                        <div className="card" key={item.id}  animate={inView1}>
+                {expertName.map((item,index) => (
+                        <div className="card" key={index}  animate={inView1}>
                             <img className="card-image" src={item.profile_picture} alt={item.name} />
                             <h2>{item.name}</h2>
                             <p>{item.email}</p>
@@ -142,8 +157,8 @@ const Expert = () =>{
                     ))}
             </div>
         <div className="wrapper" ref={ref1}>
-                {currentItem.map(item => (
-                    <div className="card" key={item.id}  animate={inView1}>
+                {currentItem.map((item,index) => (
+                    <div className="card" key={index}  animate={inView1}>
                         <img className="card-image" src={item.profile_picture} alt={item.name} />
                         <h2>{item.name}</h2>
                         <p>{item.email}</p>
