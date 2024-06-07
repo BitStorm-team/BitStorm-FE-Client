@@ -76,7 +76,7 @@ const ContactUs = () => {
   const handleSubmitContactForm = async (values) => {
     setButtonLoading(true); // Start loading
     const header = headerAPI();
-    const API = "http://127.0.0.1:8000/api/contactUs";
+    const API = `${API_URL}/contactUs`;
     try {
       const response = await axios.post(
         API,
@@ -89,8 +89,9 @@ const ContactUs = () => {
         }
       );
       console.log("Response:", response);
-      message.success("Successfully contacted us");
+
       form.resetFields(); // Reset form fields
+      message.success(response.data.message || "Send message successfully");
     } catch (error) {
       console.error("Contact failed", error);
       message.error(
