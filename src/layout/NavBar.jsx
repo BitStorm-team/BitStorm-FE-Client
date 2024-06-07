@@ -5,7 +5,7 @@ import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
 const NavBar = ({ isLogin, menuActive, setMenuActive }) => {
-  const navItems = ["Home", "Post", "Expert", "About", "ContactUs"];
+  const navItems = ["Home", "Post", "Expert", "ContactUs"];
 
   const toggleMenu = () => {
     setMenuActive(!menuActive);

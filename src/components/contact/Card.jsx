@@ -16,7 +16,7 @@ const Card = ({ name, email, image, id }) => {
         <img src={image} alt={name} />
       </div>
       <div className="card-content" >
-        <h3 className="card-title">{name}</h3>
+        <h3 className="card-title" style={{marginTop:"20px"}}>{name}</h3>
         <p className="card-name">{email}</p>
       </div>
       <div className="btn_card_box">

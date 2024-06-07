@@ -183,10 +183,13 @@ export default function ExpertDetail() {
                     {schedules.map((schedule, index) => {
                       return (
                         <ScheduleButton
+                          status = {schedule.status}
                           key={index}
                           start_time={schedule.start_time}
                           end_time={schedule.end_time}
-                          calendar_id={schedules.id}
+                          calendar_id={schedule.id}
+                          expert_id={id}
+                          price={schedule.price}
                         />
                       );
                     })}

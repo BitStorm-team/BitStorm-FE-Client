@@ -64,7 +64,7 @@ const ContactUs = () => {
 
   const handleSubmitContactForm = async (values) => {
     const header = headerAPI();
-    const API = "http://127.0.0.1:8000/api/contactUs";
+    const API = `${API_URL}/contactUs`;
     try {
       const response = await axios.post(
         API,
@@ -77,7 +77,7 @@ const ContactUs = () => {
         }
       );
       console.log("Response:", response);
-      message.success("Successfully to contact us");
+      message.success(response.data.message || "Send message successfully");
     } catch (error) {
       console.error("Contact failed", error);
       message.error(
@@ -88,7 +88,11 @@ const ContactUs = () => {
 
   return (
     <div className="contact-us">
-      <Banner />
+      <Banner
+        title="CONTACT US"
+        description="We'd love to hear from you!
+          Please fill out the form below and we will get in touch with you shortly."
+      />
       <MapContact />
       <div
         className="contact-form"
@@ -100,7 +104,7 @@ const ContactUs = () => {
           maxWidth: "95%",
         }}
       >
-        <div style={{ position: "relative", zIndex: "0"}}>
+        <div style={{ position: "relative", zIndex: "0" }}>
           <div className="form_icon_contact">
             <div style={{ zIndex: "3" }}>
               <div
@@ -204,7 +208,7 @@ const ContactUs = () => {
         </div>
       </div>
       <div className="doctor_contact">
-        <h1 style={{ marginTop: "10px" }}>
+        <h1 style={{ margin: "30px" }}>
           Some experts in the field of psychology
         </h1>
         {loading ? (
