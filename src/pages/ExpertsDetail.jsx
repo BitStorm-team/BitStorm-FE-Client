@@ -1,6 +1,6 @@
 import "../assets/css/expertDetail.css";
 import Doctor from "../assets/images/expertDetail/doctor.jpg";
-import Stars from "../assets/images/expertDetail/stars.png"
+import Stars from "../assets/images/expertDetail/stars.png";
 import ExpertDetailReview from "../components/expertDetail/ExpertDetailReview";
 import CardExpert from "../components/expertDetail/CardExpert";
 import ScheduleButton from "../components/expertDetail/ScheduleButton";
@@ -8,13 +8,7 @@ import { API_URL, fetchAPIUserExpert, headerAPI } from "../utils/helpers";
 import Loading from "../components/expertDetail/Loading";
 import axios from "axios";
 //import { HeartOutlined } from "../../node_modules/@ant-design/icons-svg/es/index.d.ts";
-import {
-  Layout,
-  Row,
-  Col,
-  Button,
-  Typography,
-} from "antd";
+import { Layout, Row, Col, Button, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import NotFound from "./NotFound";
@@ -42,7 +36,6 @@ export default function ExpertDetail() {
   const [filterRating, setFilterRating] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
 
-
   //get detailed information about the selected expert
   useEffect(() => {
     const token = localStorage.getItem("__token__");
@@ -64,7 +57,7 @@ export default function ExpertDetail() {
     };
     fetchExpert();
   }, [id]);
-  console.log("expert detail: ",expert);
+  console.log("expert detail: ", expert);
   //get list suggest expert
   useEffect(() => {
     const token = localStorage.getItem("__token__");
@@ -91,45 +84,42 @@ export default function ExpertDetail() {
     };
     fetchListExpert();
   }, [id]);
-// console.log("expert id: ",id)
-// console.log("list expert: ",listExpert);
-// console.log("list random expert: ",randomExperts);
 
-
-   useEffect(() => {
-     if (expert.feedback) {
-       setFeedbacks(expert.feedback.slice(0, 2));
-     }
-   }, [expert]);
-
+  useEffect(() => {
+    if (expert.feedback) {
+      setFeedbacks(expert.feedback.slice(0, 2));
+    }
+  }, [expert]);
 
   if (loading) {
     return <Loading />;
   }
   if (!expert || !expert.expertDetail) {
-    return (<NotFound></NotFound>);
+    return <NotFound></NotFound>;
   }
-  const { expertDetail, schedules, feedback } = expert;
+
+  let { expertDetail, schedules, feedback } = expert;
   const { average_rating, certificate, experience, user } = expertDetail;
   const { name, email, profile_picture } = user;
   const rating = parseInt(average_rating, 10);
+  // console.log("feedback",feedback)
 
-   const handleFilterClick = (rating) => {
-     setIsFilter(true);
-     setFilterRating(rating);
-     const filteredFeedbacks = expert.feedback.filter(
-       (feedback) => feedback.rating === rating
-     );
-     setFeedbacks(filteredFeedbacks);
-   };
+  const handleFilterClick = (rating) => {
+    setIsFilter(true);
+    setFilterRating(rating);
+    const filteredFeedbacks = expert.feedback.filter(
+      (feedback) => feedback.rating === rating
+    );
+    setFeedbacks(filteredFeedbacks);
+  };
 
-   const handleShowAllClick = (e) => {
-     setIsFilter(false);
-     setFilterRating(null);
-     setFeedbacks(feedback);
-   };
+  const handleShowAllClick = (e) => {
+    setIsFilter(false);
+    setFilterRating(null);
+    setFeedbacks(feedback);
+  };
 
-   console.log("feedback", feedbacks.slice(0, 2));
+  console.log("feedback", feedbacks.slice(0, 2));
 
   return (
     <Layout className="fluid-container" style={{ marginBottom: 50 }}>
@@ -185,20 +175,16 @@ export default function ExpertDetail() {
                     {schedules.map((schedule, index) => {
                       return (
                         <ScheduleButton
-                          status = {schedule.status}
                           key={index}
                           start_time={schedule.start_time}
                           end_time={schedule.end_time}
-                          calendar_id={schedule.id}
-                          expert_id={id}
-                          price={schedule.price}
+                          calendar_id={schedules.id}
                         />
                       );
                     })}
                   </div>
                 </div>
               )}
-
             </Col>
             <Row></Row>
           </Row>
@@ -230,58 +216,43 @@ export default function ExpertDetail() {
               <Button className="filterRatingBtn" onClick={handleShowAllClick}>
                 See all
               </Button>
-              <Button className="filterRatingBtn1">
-                <span
-                  style={{ marginRight: 5 }}
-                  onClick={() => handleFilterClick(5)}
-                >
-                  {" "}
-                  5 stars
-                </span>
+              <Button
+                className="filterRatingBtn1"
+                onClick={() => handleFilterClick(5)}
+              >
+                <span style={{ marginRight: 5 }}> 5 stars</span>
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon>
               </Button>
-              <Button className="filterRatingBtn1">
-                <span
-                  style={{ marginRight: 5 }}
-                  onClick={() => handleFilterClick(4)}
-                >
-                  {" "}
-                  4 stars
-                </span>
+              <Button
+                className="filterRatingBtn1"
+                onClick={() => handleFilterClick(4)}
+              >
+                <span style={{ marginRight: 5 }}> 4 stars</span>
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>
               </Button>
-              <Button className="filterRatingBtn1">
-                <span
-                  style={{ marginRight: 5 }}
-                  onClick={() => handleFilterClick(3)}
-                >
-                  {" "}
-                  3 stars
-                </span>{" "}
+              <Button
+                className="filterRatingBtn1"
+                onClick={() => handleFilterClick(3)}
+              >
+                <span style={{ marginRight: 5 }}> 3 stars</span>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>{" "}
                 <StarIcon></StarIcon>
               </Button>
-              <Button className="filterRatingBtn1">
-                <span
-                  style={{ marginRight: 5 }}
-                  onClick={() => handleFilterClick(2)}
-                >
-                  {" "}
-                  2 stars
-                </span>{" "}
+              <Button
+                className="filterRatingBtn1"
+                onClick={() => handleFilterClick(2)}
+              >
+                <span style={{ marginRight: 5 }}> 2 stars</span>{" "}
                 <StarIcon></StarIcon> <StarIcon></StarIcon>
               </Button>
-              <Button className="filterRatingBtn1">
-                <span
-                  style={{ marginRight: 5 }}
-                  onClick={() => handleFilterClick(1)}
-                >
-                  {" "}
-                  1 star
-                </span>
+              <Button
+                className="filterRatingBtn1"
+                onClick={() => handleFilterClick(1)}
+              >
+                <span style={{ marginRight: 5 }}> 1 star</span>
                 <StarIcon></StarIcon>
               </Button>
             </div>
@@ -316,7 +287,9 @@ export default function ExpertDetail() {
               />
             ))
           ) : (
-            <p style={{ marginTop: 20 }}>This expert has no reviews for this rating yet.</p>
+            <p style={{ marginTop: 20 }}>
+              This expert has no reviews for this rating yet.
+            </p>
           )}
         </div>
       </div>
