@@ -220,9 +220,9 @@ return (
           <Loading />
         ) : (
           <Row>
-            {posts.slice().reverse().map(post => (
+            {posts.slice().reverse().map((post) => (
               <Col span={24} key={post.id}>
-                <PostCart post={post} />
+                <PostCart post={post} currentUser={userProfile}/>
               </Col>
             ))}
           </Row>
