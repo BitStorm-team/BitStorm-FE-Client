@@ -5,6 +5,7 @@
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    cursor: pointer;
   }
   
   .user-avatar {
@@ -38,6 +39,7 @@
     color: #3D93FF;
     text-decoration: none;
     margin-right: 30px;
+    cursor: pointer;
   }
   
   .schedule-link-button:hover {

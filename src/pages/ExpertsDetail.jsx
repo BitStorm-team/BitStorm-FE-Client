@@ -42,7 +42,6 @@ export default function ExpertDetail() {
   const [filterRating, setFilterRating] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
 
-
   //get detailed information about the selected expert
   useEffect(() => {
     const token = localStorage.getItem("__token__");
@@ -99,19 +98,29 @@ export default function ExpertDetail() {
    }, [expert]);
 
   
+// console.log("expert id: ",id)
+// console.log("list expert: ",listExpert);
+// console.log("list random expert: ",randomExperts);
+
+
+   useEffect(() => {
+     if (expert.feedback) {
+       setFeedbacks(expert.feedback.slice(0, 2));
+     }
+   }, [expert]);
+
+
   if (loading) {
     return <Loading />;
   }
   if (!expert || !expert.expertDetail) {
     return (<NotFound></NotFound>);
   }
+  const { expertDetail, schedules, feedback } = expert;
+  const { average_rating, certificate, experience, user } = expertDetail;
+  const { name, email, profile_picture } = user;
+  const rating = parseInt(average_rating, 10);
 
-   let { expertDetail, schedules, feedback } = expert;
-   const { average_rating, certificate, experience, user } = expertDetail;
-   const { name, email, profile_picture } = user;
-   const rating = parseInt(average_rating, 10);
-  // console.log("feedback",feedback)
-  
    const handleFilterClick = (rating) => {
      setIsFilter(true);
      setFilterRating(rating);
@@ -120,7 +129,7 @@ export default function ExpertDetail() {
      );
      setFeedbacks(filteredFeedbacks);
    };
-  
+
    const handleShowAllClick = (e) => {
      setIsFilter(false);
      setFilterRating(null);
@@ -197,27 +206,6 @@ export default function ExpertDetail() {
                 </div>
               )}
 
-              <div className="favorite_container">
-                <h2
-                  style={{ marginRight: 50, marginTop: 20 }}
-                  className="favorite"
-                >
-                  Add this expert to your favorites list
-                </h2>
-                <div className="favoriteIcon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="30"
-                    height="30"
-                    fill="red"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                  </svg>
-                  <p style={{ paddingLeft: 5, fontWeight: "bold" }}>20 tyms</p>
-                </div>
-              </div>
             </Col>
             <Row></Row>
           </Row>
