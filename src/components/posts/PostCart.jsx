@@ -41,9 +41,6 @@ function PostCart({ post }) {
             }}/>
         </div>
         <span style={{ marginLeft: '8px' }}>{post.like_count} lượt thích</span>
-        {comments.map(comment => (
-          <Comment key={comment.id} comment={comment} />
-         ))}
       </div>
     );
   }
