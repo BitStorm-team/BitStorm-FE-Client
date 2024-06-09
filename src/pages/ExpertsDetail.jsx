@@ -42,6 +42,7 @@ export default function ExpertDetail() {
   const [filterRating, setFilterRating] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
 
+
   //get detailed information about the selected expert
   useEffect(() => {
     const token = localStorage.getItem("__token__");
