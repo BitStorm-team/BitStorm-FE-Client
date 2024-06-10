@@ -98,3 +98,15 @@ export const bookCalendar = async (dataBooking) => {
     return false; // Return false for other errors or conflict
   }
 };
+
+// get all booking
+export const getAllBooking = async (userId) => {
+  const header = headerAPI();
+  const apiUrl = `${API_URL}/user/${userId}/bookings`;
+  try {
+    const response = await api.get(apiUrl, { headers: header });
+    return response.data.data.data;
+  } catch (error) {
+    throw error;
+  }
+}

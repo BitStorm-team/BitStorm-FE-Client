@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Banner from "../components/contact/Banner";
 import "../assets/css/profile/index.css";
-import UserImage from "../assets/images/Doctor.jpg";
+import UserImage from "../assets/images/loading_image.webp";
 import {
   ClockCircleFilled,
   SettingFilled,
@@ -10,13 +10,14 @@ import {
 import Action from "../components/prrofile/Action";
 import Schedule from "../components/prrofile/Schedule";
 import HistoryBooking from "../components/prrofile/HistoryBooking";
-import { getUserProfile } from "../api";
+import { getAllBooking, getUserProfile } from "../api";
 import axios from "axios";
 import { API_URL, headerAPI } from "../utils/helpers.js";
 import { DatePicker } from "antd";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { message } from "antd";
+
 
 export default function Profile() {
   const [user, setUser] = useState("user");
@@ -29,7 +30,10 @@ export default function Profile() {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [price, setPrice] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [userId, setUserId] = useState(0);
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -39,16 +43,18 @@ export default function Profile() {
         if (data) {
           const loggedInUser = data;
           console.log(loggedInUser);
+          setUserId(loggedInUser.id);
           if (loggedInUser.role_id === 3) {
             try {
               const expertResponse = await axios.get(
                 `${API_URL}/experts/profile/${loggedInUser.id}`,
                 { headers: header }
               );
-              setLoading(true);
+
               setUser("expert");
               setUserData(expertResponse.data.data);
               console.log(expertResponse.data.data);
+              setLoading(false);
             } catch (error) {
               console.error("Error fetching expert profile", error);
             }
@@ -76,6 +82,22 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
+  // get all booking of user (role user and role expert)
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookingsData = await getAllBooking(userId);
+
+        setBookings(bookingsData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching bookings", error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
+  console.log("bookings", bookings);
   const openCreateCalendarModal = () => {
     setShowCreateCalendarModal(true);
     setShowMenu(false);
@@ -126,29 +148,6 @@ export default function Profile() {
       console.error("Error fetching updated schedules", error);
     }
   };
-  const schedules = [
-    {
-      username: "caubecodon",
-      date: "30-12-2023",
-      time: "13h - 14h",
-      price: "300.000",
-      link: "20d-405-xdj-dns",
-    },
-    {
-      username: "caubecodon",
-      date: "30-12-2023",
-      time: "13h - 14h",
-      price: "300.000",
-      link: "20d-405-xdj-dns",
-    },
-    {
-      username: "caubecodon",
-      date: "30-12-2023",
-      time: "13h - 14h",
-      price: "300.000",
-      link: "20d-405-xdj-dns",
-    },
-  ];
 
   return (
     <div className="main-profile">
@@ -159,9 +158,8 @@ export default function Profile() {
       <div className="profile-container">
         <div className="profile_avtar">
           <div className="img_box">
-
             <img
-              src={userData ? userData.profile_picture : UserImage}
+              src={!loading ? userData.profile_picture : UserImage}
               alt="User Avatar"
             />
           </div>
@@ -169,7 +167,7 @@ export default function Profile() {
             <p>
               Hi{" "}
               <span style={{ color: "#3D93FF" }}>
-                {userData ? userData.name : "Loading..."}
+                {!loading ? userData.name : "Loading..."}
               </span>
             </p>
           </div>
@@ -224,19 +222,31 @@ export default function Profile() {
         )}
         <div className="examination_booking_history">
           <h5>Scheduled medical appointments</h5>
-          <div className="booking_history_item">
-            {schedules.map((schedule, index) => (
-              <HistoryBooking
-                key={index}
-                username={schedule.username}
-                date={schedule.date}
-                time={schedule.time}
-                price={schedule.price}
-                link={schedule.link}
-              />
-            ))}
-          </div>
+          {!loading ? (
+            bookings.length !== 0 ? (
+              <div className="booking_history_item">
+                {bookings.map((booking, index) => (
+                  <HistoryBooking
+                    key={index}
+                    userImage={booking.user.profile_picture}
+                    date={booking.calendar.created_at}
+                    startTime={booking.calendar.start_time}
+                    endTime={booking.calendar.end_time}
+                    price={booking.calendar.price}
+                    link={booking.link_room}
+                    isLoading={loading}
+                  />
+                ))}
+              </div>
+            ) : <p>You don't have any booking yet!</p>
+
+          ) : (
+            <div className="booking_history_item">
+              <p>Loading...</p>
+            </div>
+          )}
         </div>
+
         {showCreateCalendarModal && (
           <div
             className="modal-overlay"
