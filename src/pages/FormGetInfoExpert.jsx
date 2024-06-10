@@ -9,7 +9,7 @@ const FormGetInfoExpert = () => {
   const [parentValues, setParentValues] = useState({});
   const [fileList, setFileList] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
-  const [loading, setLoading] = useState(false); // 1. Add loading state
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -20,27 +20,53 @@ const FormGetInfoExpert = () => {
     }
   }, []);
 
-  const onFinish = async (values) => {
-    setLoading(true); // 2. Start loading when sign-up process starts
-    const { experience } = values;
-    const formData = {
-      experience: experience,
-      certificate: imageUrl,
-      ...parentValues
+  const getUrlUpdateUserImg = async (file) => {
+    const CLOUD_NAME = "dugeyusti";
+    const PRESET_NAME = "expert_upload";
+    const FOLDER_NAME = "BitStorm";
+    const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+    const formData = new FormData();
+    formData.append("upload_preset", PRESET_NAME);
+    formData.append("folder", FOLDER_NAME);
+    formData.append("file", file);
+
+    const options = {
+      method: "POST",
+      body: formData,
     };
+
     try {
+      const res = await fetch(api, options);
+      const data = await res.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error);
+      throw error;
+    }
+  };
+
+  const onFinish = async (values) => {
+    setLoading(true);
+    const { experience } = values;
+    try {
+      const imageUrl = await getUrlUpdateUserImg(fileList[0].originFileObj);
+      const formData = {
+        experience: experience,
+        certificate: imageUrl,
+        ...parentValues,
+      };
       await signUp(formData, navigate);
     } catch (error) {
       console.error("Error:", error);
       message.error("Failed to sign up");
     } finally {
-      setLoading(false); // 3. Stop loading when sign-up process completes
+      setLoading(false);
     }
   };
 
   const handleChange = (info) => {
     let fileList = [...info.fileList];
-    fileList = fileList.slice(-1); // Limit to only one file
+    fileList = fileList.slice(-1);
     setFileList(fileList);
 
     if (info.file.status === "done") {
@@ -94,7 +120,7 @@ const FormGetInfoExpert = () => {
               listType="picture-card"
               fileList={fileList}
               onChange={handleChange}
-              beforeUpload={() => false} // Prevent auto upload
+              beforeUpload={() => false}
             >
               {fileList.length < 1 && (
                 <div>
