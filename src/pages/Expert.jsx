@@ -1,11 +1,11 @@
-import {Card,Pagination, message,Button } from "antd";
+import {Pagination, message} from "antd";
 import '../assets/css/expert.css';
 import { StarTwoTone } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-
+import Card from "../components/expertDetail/Card";
 const Expert = () =>{
     const [ref1, inView1] = useInView({ threshold: 0.5 });
     const [experts, setExperts] = useState([]);
@@ -111,7 +111,7 @@ const Expert = () =>{
                                     type="range"
                                     value={min_price}
                                     min="0"
-                                    max="1000"
+                                    max="100"
                                     onChange={handleMinPriceChange}
                                 />
                                 <span>{min_price}</span>
@@ -123,7 +123,7 @@ const Expert = () =>{
                                     type="range"
                                     value={max_price}
                                     min="0"
-                                    max="1000"
+                                    max="100"
                                     onChange={handleMaxPriceChange}
                                 />
                                 <span>{max_price}</span>
