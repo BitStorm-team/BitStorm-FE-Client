@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { FaEllipsisV, FaEye, FaTrash } from "react-icons/fa";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../assets/css/profile/schedule.css";
 import axios from "axios";
 import moment from "moment";
 import { API_URL, headerAPI } from "../../utils/helpers.js";
-import { message } from "antd";
+import { message, DatePicker } from "antd";
 
 const formatTime = (timestamp) => {
   const date = new Date(timestamp);
@@ -44,11 +43,13 @@ export default function Schedule({ schedule, onUpdate }) {
       });
       // hideLoading();
       message.success(response.data.message || "Delete schedule successfully");
-      } catch (error) {
-        // hideLoading();
-        message.error("Delete failed " + (error.response?.data?.message || error.message));
-        }
-      onUpdate();
+    } catch (error) {
+      // hideLoading();
+      message.error(
+        "Delete failed " + (error.response?.data?.message || error.message)
+      );
+    }
+    onUpdate();
   };
 
   const handleUpdateScheduleSubmit = async (e) => {
@@ -74,7 +75,9 @@ export default function Schedule({ schedule, onUpdate }) {
       setShowDetailModal(false);
     } catch (error) {
       hideLoading();
-      message.error("Update failed " + (error.response?.data?.message || error.message));
+      message.error(
+        "Update failed " + (error.response?.data?.message || error.message)
+      );
     }
   };
 
@@ -85,7 +88,11 @@ export default function Schedule({ schedule, onUpdate }) {
     <>
       <div className="card_profile_schedule">
         <div className="card-body">
-          <p className={schedule.status === 0 ? "card_title_booked" : "card-title"}>
+          <p
+            className={
+              schedule.status === 0 ? "card_title_booked" : "card-title"
+            }
+          >
             {formattedStartTime} - {formattedEndTime}
           </p>
         </div>
@@ -115,7 +122,13 @@ export default function Schedule({ schedule, onUpdate }) {
               </span>
               <h2>Update schedule</h2>
               <form onSubmit={handleUpdateScheduleSubmit}>
-                <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
                   <label>Describe:</label>
                   <textarea
                     type="textarea"
@@ -124,31 +137,53 @@ export default function Schedule({ schedule, onUpdate }) {
                     required
                   />
                 </div>
-                <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
                   <label>Start Time:</label>
                   <DatePicker
                     className="input-date-profile"
                     selected={startTime}
-                    onChange={(date) => setStartTime(date)}
+                    showTime={{ format: "HH:mm" }}
+                    format="YYYY-MM-DD HH:mm"
+                    onChange={(date) =>
+                      setStartTime(date ? date.toDate() : null)
+                    }
                     showTimeSelect
                     dateFormat="Pp"
-                    timeFormat="HH:mm"
                     timeIntervals={30}
                   />
                 </div>
-                <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
                   <label>End Time:</label>
                   <DatePicker
                     className="input-date-profile"
                     selected={endTime}
-                    onChange={(date) => setEndTime(date)}
+                    showTime={{ format: "HH:mm" }}
+                    format="YYYY-MM-DD HH:mm"
+                    onChange={(date) => setEndTime(date ? date.toDate() : null)}
                     showTimeSelect
                     dateFormat="Pp"
-                    timeFormat="HH:mm"
                     timeIntervals={30}
                   />
                 </div>
-                <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
                   <label>Price:</label>
                   <input
                     type="number"
