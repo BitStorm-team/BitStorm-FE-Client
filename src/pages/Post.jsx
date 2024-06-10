@@ -74,7 +74,8 @@ export default function Post() {
       } catch (error) {
         console.error("Error fetching posts:", error);
         message.error("Failed to fetch posts");
-      } finally {
+      } 
+      finally {
         setLoading(false); // Set loading to false after fetching posts
       }
     };
