@@ -1,11 +1,12 @@
-import {Pagination, message} from "antd";
+import {Pagination, message,Card} from "antd";
 import '../assets/css/expert.css';
 import { StarTwoTone } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import Card from "../components/expertDetail/Card";
+import CardPrice from "../components/expertDetail/CardPrice";
+import Slider from "react-slick";
 const Expert = () =>{
     const [ref1, inView1] = useInView({ threshold: 0.5 });
     const [experts, setExperts] = useState([]);
@@ -31,6 +32,7 @@ const Expert = () =>{
       try {
         const response = await axios.post("http://127.0.0.1:8000/api/experts/filter", { min_price:min_price, max_price:max_price });
         setResponse(response.data.data);
+        console.log(response);
       } catch (error) {
         console.error("There was an error making the request:", error);
       }
@@ -77,7 +79,24 @@ const Expert = () =>{
         console.log(id)
         navigate(`/expert/${id}`);
     }    
-  
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              infinite: true,
+              dots: true,
+            },
+          },
+        ],
+      };
     
     // Calculate the items to display on the current page
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -129,23 +148,27 @@ const Expert = () =>{
                                 <span>{max_price}</span>
                             </label>
                             <br />
-                            <button type="submit">Filter</button>
+                            <button className="custom-btn btn-16" type="submit">Filter</button>
                         </form>
                         </label>
                     </div>
                 </div>
             </div>
-            <div className="wrapper search-item">
-                {response.map((item,index) => (
-                    <div className="card" key={index}>
-                        <h2>{item.name}</h2>
-                        <p  style={{color:'red'}}> {item.price}.000 VNĐ</p>
-                        <p>{item.email}</p>
-                        
-                        <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
-                    </div>
-                ))}
+            <div className="card-containerr">
+                <Slider {...settings}>
+                    {response.map((item,index) => (
+                        <CardPrice
+                        key={index}
+                        name={item.name}
+                        price= {item.price}
+                        email={item.email}
+                        profile_picture={item.profile_picture}
+                        id={item.id}
+                        />
+                    ))}
+                </Slider>
             </div>
+            <div style={{margin:20}}></div>
             <div className="wrapper search-item">
                 {expertName.map((item,index) => (
                         <div className="card" key={index}  animate={inView1}>
