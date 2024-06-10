@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Banner from "../components/contact/Banner";
 import "../assets/css/profile/index.css";
-import UserImage from "../assets/images/hollywooddoctors3.jpg";
+import UserImage from "../assets/images/Doctor.jpg";
 import {
   ClockCircleFilled,
   SettingFilled,
@@ -13,7 +13,7 @@ import HistoryBooking from "../components/prrofile/HistoryBooking";
 import { getUserProfile } from "../api";
 import axios from "axios";
 import { API_URL, headerAPI } from "../utils/helpers.js";
-import DatePicker from "react-datepicker";
+import { DatePicker } from "antd";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { message } from "antd";
@@ -235,7 +235,12 @@ export default function Profile() {
           </div>
         </div>
         {showCreateCalendarModal && (
-          <div className="modal-overlay">
+          <div
+            className="modal-overlay"
+            style={{
+              marginTop: "50px",
+            }}
+          >
             <div className="modal createCalendarForm">
               <div className="modal-content">
                 <span className="close" onClick={closeDetailModal}>
@@ -243,7 +248,13 @@ export default function Profile() {
                 </span>
                 <h2>Let create new schedule</h2>
                 <form onSubmit={handleCreateCalendarSubmit}>
-                  <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "10px",
+                    }}
+                  >
                     <label>Describe:</label>
                     <textarea
                       type="textarea"
@@ -252,34 +263,55 @@ export default function Profile() {
                       required
                     />
                   </div>
-                  <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "10px",
+                    }}
+                  >
                     <label>Start Time:</label>
                     <DatePicker
                       className="input-date-profile"
-                      style={{
-                        backgroundColor: "dark",
-                      }}
                       selected={startTime}
-                      onChange={(date) => setStartTime(date)}
+                      showTime={{ format: "HH:mm" }}
+                      format="YYYY-MM-DD HH:mm"
+                      onChange={(date) =>
+                        setStartTime(date ? date.toDate() : null)
+                      }
                       showTimeSelect
                       dateFormat="Pp"
-                      timeFormat="HH:mm"
                       timeIntervals={30}
                     />
                   </div>
-                  <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "10px",
+                    }}
+                  >
                     <label>End Time:</label>
                     <DatePicker
                       className="input-date-profile"
                       selected={endTime}
-                      onChange={(date) => setEndTime(date)}
+                      showTime={{ format: "HH:mm" }}
+                      format="YYYY-MM-DD HH:mm"
+                      onChange={(date) =>
+                        setEndTime(date ? date.toDate() : null)
+                      }
                       showTimeSelect
                       dateFormat="Pp"
-                      timeFormat="HH:mm"
                       timeIntervals={30}
                     />
                   </div>
-                  <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "10px",
+                    }}
+                  >
                     <label>Price:</label>
                     <input
                       type="number"
