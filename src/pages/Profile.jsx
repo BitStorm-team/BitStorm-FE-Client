@@ -29,6 +29,7 @@ export default function Profile() {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [price, setPrice] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,6 +45,7 @@ export default function Profile() {
                 `${API_URL}/experts/profile/${loggedInUser.id}`,
                 { headers: header }
               );
+              setLoading(true);
               setUser("expert");
               setUserData(expertResponse.data.data);
               console.log(expertResponse.data.data);
@@ -157,6 +159,7 @@ export default function Profile() {
       <div className="profile-container">
         <div className="profile_avtar">
           <div className="img_box">
+
             <img
               src={userData ? userData.profile_picture : UserImage}
               alt="User Avatar"
@@ -320,7 +323,7 @@ export default function Profile() {
                       required
                     />
                   </div>
-                  <button type="submit">Submit</button>
+                  <button type="submit">Create</button>
                 </form>
               </div>
             </div>
