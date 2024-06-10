@@ -60,6 +60,7 @@
   display: flex;
   justify-content: center;
   gap: 20px;
+  cursor: pointer;
 }
 
 .btn_create_schedule_btn {
@@ -70,6 +71,7 @@
   color: white;
   border-radius: 10px;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .schedule_item_box {
@@ -187,4 +189,5 @@
 .createCalendarForm .btn_create_schedule button:hover,
 .modal-content button:hover {
   background-color: #0056b3;
+  cursor: pointer;
 }

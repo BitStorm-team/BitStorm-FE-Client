@@ -106,3 +106,5 @@ npm install --save moment react-moment
 
 ## text animation
 --> npm install animate.css --save
+##
+npm install date-fns@latest
