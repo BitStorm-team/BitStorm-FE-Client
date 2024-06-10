@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../assets/css/profile/action.css";
 import { API_URL, headerAPI } from "../../utils/helpers";
 import { message } from "antd";
+import Loading from "../expertDetail/Loading";
 
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [formData, setFormData] = useState({});
+  const [fileList, setFileList] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
   const [header] = useState(headerAPI);
+  const fileInputRef = useRef(null); // Ref để truy cập input file
+  const [isLoading, setIsLoading] = useState(false); 
 
   useEffect(() => {
     if (props.infor) {
@@ -88,6 +93,56 @@ export default function Action(props) {
     console.log("Form data submitted:", formData);
   };
 
+  const getUrlUpdateUserImg = async (file) => {
+    const CLOUD_NAME = "dugeyusti";
+    const PRESET_NAME = "expert_upload";
+    const FOLDER_NAME = "BitStorm";
+    const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+    const formData = new FormData();
+    formData.append("upload_preset", PRESET_NAME);
+    formData.append("folder", FOLDER_NAME);
+    formData.append("file", file);
+
+    const options = {
+      method: "POST",
+      body: formData,
+    };
+
+    try {
+      const res = await fetch(api, options);
+      const data = await res.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error);
+      throw error;
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+       setIsLoading(true);
+      try {
+        const secureUrl = await getUrlUpdateUserImg(file);
+        console.log("File URL from Cloudinary:", secureUrl);
+        setImageUrl(secureUrl); // Lưu URL vào state imageUrl
+        setFormData((prevState) => ({
+          ...prevState,
+          profile_picture: secureUrl,
+        }));
+        setFileList((prevList) => [...prevList, file]); // Lưu file vào fileList nếu cần
+      } catch (error) {
+        console.error("Error updating user image:", error);
+      }
+      finally {
+        setIsLoading(false); // Kết thúc trạng thái loading
+      }
+    }
+  };
+  const handleEditClick = () => {
+    fileInputRef.current.click(); // Mở hộp thoại chọn file khi nhấn nút "Edit"
+  };
+
   return (
     <>
       <div
@@ -113,10 +168,39 @@ export default function Action(props) {
                 <>
                   <h2>Personal Information</h2>
                   <form onSubmit={handleSubmit}>
-                    <img
-                      src={formData.profile_picture}
-                      alt="Profile"
-                      className="profile-picture"
+                    <div className="avatar-container">
+                      {isLoading ? (
+                        <div className="loader-container">
+                          <div className="loader"></div>
+                        </div>
+                      ) : (
+                        <>
+                          <img
+                            src={imageUrl || props.infor.profile_picture}
+                            alt="Profile"
+                            className="profile-picture"
+                          />
+                          <button
+                            type="button"
+                            className="edit-button"
+                            onClick={handleEditClick}
+                          >
+                            Edit
+                          </button>
+                        </>
+                      )}
+                    </div>
+                    <input
+                      type="hidden"
+                      name="avatar"
+                      id="userAvatar"
+                      value={imageUrl || ""}
+                    />
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
                     />
                     <div className="input-group">
                       <label>
@@ -173,7 +257,7 @@ export default function Action(props) {
                             name="certificate"
                             accept="image/*"
                             onChange={handleCertificateChange}
-                            style={{width:"20%"}}
+                            style={{ width: "20%" }}
                           />
                           {formData.expert?.certificate && (
                             <img
