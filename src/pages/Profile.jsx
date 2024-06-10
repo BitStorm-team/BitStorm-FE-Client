@@ -113,7 +113,17 @@ export default function Profile() {
       );
     }
   };
-
+  const handleUpdate = async () => {
+    try {
+      const updatedSchedules = await axios.get(
+        `${API_URL}/experts/${userData.id}/calendars`,
+        { headers: header }
+      );
+      setAllSchedules(updatedSchedules.data.data.data);
+    } catch (error) {
+      console.error("Error fetching updated schedules", error);
+    }
+  };
   const schedules = [
     {
       username: "caubecodon",
@@ -172,7 +182,6 @@ export default function Profile() {
             icon={<ClockCircleFilled />}
             title="Personal activity"
             description="Review the history of your calendars and posts..."
-
           />
           <Action
             icon={<SettingFilled />}
@@ -195,9 +204,17 @@ export default function Profile() {
             <div className="examination_schedule_box">
               <h5>Your examination schedule</h5>
               <div className="schedule_item_box">
-                {allSchedules.map((schedule) => (
-                  <Schedule key={schedule.id} schedule={schedule} />
-                ))}
+                {Array.isArray(allSchedules) && allSchedules.length === 0 ? (
+                  <></>
+                ) : (
+                  allSchedules.map((schedule) => (
+                    <Schedule
+                      key={schedule.id}
+                      schedule={schedule}
+                      onUpdate={handleUpdate}
+                    />
+                  ))
+                )}
               </div>
             </div>
           </>
@@ -235,13 +252,13 @@ export default function Profile() {
                       required
                     />
                   </div>
-                  <div style={{ display: "flex"}}>
+                  <div style={{ display: "flex" }}>
                     <label>Start Time:</label>
                     <DatePicker
-                    className="input-date-profile"
-                    style = {{
-                       backgroundColor : 'dark',
-                    }}
+                      className="input-date-profile"
+                      style={{
+                        backgroundColor: "dark",
+                      }}
                       selected={startTime}
                       onChange={(date) => setStartTime(date)}
                       showTimeSelect
@@ -253,7 +270,7 @@ export default function Profile() {
                   <div style={{ display: "flex" }}>
                     <label>End Time:</label>
                     <DatePicker
-                    className="input-date-profile"
+                      className="input-date-profile"
                       selected={endTime}
                       onChange={(date) => setEndTime(date)}
                       showTimeSelect

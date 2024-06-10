@@ -11,20 +11,20 @@ const CommentContent = styled.div`
 
 const Comment = ({ comment }) => {
   return (
-    
+
       <CommentContent>
         <div style={{ display: 'flex', justifyContent: 'start' }}>
             <Col lg={1} xs={3}>
-                <Avatar 
-                    size={40} 
+                <Avatar
+                    size={40}
                     src={comment.user.profile_picture}
                     alt={comment.user.name}
                 />
-            </Col>  
+            </Col>
             <Col>
                 <Row style={{ padding:'0.5em', margin: '0px 10px 0px 10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', borderRadius:'0.5em ' }}>
                     <Col xs={23}>
-                        
+
                         <strong>{comment.user.name}</strong>
                         <p style={{marginBottom:'0px'}}>{comment.content}</p>
                     </Col>
@@ -33,10 +33,10 @@ const Comment = ({ comment }) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Button type='link'>Reply</Button>  
+                    <Button type='link'>Reply</Button>
                 </Row>
             </Col>
-            
+
         </div>
       </CommentContent>
   );
