@@ -95,9 +95,16 @@ npm install react-slick slick-carousel
 
 ## install mdb-react-ui-kit
 --> npm install mdb-react-ui-kit
+## install icons-react
+npm install react-icons
+##
+npm install react-datepicker
+npm install --save moment react-moment
 
 ## istall npm install crypto-browserify stream-browserify
 --> npm install crypto-browserify stream-browserify
 
 ## text animation
 --> npm install animate.css --save
+##
+npm install date-fns@latest

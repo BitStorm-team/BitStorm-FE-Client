@@ -94,4 +94,9 @@ export const privateRoutes = [
     element: <MainLayout main={<Post />} />,
     exact: true,
   },
+  {
+    path: "/profile",
+    element: <MainLayout main={<Profile />} />,
+    exact: true,
+  },
 ];
