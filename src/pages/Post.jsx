@@ -222,7 +222,7 @@ return (
           <Row>
             {posts.slice().reverse().map((post) => (
               <Col span={24} key={post.id}>
-                <PostCart post={post} currentUser={userProfile}/>
+                <PostCart post={post} currentUser={userProfile} setPosts={setPosts}/>
               </Col>
             ))}
           </Row>

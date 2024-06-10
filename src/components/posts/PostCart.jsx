@@ -20,7 +20,7 @@ const formItemLayout = {
     lg: { span: 20 },
   },
 };
-function PostCart({ post, currentUser }) {
+function PostCart({ post, currentUser, setPosts }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [loading, setLoading] = useState(false); // State for loading
     const [form] = Form.useForm();
@@ -49,9 +49,28 @@ function PostCart({ post, currentUser }) {
               },
             }
           );
-  
-          message.success('Post updated successfully!');
-          setIsModalUpdatePostOpen(false);
+          if (response.data.success) {
+            message.success('Post updated successfully!');
+            setIsModalUpdatePostOpen(false);
+            form.resetFields();
+      
+            // Fetch posts again to update the table
+            const fetchResponse = await axios.get(`${API_URL}/posts`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+      
+            if (fetchResponse.data.success) {
+              setPosts(fetchResponse.data.data);
+            } else {
+              message.error(`Error fetching posts: ${fetchResponse.data.message}`);
+            }
+          } else {
+            message.error(`Error: ${response.data.message}`);
+          }
+          
         } catch (error) {
           console.error('Error updating post:', error);
           message.error('Failed to update post');
