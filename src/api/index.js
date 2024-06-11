@@ -98,3 +98,42 @@ export const bookCalendar = async (dataBooking) => {
     return false; // Return false for other errors or conflict
   }
 };
+
+// Function to get all bookings based on user role
+export const getAllBooking = async (userId) => {
+  const header = headerAPI();
+  let apiUrl = `${API_URL}/user/${userId}/bookings`
+
+  try {
+    const response = await api.get(apiUrl, { headers: header });
+    console.log("booking data 1" + response);
+    // Ensure response structure is as expected
+    if (response.data) {
+      return response.data.data.data;
+    } else {
+      throw new Error("Unexpected response structure");
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Function to get all bookings based on user role
+export const getAllBookingExpert = async (userId) => {
+  const header = headerAPI();
+
+  let  apiUrl = `${API_URL}/experts/${userId}/bookings`;
+
+  try {
+    const response = await api.get(apiUrl, { headers: header });
+    console.log("booking data 1" + response);
+    // Ensure response structure is as expected
+    if (response.data) {
+      return response.data.data.data;
+    } else {
+      throw new Error("Unexpected response structure");
+    }
+  } catch (error) {
+    throw error;
+  }
+};

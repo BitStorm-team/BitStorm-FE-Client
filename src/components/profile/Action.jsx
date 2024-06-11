@@ -66,7 +66,7 @@ export default function Action(props) {
                 &times;
               </span>
               {props.infor ? (
-                <>
+                <div data-aos="zoom-in">
                   <h2>Personal Information</h2>
                   <form onSubmit={handleSubmit}>
                     <img
@@ -128,7 +128,7 @@ export default function Action(props) {
                       </button>
                     </div>
                   </form>
-                </>
+                </div>
               ) : (
                 <p>Detail information here...</p>
               )}

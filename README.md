@@ -108,3 +108,6 @@ npm install --save moment react-moment
 --> npm install animate.css --save
 ##
 npm install date-fns@latest
+
+## format
+--> npm install date-fns

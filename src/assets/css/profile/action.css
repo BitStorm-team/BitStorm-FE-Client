@@ -1,116 +1,117 @@
 .card_profile {
-    height: 200px;
-    width: 30%;
-    margin: 50px;
-    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+  height: 200px;
+  width: 30%;
+  margin: 50px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Thêm transition ở đây */
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .card_profile:hover {
-    transform: scale(1.05);
-    background-color: #1678F2;
+  transform: scale(1.05);
+  background-color: #1678f2;
 }
 
 .card_profile:hover .card-title,
 .card_profile:hover .card-icon {
-    color: white;
+  color: white;
 }
 
 .card_profile .card-title {
-    color: #1678F2;
-    font-weight: bold;
-    margin-bottom: 10px;
+  color: #1678f2;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .card_profile .card-icon {
-    color: #1678F2;
-    font-size: 25px;
-    margin-bottom: 10px;
-    margin-top: 10px;
+  color: #1678f2;
+  font-size: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .card_profile .card-body {
-    height: 200px;
-    width: 100%;
-    border-radius: 10px;
+  height: 200px;
+  width: 100%;
+  border-radius: 10px;
 }
 
 h2 {
-    margin-bottom: 20px;
-    color: #3D93FF;
+  margin-bottom: 20px;
+  color: #3d93ff;
 }
 
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modalOfPersonalInfor {
-    border-radius: 8px;
-    width: 70%;
-    max-height: 80vh;
-    overflow-y: auto;
-    margin-top: 50px;
+  border-radius: 8px;
+  width: 70%;
+  max-height: 80vh;
+  overflow-y: auto;
+  margin-top: 50px;
 }
 
 .modalOfPersonalInfor .modal-content {
-    padding: 20px;
-    position: relative;
+  padding: 20px;
+  position: relative;
 }
 
 .modalOfPersonalInfor .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .modalOfPersonalInfor .profile-picture {
-    max-width: 150px;
-    height: auto;
-    border-radius: 50%;
-    margin-bottom: 20px;
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
 .modalOfPersonalInfor .input-group {
-    margin-bottom: 15px;
-    display: flex;
+  margin-bottom: 15px;
+  display: flex;
 }
 
 .modalOfPersonalInfor .input-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    width: 20%;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  width: 20%;
 }
 
 .modalOfPersonalInfor .input-group input {
-    width: 80%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 80%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .modalOfPersonalInfor .update-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .modalOfPersonalInfor .update-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }

@@ -102,7 +102,11 @@
 }
 
 .booking_history_item {
-  width: 80%;
+  width: 100%;
+  /* max-height: 600px; */
+  /* background-color: #3ed1fe5b; */
+  /* overflow-y: scroll; */
+  padding: 20px;
 }
 
 .examination_booking_history {
