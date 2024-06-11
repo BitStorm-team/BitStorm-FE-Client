@@ -1,59 +1,63 @@
 .schedule-item {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  
-  .schedule-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex: 1;
-    margin-left: 5%;
-  }
-  
-  .username {
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .schedule-date,
-  .schedule-price,
-  .schedule-link {
-    margin: 5px 0;
-  }
-  
-  .schedule-link-button {
-    color: #3D93FF;
-    text-decoration: none;
-    margin-right: 30px;
-    cursor: pointer;
-  }
-  
-  .schedule-link-button:hover {
-    text-decoration: underline;
-  }
-  .booking_image{
-    width: 100px;
-    height: 100px;
-    background-color: #3D93FF;
-    border-radius: 50%;
-    margin-left: 5%;
-  }
-  .booking_image .user-avatar{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #09a7d3;
+  border-radius: 5px;
+  cursor: pointer;
+
+}
+.schedule-item:hover {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.schedule-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+  margin-left: 5%;
+}
+
+.username {
+  font-weight: bold;
+  margin: 0;
+}
+
+.schedule-date,
+.schedule-price,
+.schedule-link {
+  margin: 5px 0;
+}
+
+.schedule-link-button {
+  color: #3d93ff;
+  text-decoration: none;
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.schedule-link-button:hover {
+  text-decoration: underline;
+}
+.booking_image {
+  width: 100px;
+  height: 100px;
+  background-color: #3d93ff;
+  border-radius: 50%;
+  margin-left: 5%;
+}
+.booking_image .user-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
