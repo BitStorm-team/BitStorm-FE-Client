@@ -63,7 +63,7 @@ export default function Post() {
         const response = await axios.get(`${API_URL}/posts`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, 
           },
         });
         if (response.data.success) {
