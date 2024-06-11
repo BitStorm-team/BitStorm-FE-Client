@@ -3,16 +3,18 @@ import axios from "axios";
 import "../../assets/css/profile/action.css";
 import { API_URL, headerAPI } from "../../utils/helpers";
 import { message } from "antd";
-import Loading from "../expertDetail/Loading";
 
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [fileList, setFileList] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+  const [fileCertList, setFileCertList] = useState([]);
+  const [imageCertUrl, setCertImageUrl] = useState("");
   const [header] = useState(headerAPI);
   const fileInputRef = useRef(null); // Ref để truy cập input file
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCert, setIsLoadingCert] = useState(false);
 
   useEffect(() => {
     if (props.infor) {
@@ -45,23 +47,6 @@ export default function Action(props) {
     }));
   };
 
-  const handleCertificateChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prevData) => ({
-          ...prevData,
-          expert: {
-            ...prevData.expert,
-            certificate: reader.result,
-          },
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const API =
@@ -81,8 +66,8 @@ export default function Action(props) {
             email: formData.email,
             password: formData.password,
             experience: formData.expert.experience,
-            certificate: formData.expert.certificate,
-            profile_picture: imageUrl
+            certificate: imageCertUrl,
+            profile_picture: imageUrl,
           },
           { headers: header }
         );
@@ -156,6 +141,31 @@ export default function Action(props) {
       }
     }
   };
+
+   const handleCertificateChange = async (e) => {
+     const file = e.target.files[0];
+     if (file) {
+        setIsLoadingCert(true);
+       try {
+         const secureUrl = await getUrlUpdateUserImg(file);
+         console.log("File URL from Cloudinary:", secureUrl);
+         setCertImageUrl(secureUrl); // Lưu URL vào state imageCertUrl
+         setFormData((prevState) => ({
+           ...prevState,
+           expert: {
+             ...prevState.expert,
+             certificate: secureUrl,
+           },
+         }));
+         setFileCertList((prevList) => [...prevList, file]); 
+       } catch (error) {
+         console.error("Error updating user image:", error);
+       }
+       finally {
+         setIsLoadingCert(false); // Kết thúc trạng thái loading
+       }
+     }
+   };
   const handleEditClick = () => {
     fileInputRef.current.click(); // Mở hộp thoại chọn file khi nhấn nút "Edit"
   };
@@ -243,17 +253,6 @@ export default function Action(props) {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="input-group">
-                      <label>
-                        <strong>Password</strong>
-                      </label>
-                      <input
-                        type="text"
-                        name="password"
-                        value={formData.password || ""}
-                        onChange={handleChange}
-                      />
-                    </div>
                     {formData.role_id === 3 && (
                       <>
                         <div className="input-group">
@@ -271,21 +270,42 @@ export default function Action(props) {
                           <label>
                             <strong>Certificate</strong>
                           </label>
-                          <input
-                            type="file"
-                            name="certificate"
-                            accept="image/*"
-                            onChange={handleCertificateChange}
-                            style={{ width: "20%" }}
-                          />
-                          {formData.expert?.certificate && (
+                          {isLoadingCert ? (
+                            <div className="loader-container">
+                              <div className="loader"></div>
+                            </div>
+                          ) : (
+                            <>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleCertificateChange}
+                                style={{ width: "20%" }}
+                              />
+                              <img
+                                src={
+                                  imageCertUrl || formData.expert?.certificate
+                                }
+                                alt="Certificate"
+                                className="certificate-img"
+                                style={{ width: "200px" }}
+                              />
+                              <input
+                                type="hidden"
+                                name="certificate"
+                                id="certificate"
+                                value={imageCertUrl}
+                              />
+                            </>
+                          )}
+                          {/* {formData.expert?.certificate && (
                             <img
-                              src={formData.expert.certificate}
+                              src={imageCertUrl}
                               alt="Certificate"
                               className="certificate-img"
                               style={{ width: "200px" }}
                             />
-                          )}
+                          )} */}
                         </div>
                       </>
                     )}
