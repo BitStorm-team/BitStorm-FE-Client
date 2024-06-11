@@ -87,6 +87,7 @@ export default function Action(props) {
           { headers: header }
         );
         message.success(updateResponse.data.message || "Updated successfully");
+        setShowDetailModal(false);
       }else{
         const updateResponse = await axios.patch(
           API,
@@ -99,6 +100,7 @@ export default function Action(props) {
           { headers: header }
         );
         message.success(updateResponse.data.message || "Updated successfully");
+        setShowDetailModal(false);
       }
       } catch (error) {
         message.error(
