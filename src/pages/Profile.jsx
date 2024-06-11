@@ -7,17 +7,16 @@ import {
   SettingFilled,
   UserOutlined,
 } from "@ant-design/icons";
-import Action from "../components/prrofile/Action";
-import Schedule from "../components/prrofile/Schedule";
-import HistoryBooking from "../components/prrofile/HistoryBooking";
-import { getAllBooking, getUserProfile } from "../api";
+import Action from "../components/profile/Action";
+import Schedule from "../components/profile/Schedule";
+import HistoryBooking from "../components/profile/HistoryBooking";
+import { getAllBooking, getAllBookingExpert, getUserProfile } from "../api";
 import axios from "axios";
 import { API_URL, headerAPI } from "../utils/helpers.js";
 import { DatePicker } from "antd";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { message } from "antd";
-
 
 export default function Profile() {
   const [user, setUser] = useState("user");
@@ -31,19 +30,21 @@ export default function Profile() {
   const [endTime, setEndTime] = useState(new Date());
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(true);
-
-  const [userId, setUserId] = useState(0);
+  const [userInformation, setUserInformation] = useState({});
   const [bookings, setBookings] = useState([]);
+  const [userId, setUserId] = useState(1);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await getUserProfile();
         console.log(data);
+        setUserId(data.id);
+        setUserInformation((prev) => ({ ...prev, ...data }));
         if (data) {
           const loggedInUser = data;
-          console.log(loggedInUser);
-          setUserId(loggedInUser.id);
+          console.log('user' + loggedInUser);
+
           if (loggedInUser.role_id === 3) {
             try {
               const expertResponse = await axios.get(
@@ -53,7 +54,7 @@ export default function Profile() {
 
               setUser("expert");
               setUserData(expertResponse.data.data);
-              console.log(expertResponse.data.data);
+              console.log('expert' + expertResponse.data.data);
               setLoading(false);
             } catch (error) {
               console.error("Error fetching expert profile", error);
@@ -80,24 +81,32 @@ export default function Profile() {
     };
 
     fetchUserData();
-  }, []);
+  }, [userId]);
 
-  // get all booking of user (role user and role expert)
   useEffect(() => {
     const fetchBookings = async () => {
+      if (!userInformation.id) return; // Ensure userInformation.id is available
       try {
-        const bookingsData = await getAllBooking(userId);
-
+        console.log('User ID:', userId);
+        let bookingsData;
+        if (userInformation.role_id === 3) {
+          bookingsData = await getAllBookingExpert(userInformation.id);
+        } else {
+          bookingsData = await getAllBooking(userInformation.id);
+        }
         setBookings(bookingsData);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching bookings", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchBookings();
-  }, []);
+  }, [userInformation]); // Dependency array updated to include userInformation
+
   console.log("bookings", bookings);
+
   const openCreateCalendarModal = () => {
     setShowCreateCalendarModal(true);
     setShowMenu(false);
@@ -137,6 +146,7 @@ export default function Profile() {
       );
     }
   };
+
   const handleUpdate = async () => {
     try {
       const updatedSchedules = await axios.get(
@@ -239,7 +249,6 @@ export default function Profile() {
                 ))}
               </div>
             ) : <p>You don't have any booking yet!</p>
-
           ) : (
             <div className="booking_history_item">
               <p>Loading...</p>
