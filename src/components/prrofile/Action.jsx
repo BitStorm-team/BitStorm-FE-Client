@@ -12,7 +12,7 @@ export default function Action(props) {
   const [imageUrl, setImageUrl] = useState("");
   const [header] = useState(headerAPI);
   const fileInputRef = useRef(null); // Ref để truy cập input file
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (props.infor) {
@@ -73,17 +73,33 @@ export default function Action(props) {
 
     if (API) {
       try {
+        if(formData.role_id === 3){
         const updateResponse = await axios.patch(
           API,
           {
             name: formData.name,
             email: formData.email,
             password: formData.password,
-            expert: formData.expert,
+            experience: formData.expert.experience,
+            certificate: formData.expert.certificate,
+            profile_picture: imageUrl
           },
           { headers: header }
         );
         message.success(updateResponse.data.message || "Updated successfully");
+      }else{
+        const updateResponse = await axios.patch(
+          API,
+          {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            profile_picture: imageUrl
+          },
+          { headers: header }
+        );
+        message.success(updateResponse.data.message || "Updated successfully");
+      }
       } catch (error) {
         message.error(
           "Update failed " + (error.response?.data?.message || error.message)
@@ -121,7 +137,7 @@ export default function Action(props) {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-       setIsLoading(true);
+      setIsLoading(true);
       try {
         const secureUrl = await getUrlUpdateUserImg(file);
         console.log("File URL from Cloudinary:", secureUrl);
@@ -133,8 +149,7 @@ export default function Action(props) {
         setFileList((prevList) => [...prevList, file]); // Lưu file vào fileList nếu cần
       } catch (error) {
         console.error("Error updating user image:", error);
-      }
-      finally {
+      } finally {
         setIsLoading(false); // Kết thúc trạng thái loading
       }
     }
@@ -175,11 +190,13 @@ export default function Action(props) {
                         </div>
                       ) : (
                         <>
-                          <img
-                            src={imageUrl || props.infor.profile_picture}
-                            alt="Profile"
-                            className="profile-picture"
-                          />
+                          <div className="avatar_profile_update">
+                            <img
+                              src={imageUrl || props.infor.profile_picture}
+                              alt="Profile"
+                              className="profile-picture"
+                            />
+                          </div>
                           <button
                             type="button"
                             className="edit-button"
@@ -192,7 +209,7 @@ export default function Action(props) {
                     </div>
                     <input
                       type="hidden"
-                      name="avatar"
+                      name="profile_picture"
                       id="userAvatar"
                       value={imageUrl || ""}
                     />
@@ -231,7 +248,7 @@ export default function Action(props) {
                       <input
                         type="text"
                         name="password"
-                        value={formData.password || "..."}
+                        value={formData.password || ""}
                         onChange={handleChange}
                       />
                     </div>
