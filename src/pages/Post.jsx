@@ -63,7 +63,7 @@ export default function Post() {
         const response = await axios.get(`${API_URL}/posts`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, 
           },
         });
         if (response.data.success) {
@@ -74,7 +74,8 @@ export default function Post() {
       } catch (error) {
         console.error("Error fetching posts:", error);
         message.error("Failed to fetch posts");
-      } finally {
+      } 
+      finally {
         setLoading(false); // Set loading to false after fetching posts
       }
     };
