@@ -1,13 +1,18 @@
-import {Pagination, message,Card} from "antd";
+import {Pagination, message} from "antd";
 import '../assets/css/expert.css';
-import { StarTwoTone } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import CardPrice from "../components/expertDetail/CardPrice";
 import Slider from "react-slick";
+import Loading from '../components/expertDetail/Loading';
+import Error from "../components/expertDetail/Error";
+import CommentUser from "../components/expertDetail/CommentUser";
+import Star from "../components/expertDetail/Star";
+import { API_URL } from "../utils/helpers.js";
 const Expert = () =>{
+    const [pageLoading, setPageLoading] = useState(true);
     const [ref1, inView1] = useInView({ threshold: 0.5 });
     const [experts, setExperts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,8 +22,9 @@ const Expert = () =>{
     const navigate = useNavigate();
     const [min_price, setMinPrice] = useState(0);
     const [max_price, setMaxPrice] = useState(100);
-    const [response, setResponse] = useState([]);
-  
+    const [response, setResponse] = useState([]); 
+    const [searchPerformed, setSearchPerformed] = useState(false);
+    const [error, setError] = useState(false);
     const handleMinPriceChange = (event) => {
       setMinPrice(event.target.value);
     };
@@ -28,9 +34,10 @@ const Expert = () =>{
     };
   
     const handleSubmit = async (event) => {
+        const API = `${API_URL}/experts/filter`;
       event.preventDefault();
       try {
-        const response = await axios.post("http://127.0.0.1:8000/api/experts/filter", { min_price:min_price, max_price:max_price });
+        const response = await axios.post(API, { min_price:min_price, max_price:max_price });
         setResponse(response.data.data);
       } catch (error) {
         console.error("There was an error making the request:", error);
@@ -38,8 +45,9 @@ const Expert = () =>{
     };
     useEffect(() => {
         const fetchExperts = async () => {
+            const API = `${API_URL}/experts`;
             try {
-                const res = await axios.get("http://127.0.0.1:8000/api/experts"); // Log the entire response
+                const res = await axios.get(API); // Log the entire response
                 setExperts(res.data.data[0]); // Adjust this based on actual API response structure
             } catch (error) {
                 console.error("Error", error);
@@ -49,17 +57,21 @@ const Expert = () =>{
         fetchExperts();
     }, []);
     const searchExpert = async (term) => {
+        const API = `${API_URL}/experts/search`;
+        setError(false);
         try {
-            const res = await axios.post("http://127.0.0.1:8000/api/experts/search", { searchTerm: term });
+            const res = await axios.post(API, { searchTerm: term });
             setExpertName(res.data.data);
+            setSearchPerformed(true); 
+            if (res.data.data.length === 0) {
+                setError(true);
+            }
+
         } catch (error) {
             console.error("Error fetching data", error);
+            setError(true);
         }
     }
-    useEffect(() => {
-       
-    },[])
-
     const onSubmit = (e) => {
         e.preventDefault();
         if (searchTerm === "") {
@@ -96,12 +108,14 @@ const Expert = () =>{
           },
         ],
       };
-    
-    // Calculate the items to display on the current page
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItem = experts.slice(indexOfFirstItem,indexOfLastItem);
-
+    useEffect(() => {
+        setTimeout(() => {
+          setPageLoading(false);
+        }, 2000);
+      }, []);
     return (
         <div className="Expert">
             <div className="search">
@@ -119,7 +133,6 @@ const Expert = () =>{
                                 placeholder="Search for..."
                             />
                         </form>
-                            {/* <span className="sr-only">Search countries here</span> */}
                         </label>
                         <label>
                         <form onSubmit={handleSubmit}>
@@ -170,26 +183,39 @@ const Expert = () =>{
             </div>
             <div style={{margin:20}}></div>
             <div className="wrapper search-item">
-                {expertName.map((item,index) => (
-                        <div className="card" key={index}  animate={inView1}>
+                {pageLoading ? (
+                    <Loading />
+                ) : (
+                    searchPerformed && error ? (
+                        <Error />
+                    ) : (
+                        expertName.map((item, index) => (
+                            <div className="card" key={index}>
+                                <img className="card-image" src={item.profile_picture} alt={item.name} />
+                                <h2>{item.name}</h2>
+                                <p>{item.email}</p>
+                                <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
+                            </div>
+                        ))
+                    )
+                )}
+            </div>
+
+            <div className="wrapper" ref={ref1}>
+                {pageLoading ? (
+                    <Loading/>
+                ) : (
+                    currentItem.map((item, index) => (
+                        <div className="card" key={index} style={{ animation: inView1 ? 'yourAnimationName' : 'none' }}>
                             <img className="card-image" src={item.profile_picture} alt={item.name} />
                             <h2>{item.name}</h2>
                             <p>{item.email}</p>
-                            <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
+                            <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>
+                                Read more
+                            </button>
                         </div>
-                    ))}
-            </div>
-        <div className="wrapper" ref={ref1}>
-                {currentItem.map((item,index) => (
-                    <div className="card" key={index}  animate={inView1}>
-                        <img className="card-image" src={item.profile_picture} alt={item.name} />
-                        <h2>{item.name}</h2>
-                        <p>{item.email}</p>
-                        <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>
-                            Read more
-                        </button>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
         <div className="wrapper" style={{padding:20}}>
             <Pagination
@@ -204,77 +230,8 @@ const Expert = () =>{
             <h1>Do you know</h1>
             <p>Every year we happily work on many platforms to help everyone have a website that heals everyone's soul. And that is also our mission.</p>
         </div>
-        <div className="comment" ref={ref1}>
-            <h1>Comment of Customer</h1>
-            <p className="p">Comments from users who have participated in scheduling</p>
-            <div className="card-comment">
-                <Card animate={inView1}
-                    bordered={false}
-                    style={{
-                    width: 300,
-                    }} className="card-details">
-                    <div className="star">
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                    </div>
-                    <p>
-                    The content on the website is very high quality and useful for readers. The information on the website is very rich and detailed, very useful. The website interface is very beautiful and intuitive, easy to find the necessary information.
-                    </p>
-                    <img src="https://vnn-imgs-a1.vgcloud.vn/image1.ictnews.vn/_Files/2020/03/17/trend-avatar-1.jpg" alt="" />
-                </Card >
-                <Card  animate={inView1}
-                    bordered={false}
-                    style={{
-                    width: 300,
-                    }} className="card-details">
-                    <div className="star">
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                    </div>
-                    <p>
-                    The user experience on the website is really great, very smooth and easy. The website works well on both computers and mobile phones, very convenient. Customer service through the website is very fast and professional.
-                    </p>
-                    <img src="https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg" alt="" />
-                </Card>
-                <Card  animate={inView1}
-                    bordered={false}
-                    style={{
-                    width: 300,
-                    }} className="card-details">
-                    <div className="star">
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                    </div>
-                    <p>
-                    Your website is easy to find on search engines, proving very good SEO. The website's features are rich and easy to use. I received very good support from the team through the website .The response speed of the website is really great.
-                    </p>
-                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/anh-avatar-facebook-7-1.jpg" alt="" />
-                </Card>
-            </div>
-        </div>
-        <div className="stats-container">
-        <div className="stat-item">
-            <span className="stat-number">+3.500</span>
-            <span className="stat-label">Users</span>
-        </div>
-        <div className="stat-item">
-            <span className="stat-number">+15</span>
-            <span className="stat-label">Leading psychologist</span>
-        </div>
-        <div className="stat-item">
-            <span className="stat-number">+10</span>
-            <span className="stat-label">Meeting over a month</span>
-        </div>
-    </div>
+        <CommentUser />
+        <Star />
     </div>
     )
 }
