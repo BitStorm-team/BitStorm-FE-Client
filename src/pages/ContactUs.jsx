@@ -108,7 +108,7 @@ const ContactUs = () => {
         <Loading />
       ) : (
         <>
-          <Banner />
+          <Banner title = "Contact Us" description="Come to BitStorm if you have personal issues that you want to resolve. Contact us now to discuss the problems you are facing."/>
           <MapContact />
           <div
             className="contact-form"
