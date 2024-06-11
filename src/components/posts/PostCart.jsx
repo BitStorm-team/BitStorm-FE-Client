@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { API_URL } from '../../utils/helpers';
+import { deletePostApi, getAllPostsApi } from '../../api/post';
 
 const PostContent = styled.div`
   margin-left: 10px;
@@ -25,6 +26,7 @@ function PostCart({ post, currentUser, setPosts }) {
     const [loading, setLoading] = useState(false); // State for loading
     const [form] = Form.useForm();
     const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const { id, content, comments, profile_picture, is_anonymous, user } = post;
     const words = content.split(' ');
     const isLongContent = words.length > 50;
@@ -55,13 +57,7 @@ function PostCart({ post, currentUser, setPosts }) {
             form.resetFields();
       
             // Fetch posts again to update the table
-            const fetchResponse = await axios.get(`${API_URL}/posts`, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            });
-      
+            const fetchResponse = await getAllPostsApi();
             if (fetchResponse.data.success) {
               setPosts(fetchResponse.data.data);
             } else {
@@ -83,9 +79,23 @@ function PostCart({ post, currentUser, setPosts }) {
       });
     };
 
-    const handleDeletePost = () => {
-        message.info('Delete post functionality not implemented yet.');
-    };
+    const handleDeletePost=async function(){
+      // const token = localStorage.getItem("__token__");
+      setLoading(true);
+        const  response = await deletePostApi(id);
+        if (response.data.success) {
+          const fetchResponse = await getAllPostsApi();
+            if (fetchResponse.data.success) {
+              setPosts(fetchResponse.data.data);
+              setLoading(false);
+            } else {
+              message.error(`Error fetching posts: ${fetchResponse.data.message}`);
+            }
+          message.success(response.data.message || "Delete post successfully");
+          setIsModalDeleteOpen(false);
+        }
+      
+    }
     const showUpdateModal = () => {
       form.setFieldsValue({
         content,
@@ -98,7 +108,7 @@ function PostCart({ post, currentUser, setPosts }) {
             <Menu.Item key="1" onClick={showUpdateModal}>
                 Update Post
             </Menu.Item>
-            <Menu.Item key="2" onClick={handleDeletePost}>
+            <Menu.Item key="2" onClick={()=>setIsModalDeleteOpen(true)}>
                 Delete Post
             </Menu.Item>
         </Menu>
@@ -152,6 +162,29 @@ function PostCart({ post, currentUser, setPosts }) {
             </Form.Item>
           </Form>
         </Modal>
+         {/* Delete Confirmation Modal */}
+       <Modal
+        title="Confirm Delete Post"
+        open={isModalDeleteOpen}
+        onCancel={() => setIsModalDeleteOpen(false)}
+        
+        footer={[
+          <Button key="cancel" onClick={() => setIsModalDeleteOpen(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="delete"
+            type="primary"
+            danger
+            loading={loading} 
+            onClick={handleDeletePost}
+          >
+            Delete
+          </Button>,
+        ]}
+      >
+        <p>Are you sure you want to delete this post?</p>
+      </Modal>
         <div 
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
