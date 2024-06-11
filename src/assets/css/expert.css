@@ -1,7 +1,4 @@
 .wrapper {
-    /* width: 96%; */
-    /* max-width: 1140px; */
-    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
 }
@@ -9,7 +6,6 @@
     width: 96%;
     max-width: 1140px;
     margin: 0 auto;
-
 }
 .wrapper-inner {
     max-width: 600px;
@@ -23,7 +19,7 @@
 }
 /* search input */
 .search-wrapper {
-    margin: 48px 0;
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
 }
@@ -41,7 +37,7 @@
     }
 }
 .search-form {
-    box-shadow: 0px 4px 6px var(--border) !important;
+    box-shadow: 0px 4px 6px #007bff !important;
 }
 .search-input {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0xNS44NTMgMTYuNTZjLTEuNjgzIDEuNTE3LTMuOTExIDIuNDQtNi4zNTMgMi40NC01LjI0MyAwLTkuNS00LjI1Ny05LjUtOS41czQuMjU3LTkuNSA5LjUtOS41IDkuNSA0LjI1NyA5LjUgOS41YzAgMi40NDItLjkyMyA0LjY3LTIuNDQgNi4zNTNsNy40NCA3LjQ0LS43MDcuNzA3LTcuNDQtNy40NHptLTYuMzUzLTE1LjU2YzQuNjkxIDAgOC41IDMuODA5IDguNSA4LjVzLTMuODA5IDguNS04LjUgOC41LTguNS0zLjgwOS04LjUtOC41IDMuODA5LTguNSA4LjUtOC41eiIvPjwvc3ZnPg==");
@@ -49,17 +45,21 @@
     background-size: 16px 16px;
     background-position: left 10px center;
     background-repeat: no-repeat;
-    padding: 1.4em 2em;
+    padding: 1.4em 5em;
     padding-left: 2.7em;
-    border: 1px solid var(--border);
+    border-radius: 5px;
     color: var(--gray);
-    box-shadow: 0px 4px 6px var(--border) !important;
+    box-shadow: 2px 2px 2px #717c87;
+    border: none;
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    outline: none; 
 }
-.search-input:hover {
-    box-shadow: 0px 0px 0px var(--border);
+input[type="input"] {
+  border: none; 
+  outline: none; 
 }
-/* select from moderncss.dev */
+
+/* select from moderncss.dev */   
 select {
     appearance: none !important;
     outline: none;
@@ -230,6 +230,20 @@ select:focus + .focus {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.cardprice .h2 {
+  margin-left: 30px;
+  margin-top: 3%;
+  color: rgb(126, 159, 237);
+  font-weight: 600;
+  font-size: 20px;
+}
+.cardprice p {
+  margin-left: 30px;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .background {
   /* background-color: antiquewhite; */
     background: url("../images/hinh.png") no-repeat center center;
@@ -275,8 +289,8 @@ select:focus + .focus {
   font-size: 2rem;
 }
 .comment .p {
-  text-align: center !important;
-  font-size: 1.2rem !important;
+  text-align: center ;
+  font-size: 1.2rem ; 
   width: 900px;
   margin: 0 auto;
   margin-bottom: 20px;
@@ -348,6 +362,156 @@ select:focus + .focus {
   color: #666;
   margin-top: 10px;
 }
-.search-item {
+.card-containerr {
+  width: 90%;
+  margin-left: 5%;
+}
+@media (max-width: 1024px) {
+  .card-containerr {
+    width: 90%;
+  }
+  .card-containerr .cardprice{
+    max-width: 190px;
+    margin: 10px;
+  }
+  .comment .p {
+    font-size: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .comment .p {
+    font-size: 10px;
+  }
+}
+.cardprice {
+  background: #fff;
+  /* width: 20em; */
+  border-radius: 0.6em;
+  margin: 1em;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+  transition: all ease 200ms;
+}
+.cardprice:hover {
+  transform: scale(1.03);
+  box-shadow: 0 13px 40px -5px hsla(240, 30.1%, 28%, 0.12), 0 8px 32px -8px hsla(0, 0%, 0%, 0.14), 0 -6px 32px -6px hsla(0, 0%, 0%, 0.02);
+}
+.cardprice h2 {
+  color: #222;
+  margin-top: -0.2em;
+  line-height: 1.4;
+  font-size: 1.3em;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+  transition: all ease-in 100ms;
+}
 
+
+.cardprice p {
+  color: #777;
+}
+
+.cardprice h5 {
+  color: #bbb;
+  font-weight: 700;
+  font-size: 0.7em;
+  margin: 1.4em 0 0 0;
+  text-transform: uppercase;
+}
+.card-body {
+  padding: 1.2em;
+}
+.box {
+  animation: slideIn 2s infinite;
+}
+@keyframes slideIn {
+  0% {
+    transform: translateX(-50%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+}
+.box {/* Bắt đầu với độ mờ để ẩn phần tử */
+  transition: opacity 0.5s ease-out;
+}
+
+.box.slide-in {
+  animation: slideIn 2s forwards; /* Chạy animation và dừng lại sau khi hoàn thành */
+  opacity: 1; /* Hiển thị phần tử */
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-50%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+.button-6 {
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.button-6:hover,
+.button-6:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.button-6:hover {
+  transform: translateY(-1px);
+}
+
+.button-6:active {
+  background-color: #F0F0F1;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+  color: rgba(0, 0, 0, 0.65);
+  transform: translateY(0);
+}
+.error img {
+  width: 500px;
+  height: 500px;
+}
+.error h2 {
+  margin-left: 30px;
+  margin-top: 3%;
+  color: rgb(126, 159, 237);
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
 }

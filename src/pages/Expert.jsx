@@ -1,11 +1,18 @@
-import {Card,Pagination, message } from "antd";
+import {Pagination, message} from "antd";
 import '../assets/css/expert.css';
-import { StarTwoTone } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+import CardPrice from "../components/expertDetail/CardPrice";
+import Slider from "react-slick";
+import Loading from '../components/expertDetail/Loading';
+import Error from "../components/expertDetail/Error";
+import CommentUser from "../components/expertDetail/CommentUser";
+import Star from "../components/expertDetail/Star";
+import { API_URL } from "../utils/helpers.js";
 const Expert = () =>{
+    const [pageLoading, setPageLoading] = useState(true);
     const [ref1, inView1] = useInView({ threshold: 0.5 });
     const [experts, setExperts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,18 +20,58 @@ const Expert = () =>{
     const [expertName, setExpertName] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
+    const [min_price, setMinPrice] = useState(0);
+    const [max_price, setMaxPrice] = useState(100);
+    const [response, setResponse] = useState([]); 
+    const [searchPerformed, setSearchPerformed] = useState(false);
+    const [error, setError] = useState(false);
+    const handleMinPriceChange = (event) => {
+      setMinPrice(event.target.value);
+    };
+  
+    const handleMaxPriceChange = (event) => {
+      setMaxPrice(event.target.value);
+    };
+  
+    const handleSubmit = async (event) => {
+        const API = `${API_URL}/experts/filter`;
+      event.preventDefault();
+      try {
+        const response = await axios.post(API, { min_price:min_price, max_price:max_price });
+        setResponse(response.data.data);
+      } catch (error) {
+        console.error("There was an error making the request:", error);
+      }
+    };
+    useEffect(() => {
+        const fetchExperts = async () => {
+            const API = `${API_URL}/experts`;
+            try {
+                const res = await axios.get(API); // Log the entire response
+                setExperts(res.data.data[0]); // Adjust this based on actual API response structure
+            } catch (error) {
+                console.error("Error", error);
+            }
+        };
+
+        fetchExperts();
+    }, []);
     const searchExpert = async (term) => {
+        const API = `${API_URL}/experts/search`;
+        setError(false);
         try {
-            const res = await axios.post("http://127.0.0.1:8000/api/experts/search", { searchTerm: term });
+            const res = await axios.post(API, { searchTerm: term });
             setExpertName(res.data.data);
-            console.log(res.data.data);
+            setSearchPerformed(true); 
+            if (res.data.data.length === 0) {
+                setError(true);
+            }
+
         } catch (error) {
             console.error("Error fetching data", error);
+            setError(true);
         }
     }
-    useEffect(() => {
-        searchExpert()
-    },[])
     const onSubmit = (e) => {
         e.preventDefault();
         if (searchTerm === "") {
@@ -36,31 +83,39 @@ const Expert = () =>{
     }
 
     const onChange = (e) => setSearchTerm(e.target.value);
-    useEffect(() => {
-        const fetchExperts = async () => {
-            try {
-                const res = await axios.get("http://127.0.0.1:8000/api/experts");
-                console.log(res.data); // Log the entire response
-                setExperts(res.data.data[0]); // Adjust this based on actual API response structure
-            } catch (error) {
-                console.error("Error", error);
-            }
-        };
-
-        fetchExperts();
-    }, []);
-
     const handleChange = (page) => {
         setCurrentPage(page);
     };
     const onChangeItem = (id) => {
         console.log(id)
         navigate(`/expert/${id}`);
-    }
-    // Calculate the items to display on the current page
+    }    
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              infinite: true,
+              dots: true,
+            },
+          },
+        ],
+      };
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItem = experts.slice(indexOfFirstItem,indexOfLastItem);
+    useEffect(() => {
+        setTimeout(() => {
+          setPageLoading(false);
+        }, 2000);
+      }, []);
     return (
         <div className="Expert">
             <div className="search">
@@ -78,41 +133,89 @@ const Expert = () =>{
                                 placeholder="Search for..."
                             />
                         </form>
-                            {/* <span className="sr-only">Search countries here</span> */}
                         </label>
-                        <div className="select">
-                            <select
-                                className="custom-select"
-                                aria-label="Filter Countries By Region"
-                            >
-                                <option value="">Filter By Money</option>
-                            </select>
-                            <span className="focus"></span>
-                        </div>
+                        <label>
+                        <form onSubmit={handleSubmit}>
+                            <label>
+                            Min Price:
+                                <input
+                                    type="range"
+                                    value={min_price}
+                                    min="0"
+                                    max="100"
+                                    onChange={handleMinPriceChange}
+                                />
+                                <span>{min_price}</span>
+                                </label>
+                                <br />
+                            <label>
+                            Max Price:
+                                <input
+                                    type="range"
+                                    value={max_price}
+                                    min="0"
+                                    max="100"
+                                    onChange={handleMaxPriceChange}
+                                />
+                                <span>{max_price}</span>
+                            </label>
+                            <br />
+                            <br />
+                            <button className="button-6" type="submit">Filter</button>
+                        </form>
+                        </label>
                     </div>
                 </div>
             </div>
+            <div className="card-containerr">
+                <Slider {...settings}>
+                    {response.map((item,index) => (
+                        <CardPrice
+                        key={index}
+                        name={item.name}
+                        price= {item.price}
+                        email={item.email}
+                        profile_picture={item.profile_picture}
+                        id={item.id}
+                        />
+                    ))}
+                </Slider>
+            </div>
+            <div style={{margin:20}}></div>
             <div className="wrapper search-item">
-                {expertName.map(item => (
-                        <div className="card" key={item.id}  animate={inView1}>
+                {pageLoading ? (
+                    <Loading />
+                ) : (
+                    searchPerformed && error ? (
+                        <Error />
+                    ) : (
+                        expertName.map((item, index) => (
+                            <div className="card" key={index}>
+                                <img className="card-image" src={item.profile_picture} alt={item.name} />
+                                <h2>{item.name}</h2>
+                                <p>{item.email}</p>
+                                <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
+                            </div>
+                        ))
+                    )
+                )}
+            </div>
+
+            <div className="wrapper" ref={ref1}>
+                {pageLoading ? (
+                    <Loading/>
+                ) : (
+                    currentItem.map((item, index) => (
+                        <div className="card" key={index} style={{ animation: inView1 ? 'yourAnimationName' : 'none' }}>
                             <img className="card-image" src={item.profile_picture} alt={item.name} />
                             <h2>{item.name}</h2>
                             <p>{item.email}</p>
-                            <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>Read More</button>
+                            <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>
+                                Read more
+                            </button>
                         </div>
-                    ))}
-            </div>
-        <div className="wrapper" ref={ref1}>
-                {currentItem.map(item => (
-                    <div className="card" key={item.id}  animate={inView1}>
-                        <img className="card-image" src={item.profile_picture} alt={item.name} />
-                        <h2>{item.name}</h2>
-                        <p>{item.email}</p>
-                        <button className="custom-btn btn-16" onClick={() => onChangeItem(item.id)}>
-                            Read more
-                        </button>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
         <div className="wrapper" style={{padding:20}}>
             <Pagination
@@ -125,75 +228,10 @@ const Expert = () =>{
         </div>
         <div className="background">
             <h1>Do you know</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero id enim distinctio harum sit, debitis quod voluptate velit repellendus ullam veniam quae a eius totam facere eligendi esse, autem neque!</p>
+            <p>Every year we happily work on many platforms to help everyone have a website that heals everyone's soul. And that is also our mission.</p>
         </div>
-        <div className="comment" ref={ref1}>
-            <h1>Comment of Customer</h1>
-            <p className="p">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit tempora sed ex quae quasi excepturi ad voluptas, aliquid rerum molestias accusamus explicabo quaerat, asperiores quam voluptatem molestiae ullam impedit qui?</p>
-            <div className="card-comment">
-                <Card animate={inView1}
-                    bordered={false}
-                    style={{
-                    width: 300,
-                    }} className="card-details">
-                    <div className="star">
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                    </div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium, sunt? Quia praesentium maiores, culpa dolore vero laborum accusamus earum dicta consequuntur voluptatem quidem excepturi dolores, autem, doloribus veritatis hic est.
-                    </p>
-                    <img src="https://vnn-imgs-a1.vgcloud.vn/image1.ictnews.vn/_Files/2020/03/17/trend-avatar-1.jpg" alt="" />
-                </Card >
-                <Card  animate={inView1}
-                    bordered={false}
-                    style={{
-                    width: 300,
-                    }} className="card-details">
-                    <div className="star">
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam nihil amet voluptates fugit facere repellat ipsam, ad repellendus sequi iure eos nobis iste sunt tenetur praesentium accusantium eum cum officia?</p>
-                    <img src="https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg" alt="" />
-                </Card>
-                <Card  animate={inView1}
-                    bordered={false}
-                    style={{
-                    width: 300,
-                    }} className="card-details">
-                    <div className="star">
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                        <StarTwoTone />
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero est sequi nisi eligendi ipsum accusantium. Repellendus nulla tempore incidunt! Cupiditate ex porro, nesciunt hic illo earum nisi voluptate maxime corporis!</p>
-                    <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/anh-avatar-facebook-7-1.jpg" alt="" />
-                </Card>
-            </div>
-        </div>
-        <div className="stats-container">
-        <div className="stat-item">
-            <span className="stat-number">+3.500</span>
-            <span className="stat-label">Users</span>
-        </div>
-        <div className="stat-item">
-            <span className="stat-number">+15</span>
-            <span className="stat-label">Leading psychologist</span>
-        </div>
-        <div className="stat-item">
-            <span className="stat-number">+10</span>
-            <span className="stat-label">Meeting over a month</span>
-        </div>
-    </div>
+        <CommentUser />
+        <Star />
     </div>
     )
 }
