@@ -73,6 +73,9 @@ const MainHeader = () => {
   const getUser = async () => {
     try {
       const userProfileData = await getUserProfile();
+      if (userProfileData.status === 0) {
+        handleLogout();
+      }
       setUserProfile(userProfileData);
       if (userProfileData.role_id === 3) {
         getExpert();
@@ -134,9 +137,9 @@ const MainHeader = () => {
             <div className={`menu ${profileMenuActive ? "active" : ""}`}>
               <ul>
                 <li>
-                <Link to="/profile">My profile</Link>
+                  <Link to="/profile">My profile</Link>
                 </li>
-                <li style={{cursor : "pointer",}} onClick={handleLogout}>
+                <li style={{ cursor: "pointer" }} onClick={handleLogout}>
                   <Link>Logout</Link>
                 </li>
               </ul>
