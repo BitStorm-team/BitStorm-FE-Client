@@ -181,6 +181,7 @@ export default function ExpertDetail() {
                           calendar_id={schedule.id}
                           price={schedule.price}
                           expert_id = {id}
+                          status={schedule.status}
                         />
                       );
                     })}

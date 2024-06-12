@@ -17,7 +17,8 @@
     justify-content: center;
     align-items:center;
     border:1px solid #3D93FF;
-    color: #3D93FF;
+    color: #ffffff;
+    background-color: #ff856c;
 }
 .card_profile_schedule {
     width: 18rem;
@@ -43,7 +44,7 @@
 
 .menu_schedule button {
     font-size: 20px;
-    background: rgba(0, 0, 0, 0); 
+    background: rgba(0, 0, 0, 0);
     border: none;
     width: 60px;
     cursor: pointer;
