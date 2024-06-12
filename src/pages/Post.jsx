@@ -132,7 +132,7 @@ export default function Post() {
       console.error("Error creating post:", error);
       message.error("Failed to create post");
     } finally {
-      setLoading(false); // Reset loading to false after process completes
+      setLoading(false); 
     }
   };
   

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { API_URL } from '../../utils/helpers';
 import { deletePostApi, getAllPostsApi } from '../../api/post';
+import Comment from './Comment';
+import PostDetail from './PostDetail';
 
 const PostContent = styled.div`
   margin-left: 10px;
@@ -27,10 +29,11 @@ function PostCart({ post, currentUser, setPosts }) {
     const [form] = Form.useForm();
     const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const [isModalPostDetailOpen, setIsModalPostDetailOpen] = useState(false);
     const { id, content, comments, profile_picture, is_anonymous, user } = post;
     const words = content.split(' ');
     const isLongContent = words.length > 50;
-    const displayedContent = isExpanded ? content : words.slice(0, 50).join(' ') + '...';
+    const displayedContent = isExpanded ? content : words.slice(0, 50).join(' ');
 
     const handleFormUpdatePost = () => {
       form.validateFields().then(async values => {
@@ -205,18 +208,20 @@ function PostCart({ post, currentUser, setPosts }) {
         <PostContent>
           <p style={{marginBottom:'0', }}>{displayedContent}</p>
           {isLongContent && (
-          <Button style={{padding:'0'}} type="link" onClick={() => setIsExpanded(!isExpanded)}> {isExpanded ? 'Thu gọn' : 'Read More'}</Button>
+          <Button style={{padding:'0'}} type="link" onClick={() => setIsExpanded(!isExpanded)}> {isExpanded ? 'Show less' : 'Show More'}</Button>
           )}
         </PostContent>
         <div style={{ marginTop: '20px', display:'flex', gap:'10px' }}>
             <HeartOutlined style={{
               fontSize: '32px',
             }} />
-            <CommentOutlined style={{
+            <CommentOutlined onClick={() => setIsModalPostDetailOpen(true)} style={{
               fontSize: '32px',
             }}/>
         </div>
         <span style={{ marginLeft: '8px' }}>{post.like_count} lượt thích</span>
+        <PostDetail  post={post}isModalPostDetailOpen={isModalPostDetailOpen}
+        setIsModalPostDetailOpen={setIsModalPostDetailOpen} />
       </div>
     );
 }
