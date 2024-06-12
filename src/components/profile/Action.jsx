@@ -1,23 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import "../../assets/css/profile/action.css";
-
+import { API_URL, headerAPI } from "../../utils/helpers";
+import { message } from "antd";
+import "../../assets/css/profile/loadingProfille.css";
+import PostItem from "./PostItem";
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [formData, setFormData] = useState({});
-
+  const [fileList, setFileList] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
+  const [fileCertList, setFileCertList] = useState([]);
+  const [imageCertUrl, setCertImageUrl] = useState("");
+  const [header] = useState(headerAPI);
+  const fileInputRef = useRef(null); // Ref để truy cập input file
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCert, setIsLoadingCert] = useState(false);
+  const [isPostLoading, setIsPostLoading] = useState(true);
+  const {postInfor} = props;
   useEffect(() => {
     if (props.infor) {
-      setFormData(props.infor);
+      setFormData({
+        ...props.infor,
+        expert: props.infor.expert || {}, // Ensure 'expert' is initialized
+      });
     }
   }, [props.infor]);
+  useEffect(() => {
+    // Giả lập quá trình tải dữ liệu bài viết
+    const fetchPosts = async () => {
+      setIsPostLoading(true);
+      try {
+        // Giả lập API call
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setIsPostLoading(false);
+      } catch (error) {
+        console.error("Error loading posts:", error);
+        setIsPostLoading(false);
+      }
+    };
 
-  const openDetailModal = () => {
-    setShowDetailModal(true);
-  };
-
-  const closeDetailModal = () => {
-    setShowDetailModal(false);
-  };
+    fetchPosts();
+  }, []);
+  const openDetailModal = () => setShowDetailModal(true);
+  const closeDetailModal = () => setShowDetailModal(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,10 +64,130 @@ export default function Action(props) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here, such as making an API call
-    console.log('Form data submitted:', formData);
+    const API =
+      formData.role_id === 2
+        ? `${API_URL}/user/profile`
+        : formData.role_id === 3
+        ? `${API_URL}/experts/profile`
+        : null;
+
+    if (API) {
+      try {
+        if (formData.role_id === 3) {
+          const updateResponse = await axios.patch(
+            API,
+            {
+              name: formData.name,
+              email: formData.email,
+              password: formData.password,
+              experience: formData.expert.experience,
+              certificate: imageCertUrl,
+              profile_picture: imageUrl,
+            },
+            { headers: header }
+          );
+          message.success(
+            updateResponse.data.message || "Updated successfully"
+          );
+          setShowDetailModal(false);
+        } else {
+          const updateResponse = await axios.patch(
+            API,
+            {
+              name: formData.name,
+              email: formData.email,
+              password: formData.password,
+              profile_picture: imageUrl,
+            },
+            { headers: header }
+          );
+          message.success(
+            updateResponse.data.message || "Updated successfully"
+          );
+          setShowDetailModal(false);
+        }
+      } catch (error) {
+        message.error(
+          "Update failed " + (error.response?.data?.message || error.message)
+        );
+      }
+    }
+    console.log("Form data submitted:", formData);
+  };
+
+  const getUrlUpdateUserImg = async (file) => {
+    const CLOUD_NAME = "dugeyusti";
+    const PRESET_NAME = "expert_upload";
+    const FOLDER_NAME = "BitStorm";
+    const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+    const formData = new FormData();
+    formData.append("upload_preset", PRESET_NAME);
+    formData.append("folder", FOLDER_NAME);
+    formData.append("file", file);
+
+    const options = {
+      method: "POST",
+      body: formData,
+    };
+
+    try {
+      const res = await fetch(api, options);
+      const data = await res.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error);
+      throw error;
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setIsLoading(true);
+      try {
+        const secureUrl = await getUrlUpdateUserImg(file);
+        console.log("File URL from Cloudinary:", secureUrl);
+        setImageUrl(secureUrl); // Lưu URL vào state imageUrl
+        setFormData((prevState) => ({
+          ...prevState,
+          profile_picture: secureUrl,
+        }));
+        setFileList((prevList) => [...prevList, file]); // Lưu file vào fileList nếu cần
+      } catch (error) {
+        console.error("Error updating user image:", error);
+      } finally {
+        setIsLoading(false); // Kết thúc trạng thái loading
+      }
+    }
+  };
+
+  const handleCertificateChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setIsLoadingCert(true);
+      try {
+        const secureUrl = await getUrlUpdateUserImg(file);
+        console.log("File URL from Cloudinary:", secureUrl);
+        setCertImageUrl(secureUrl); // Lưu URL vào state imageCertUrl
+        setFormData((prevState) => ({
+          ...prevState,
+          expert: {
+            ...prevState.expert,
+            certificate: secureUrl,
+          },
+        }));
+        setFileCertList((prevList) => [...prevList, file]);
+      } catch (error) {
+        console.error("Error updating user image:", error);
+      } finally {
+        setIsLoadingCert(false); // Kết thúc trạng thái loading
+      }
+    }
+  };
+  const handleEditClick = () => {
+    fileInputRef.current.click(); // Mở hộp thoại chọn file khi nhấn nút "Edit"
   };
 
   return (
@@ -69,10 +215,39 @@ export default function Action(props) {
                 <div data-aos="zoom-in">
                   <h2>Personal Information</h2>
                   <form onSubmit={handleSubmit}>
-                    <img
-                      src={formData.profile_picture}
-                      alt="Profile"
-                      className="profile-picture"
+                    <div className="avatar-container">
+                      {isLoading ? (
+                        <span class="loader"></span>
+                      ) : (
+                        <>
+                          <div className="avatar_profile_update">
+                            <img
+                              src={imageUrl || props.infor.profile_picture}
+                              alt="Profile"
+                              className="profile-picture"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            className="edit-button"
+                            onClick={handleEditClick}
+                          >
+                            Edit
+                          </button>
+                        </>
+                      )}
+                    </div>
+                    <input
+                      type="hidden"
+                      name="profile_picture"
+                      id="userAvatar"
+                      value={imageUrl || ""}
+                    />
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
                     />
                     <div className="input-group">
                       <label>
@@ -105,7 +280,7 @@ export default function Action(props) {
                           <input
                             type="text"
                             name="experience"
-                            value={formData.experience || ""}
+                            value={formData.expert?.experience || ""}
                             onChange={handleExpertChange}
                           />
                         </div>
@@ -113,12 +288,41 @@ export default function Action(props) {
                           <label>
                             <strong>Certificate</strong>
                           </label>
-                          <input
-                            type="text"
-                            name="certificate"
-                            value={formData.certificate || ""}
-                            onChange={handleExpertChange}
-                          />
+                          {isLoadingCert ? (
+                            <div className="loader-container1">
+                              <div className="loader1"></div>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="file-input-container">
+                                <div className="file-input-wrapper">
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleCertificateChange}
+                                    className="file-input"
+                                  />
+                                  <div className="custom-button">
+                                    Choose File
+                                  </div>
+                                </div>
+                                <img
+                                  src={
+                                    imageCertUrl || formData.expert?.certificate
+                                  }
+                                  alt="Certificate"
+                                  className="certificate-img"
+                                />
+                              </div>
+
+                              <input
+                                type="hidden"
+                                name="certificate"
+                                id="certificate"
+                                value={imageCertUrl}
+                              />
+                            </>
+                          )}
                         </div>
                       </>
                     )}
@@ -129,8 +333,17 @@ export default function Action(props) {
                     </div>
                   </form>
                 </div>
+              ) : isPostLoading ? (
+                <p>Loading posts...</p>
+              ) : postInfor && postInfor.length > 0 ? (
+                <div>
+                  <h2>Your post recently</h2>
+                  {postInfor.map((post, index) => (
+                    <PostItem key={index} post={post} />
+                  ))}
+                </div>
               ) : (
-                <p>Detail information here...</p>
+                <p>You currently have no posts</p>
               )}
             </div>
           </div>

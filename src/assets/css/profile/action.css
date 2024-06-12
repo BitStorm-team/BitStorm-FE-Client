@@ -60,6 +60,7 @@ h2 {
   max-height: 80vh;
   overflow-y: auto;
   margin-top: 50px;
+  overflow: hidden;
 }
 
 .modalOfPersonalInfor .modal-content {
@@ -77,9 +78,6 @@ h2 {
 
 .modalOfPersonalInfor .profile-picture {
   max-width: 150px;
-  height: auto;
-  border-radius: 50%;
-  margin-bottom: 20px;
 }
 
 .modalOfPersonalInfor .input-group {
@@ -113,5 +111,134 @@ h2 {
 }
 
 .modalOfPersonalInfor .update-button:hover {
+    background-color: #0056b3;
+}
+.avatar-container {
+    position: relative;
+    display: inline-block;
+}
+
+.avatar_profile_update {
+    width: 100px;
+    height: 100px;
+    background-color: #e4a9dd;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar_profile_update img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: red;
+
+}
+
+.edit-button {
+    position: absolute;
+    bottom: 10px;
+    right: -10px; /* Điều chỉnh để nút nằm ngoài vòng tròn */
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-input-container {
+  position: relative;
+  display: flex;
+  align-items: start;
   background-color: #0056b3;
+  gap: 20px;
+  padding: 5px;
+  height: 165px;
+  overflow: hidden;
+}
+
+.file-input-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.custom-button {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #72bdd8;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.custom-button:hover {
+  background-color: #f0f9ff;
+  color: #fff;
+}
+
+.certificate-img {
+  width: 200px;
+  display: block;
+  border: 2px solid #0002;
+  height: 100%;
+}
+.noti-post-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.noti-post-item:hover {
+  background-color: #ea43432a;
+}
+
+.noti-detail-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.noti-detail-link:hover {
+  text-decoration: underline;
 }
