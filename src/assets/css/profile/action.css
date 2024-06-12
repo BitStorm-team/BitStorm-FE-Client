@@ -78,9 +78,6 @@ h2 {
 
 .modalOfPersonalInfor .profile-picture {
   max-width: 150px;
-  height: auto;
-  border-radius: 50%;
-  margin-bottom: 20px;
 }
 
 .modalOfPersonalInfor .input-group {
@@ -124,7 +121,7 @@ h2 {
 .avatar_profile_update {
     width: 100px;
     height: 100px;
-    background-color: #0056b3;
+    background-color: #e4a9dd;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
@@ -224,4 +221,24 @@ h2 {
   display: block;
   border: 2px solid #0002;
   height: 100%;
+}
+.noti-post-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.noti-post-item:hover {
+  background-color: #ea43432a;
+}
+
+.noti-detail-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.noti-detail-link:hover {
+  text-decoration: underline;
 }
