@@ -70,6 +70,7 @@ const Expert = () => {
     try {
       const res = await axios.post(API, { searchTerm: term });
       setExpertName(res.data.data);
+      console.log("äsgsdgdfga",expertName)
       setSearchPerformed(true);
       if (res.data.data.length === 0) {
         setError(true);
@@ -209,11 +210,12 @@ const Expert = () => {
         ) : (
           <>
             <Slider {...settings}>
-              {response.map((item) => (
+              {response.map((item,index) => (
                 <CardPrice
+                  key={index}
                   name={item.name}
                   email={item.email}
-                  profile_picture={item.profile_picture}
+                  image={item.profile_picture}
                   id={item.id}
                 />
               ))}
