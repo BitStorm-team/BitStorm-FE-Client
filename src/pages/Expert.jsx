@@ -1,5 +1,7 @@
 import { Pagination, message } from "antd";
 import "../assets/css/expert.css";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -105,24 +107,30 @@ const Expert = () => {
   const onChangeItem = (id) => {
     navigate(`/expert/${id}`);
   };
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
+ 
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 5,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true,
       },
-    ],
-  };
+    },
+  ],
+  appendDots: dots => (
+    <div>
+      {dots.slice(0, 5)}
+    </div>
+  )
+};
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItem = experts.slice(indexOfFirstItem, indexOfLastItem);
@@ -216,7 +224,7 @@ const Expert = () => {
                   name={item.name}
                   email={item.email}
                   image={item.profile_picture}
-                  id={item.id}
+                  id={item.expert_id}
                 />
               ))}
             </Slider>
@@ -237,34 +245,33 @@ const Expert = () => {
           </>
         )}
       </div>
-      <div className="wrapper search-item">
+      <div className="wrapper">
         {pageLoading ? (
           <Loading />
         ) : searchPerformed && error ? (
           <Error />
+        ) : null}
+      </div>
+      <div className="card-containerr">
+        {pageLoading ? (
+          <Loading />
         ) : (
           <>
-            {expertName.map((item, index) => (
-              <div className="card" key={index}>
-                <img
-                  className="card-image"
-                  src={item.profile_picture}
-                  alt={item.name}
+            <Slider {...settings}>
+              {expertName.map((item,index) => (
+                <CardPrice
+                  key={index}
+                  name={item.name}
+                  email={item.email}
+                  image={item.profile_picture}
+                  id={item.id}
                 />
-                <h2>{item.name}</h2>
-                <p>{item.email}</p>
-                <button
-                  className="custom-btn btn-16"
-                  onClick={() => onChangeItem(item.id)}
-                >
-                  Read More
-                </button>
-              </div>
-            ))}
+              ))}
+            </Slider>
           </>
         )}
       </div>
-
+      <div style={{ margin: 20 }}></div>
       <div className="wrapper">
         {pageLoading ? (
           <Loading />
