@@ -45,7 +45,6 @@ export default function Post() {
     const fetchUserData = async () => {
       try {
         const userProfile = await getUserProfile();
-        console.log("User Profile:", userProfile);
         setUserProfile(userProfile);
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
