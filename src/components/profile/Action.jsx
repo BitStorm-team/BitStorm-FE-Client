@@ -5,6 +5,7 @@ import { API_URL, headerAPI } from "../../utils/helpers";
 import { message } from "antd";
 import "../../assets/css/profile/loadingProfille.css";
 import PostItem from "./PostItem";
+import { BellOutlined } from "@ant-design/icons";
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [formData, setFormData] = useState({});
@@ -236,6 +237,7 @@ export default function Action(props) {
                           </button>
                         </>
                       )}
+                      
                     </div>
                     <input
                       type="hidden"
