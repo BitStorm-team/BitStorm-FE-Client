@@ -3,7 +3,7 @@ import React from "react";
 const CardPrice = ({ name, email, profile_picture, id, price}) => {
     const navigate = useNavigate();
     const handleDetail = () => {
-        navigate(`/expert-detail/${id}`);
+        navigate(`/expert/${id}`);
       };
     return (
         <div className="cardprice">
