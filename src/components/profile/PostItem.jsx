@@ -1,3 +1,4 @@
+import { BellOutlined } from "@ant-design/icons";
 import "../../assets/css/profile/action.css";
 
 export default function PostItem({ post }) {
@@ -7,6 +8,7 @@ export default function PostItem({ post }) {
   return (
     <div className="noti-post-item">
       <span>You created a new post at {formattedDate}</span>
+      <BellOutlined />
     </div>
   );
 }

@@ -31,11 +31,16 @@ const SignIn = () => {
     setLoading(true); // 2. Start loading when sign-in process starts
     try {
       const data = await signIn(values, csrfToken);
-      const { access_token, expires_in } = data;
-      console.log("Login successful:", data);
-      setStorage("__token__", access_token);
-      setStorage("expires_in", expires_in);
-      navigate("/");
+      const { access_token, expires_in, user } = data;
+      const { status } = user;
+      if (status !== 0) {
+        console.log("Login successful:", data);
+        setStorage("__token__", access_token);
+        setStorage("expires_in", expires_in);
+        navigate("/");
+      }else{
+        message.error('Your account is blocked!')
+      }
     } catch (error) {
       console.error("Login failed:", error);
       message.error(
