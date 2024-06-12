@@ -4,6 +4,7 @@ import "../../assets/css/profile/action.css";
 import { API_URL, headerAPI } from "../../utils/helpers";
 import { message } from "antd";
 import "../../assets/css/profile/loadingProfille.css";
+import PostItem from "./PostItem";
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [formData, setFormData] = useState({});
@@ -15,7 +16,8 @@ export default function Action(props) {
   const fileInputRef = useRef(null); // Ref để truy cập input file
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingCert, setIsLoadingCert] = useState(false);
-
+  const [isPostLoading, setIsPostLoading] = useState(true);
+  const {postInfor} = props;
   useEffect(() => {
     if (props.infor) {
       setFormData({
@@ -24,7 +26,22 @@ export default function Action(props) {
       });
     }
   }, [props.infor]);
+  useEffect(() => {
+    // Giả lập quá trình tải dữ liệu bài viết
+    const fetchPosts = async () => {
+      setIsPostLoading(true);
+      try {
+        // Giả lập API call
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setIsPostLoading(false);
+      } catch (error) {
+        console.error("Error loading posts:", error);
+        setIsPostLoading(false);
+      }
+    };
 
+    fetchPosts();
+  }, []);
   const openDetailModal = () => setShowDetailModal(true);
   const closeDetailModal = () => setShowDetailModal(false);
 
@@ -306,14 +323,6 @@ export default function Action(props) {
                               />
                             </>
                           )}
-                          {/* {formData.expert?.certificate && (
-                            <img
-                              src={imageCertUrl}
-                              alt="Certificate"
-                              className="certificate-img"
-                              style={{ width: "200px" }}
-                            />
-                          )} */}
                         </div>
                       </>
                     )}
@@ -324,8 +333,17 @@ export default function Action(props) {
                     </div>
                   </form>
                 </div>
+              ) : isPostLoading ? (
+                <p>Loading posts...</p>
+              ) : postInfor && postInfor.length > 0 ? (
+                <div>
+                  <h2>Your post recently</h2>
+                  {postInfor.map((post, index) => (
+                    <PostItem key={index} post={post} />
+                  ))}
+                </div>
               ) : (
-                <p>Detail information here...</p>
+                <p>You currently have no posts</p>
               )}
             </div>
           </div>

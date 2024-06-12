@@ -33,6 +33,7 @@ export default function Profile() {
   const [userInformation, setUserInformation] = useState({});
   const [bookings, setBookings] = useState([]);
   const [userId, setUserId] = useState(1);
+  const [postData, setPostData] = useState([{}]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,7 +44,7 @@ export default function Profile() {
         setUserInformation((prev) => ({ ...prev, ...data }));
         if (data) {
           const loggedInUser = data;
-          console.log('user' + loggedInUser);
+          console.log("user" + loggedInUser);
 
           if (loggedInUser.role_id === 3) {
             try {
@@ -54,7 +55,7 @@ export default function Profile() {
 
               setUser("expert");
               setUserData(expertResponse.data.data);
-              console.log('expert' + expertResponse.data.data);
+              console.log("expert" + expertResponse.data.data);
               setLoading(false);
             } catch (error) {
               console.error("Error fetching expert profile", error);
@@ -75,6 +76,16 @@ export default function Profile() {
             setUserData(loggedInUser);
           }
         }
+        try {
+          const postResponse = await axios.get(
+            `${API_URL}/profile/notifications`,
+            { headers: header }
+          );
+          setPostData(postResponse.data.data);
+          console.log(postResponse.data.data);
+        } catch (error) {
+          // message.error(
+        }
       } catch (error) {
         console.error("Error fetching user data", error);
       }
@@ -87,7 +98,7 @@ export default function Profile() {
     const fetchBookings = async () => {
       if (!userInformation.id) return; // Ensure userInformation.id is available
       try {
-        console.log('User ID:', userId);
+        console.log("User ID:", userId);
         let bookingsData;
         if (userInformation.role_id === 3) {
           bookingsData = await getAllBookingExpert(userInformation.id);
@@ -193,6 +204,7 @@ export default function Profile() {
             icon={<ClockCircleFilled />}
             title="Personal activity"
             description="Review the history of your calendars and posts..."
+            postInfor = {postData}
           />
           <Action
             icon={<SettingFilled />}
@@ -213,7 +225,7 @@ export default function Profile() {
               </button>
             </div>
             <div className="examination_schedule_box">
-              <h5>Your examination schedule</h5>
+              <h5>Your schedule</h5>
               <div className="schedule_item_box">
                 {Array.isArray(allSchedules) && allSchedules.length === 0 ? (
                   <></>
@@ -248,7 +260,9 @@ export default function Profile() {
                   />
                 ))}
               </div>
-            ) : <p>You don't have any booking yet!</p>
+            ) : (
+              <p>You don't have any booking yet!</p>
+            )
           ) : (
             <div className="booking_history_item">
               <p>Loading...</p>

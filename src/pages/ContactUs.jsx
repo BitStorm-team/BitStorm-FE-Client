@@ -226,7 +226,7 @@ const ContactUs = () => {
             </div>
           </div>
           <div className="doctor_contact">
-            <h1 style={{ marginTop: "10px" }}>
+            <h1 style={{ marginTop: "20px", marginBottom:"20px" }}>
               Some experts in the field of psychology
             </h1>
             {loading ? (
