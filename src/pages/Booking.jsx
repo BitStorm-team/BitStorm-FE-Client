@@ -54,10 +54,9 @@ const Booking = () => {
     getUser();
   }, []);
 
-
   const handleErrorIsExpert = () => {
-    alert('You are not allowed to book')
-  }
+    alert("You are not allowed to book");
+  };
 
   const handleSubmit = async (values) => {
     const { notes } = values;
@@ -79,7 +78,6 @@ const Booking = () => {
       const { data } = paymentResponse;
 
       if (data.code === "00") {
-
         // If payment URL is received successfully, redirect to the payment page
         window.location.href = data.data;
       } else {
@@ -118,7 +116,7 @@ const Booking = () => {
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "center", // Chỉnh sửa từ "flex-end" thành "center" để ảnh nằm ở trung tâm theo chiều ngang
             alignItems: "center",
             flexDirection: "column",
             height: "400px",
@@ -128,9 +126,10 @@ const Booking = () => {
         >
           <img
             style={{
-              width: "100%",
+              width: "auto", // Sử dụng "auto" để chiều rộng tự điều chỉnh
               height: "100%",
-              objectFit: "cover",
+              objectFit: "cover", // Chỉnh từ "cover" thành "contain" để ảnh không bị cắt
+              margin: "auto", // Sử dụng "auto" để ảnh nằm giữa theo chiều ngang
             }}
             src={expertInfo.profile_picture}
             alt=""
@@ -173,8 +172,8 @@ const Booking = () => {
               style={{
                 float: "right",
                 width: "100%",
-                height : '50px',
-                boxShadow : "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+                height: "50px",
+                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
               }}
               htmlType="submit"
             >
