@@ -7,6 +7,7 @@ import { API_URL } from '../../utils/helpers';
 import { deletePostApi, getAllPostsApi } from '../../api/post';
 import Comment from './Comment';
 import PostDetail from './PostDetail';
+import { getUser } from '../../api';
 
 const PostContent = styled.div`
   margin-left: 10px;
@@ -23,14 +24,15 @@ const formItemLayout = {
     lg: { span: 20 },
   },
 };
-function PostCart({ post, currentUser, setPosts }) {
+function PostCart({ post, setPosts }) {
+  const currentUser=getUser();
     const [isExpanded, setIsExpanded] = useState(false);
-    const [loading, setLoading] = useState(false); // State for loading
+    const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [isModalPostDetailOpen, setIsModalPostDetailOpen] = useState(false);
-    const { id, content, comments, profile_picture, is_anonymous, user } = post;
+    const { id, content, comments, profile_picture, is_anonymous, user} = post;
     const words = content.split(' ');
     const isLongContent = words.length > 50;
     const displayedContent = isExpanded ? content : words.slice(0, 50).join(' ');

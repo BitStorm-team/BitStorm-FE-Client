@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Col, Dropdown, Menu, Row, Tooltip } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { getUserProfile } from '../../api';
+import { getUser, getUserProfile } from '../../api';
+import CommentInput from './CommentInput';
 
 const CommentContent = styled.div`
   display: flex;
@@ -37,33 +38,27 @@ const ReplyButton = styled(Button)`
 const menu = (
   <Menu>
     <Menu.Item key="1">
-      Update Post
+      Update comment
     </Menu.Item>
     <Menu.Item key="2">
-      Delete Post
+      Delete comment
     </Menu.Item>
   </Menu>
 );
 
 function Comment({ comment }) {
   const [userProfile, setUserProfile] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userProfile = await getUserProfile();
-        setUserProfile(userProfile);
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    };
-    fetchUserData();
-  }, []);
-
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const [replies, setReplies] = useState(comment.replies || []);
+  const user = getUser();
+  const handleReplyCreated = (newReply) => {
+    setReplies([...replies, newReply]);
+    setShowReplyInput(false);
+  };
   return (
     <CommentContent>
       <CommentContainer>
-        <Avatar size={40} src={comment.user.profile_picture} alt={comment.user.name} />
+        <Avatar size={40} src={user.profile_picture} alt={user.name} />
         <CommentText>
           <Row justify="space-between">
             <Col xs={{ span: 23 }} lg={{ span: 23 }}>
@@ -73,26 +68,35 @@ function Comment({ comment }) {
             <Col xs={{ span: 1 }} lg={{ span: 1 }}>
               {userProfile?.id === comment.user.id && (
                 <Tooltip title="More options">
-                  <MoreOutlined />
+                  <Dropdown overlay={menu} trigger={['click']}>
+                    <MoreOutlined style={{ fontSize: '24px', cursor: 'pointer' }} />
+                  </Dropdown>
                 </Tooltip>
               )}
             </Col>
           </Row>
           <Row>
             <Col>
-              <ReplyButton type='link'>Reply</ReplyButton>
+              <ReplyButton type='link' onClick={() => setShowReplyInput(!showReplyInput)}>Reply</ReplyButton>
             </Col>
           </Row>
+          {showReplyInput && (
+            <CommentInput 
+              postId={comment.post_id}
+              parentId={comment.id}
+              onCommentCreated={handleReplyCreated}
+            />
+          )}
         </CommentText>
       </CommentContainer>
-      {comment.replies && (
+      {comment.replies   && (
         <ReplyContainer>
           {comment.replies.map(reply => (
             <div key={reply.id}>
-              <Reply reply={reply} userProfile={userProfile} />
+              <Reply reply={reply} />
               {reply.replies && reply.replies.map(subReply => (
                 <div key={subReply.id} style={{ marginLeft: '1.5rem', marginBottom: '10px' }}>
-                  <Reply reply={subReply} userProfile={userProfile} />
+                  <Reply reply={subReply}  />
                 </div>
               ))}
             </div>
@@ -104,9 +108,16 @@ function Comment({ comment }) {
 };
 
 const Reply = ({ reply, userProfile }) => {
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const [replies, setReplies] = useState(reply.replies || []);
+  const user = getUser();
+  const handleReplyCreated = (newReply) => {
+    setReplies([...replies, newReply]);
+    setShowReplyInput(false);
+  };
   return (
     <ReplyContainer>
-      <Avatar size={30} src={reply.user.profile_picture} alt={reply.user.name} />
+      <Avatar size={30} src={user.profile_picture} alt={user.name} />
       <CommentText>
         <Row justify="space-between">
           <Col xs={{ span: 23 }} lg={{ span: 23 }}>
@@ -123,9 +134,17 @@ const Reply = ({ reply, userProfile }) => {
         </Row>
         <Row>
           <Col>
-            <ReplyButton type='link'>Reply</ReplyButton>
+            <ReplyButton type='link' onClick={() => setShowReplyInput(!showReplyInput)}>Reply</ReplyButton>
           </Col>
         </Row>
+        {showReplyInput && (
+          <CommentInput 
+            postId={reply.post_id}
+            parentId={reply.id}
+            onCommentCreated={handleReplyCreated}
+            user={userProfile}
+          />
+        )}
       </CommentText>
     </ReplyContainer>
   );

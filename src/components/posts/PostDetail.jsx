@@ -1,10 +1,7 @@
 import { Avatar, Button, Form, Modal, message } from "antd";
-import PostCart from "./PostCart";
 import Comment from "./Comment";
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
-import { API_URL } from "../../utils/helpers";
-import { getUserProfile } from "../../api";
+import CommentInput from "./CommentInput";
 
 function PostDetail({ post, isModalPostDetailOpen, setIsModalPostDetailOpen}){
     const [isExpanded, setIsExpanded] = useState(false);
@@ -12,6 +9,10 @@ function PostDetail({ post, isModalPostDetailOpen, setIsModalPostDetailOpen}){
     const isLongContent = words.length > 50;
     const displayedContent = isExpanded ? post.content : words.slice(0, 50).join(' ');
     const comments = useMemo(() => post.comments || [], [post.comments]);
+    const [replies, setReplies] = useState([]);
+    const handleReplyCreated = (newReply) => {
+    setReplies([...replies, newReply]);
+    };
     return(
         <>
             <Modal
@@ -34,12 +35,16 @@ function PostDetail({ post, isModalPostDetailOpen, setIsModalPostDetailOpen}){
                         )}
                         <hr />
                     </div>
-                    {/* <p>By: {post.is_anonymous ? 'Anonymous' : post.user.name}</p> */}
                     <div>
                         {comments.map(comment => (
                             <Comment key={comment.id} comment={comment}/>
                         ))}
                     </div>
+                    <CommentInput 
+                    postId={post.id}
+                    parentId={null}
+                    onCommentCreated={handleReplyCreated}
+                    />
                 </div>
             </Modal>
         </>
