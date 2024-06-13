@@ -1,6 +1,6 @@
 import { Pagination, message } from "antd";
 import "../assets/css/expert.css";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -107,7 +107,7 @@ const Expert = () => {
   const onChangeItem = (id) => {
     navigate(`/expert/${id}`);
   };
- 
+
 const settings = {
   dots: true,
   infinite: true,
