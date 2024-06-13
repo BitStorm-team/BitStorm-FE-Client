@@ -43,6 +43,7 @@ const Expert = () =>{
         console.error("There was an error making the request:", error);
       }
     };
+  
     useEffect(() => {
         const fetchExperts = async () => {
             const API = `${API_URL}/experts`;
@@ -176,7 +177,7 @@ const Expert = () =>{
                         price= {item.price}
                         email={item.email}
                         profile_picture={item.profile_picture}
-                        id={item.id}
+                        id={item.expert_id}
                         />
                     ))}
                 </Slider>
