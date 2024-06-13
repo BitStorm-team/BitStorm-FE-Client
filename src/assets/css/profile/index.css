@@ -58,10 +58,11 @@
 
 .action_box {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
   cursor: pointer;
 }
+
 
 .btn_create_schedule_btn {
   background-color: #1678F2;

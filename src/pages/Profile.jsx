@@ -17,6 +17,7 @@ import { DatePicker } from "antd";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { message } from "antd";
+import image_boss from "../assets/images/porfile_bpng_remove.png";
 
 export default function Profile() {
   const [user, setUser] = useState("user");
@@ -204,13 +205,21 @@ export default function Profile() {
             icon={<ClockCircleFilled />}
             title="Personal activity"
             description="Review the history of your calendars and posts..."
-            postInfor = {postData}
+            postInfor={postData}
           />
-          <Action
-            icon={<SettingFilled />}
-            title="Personal setting"
-            description="Personal information can be edited..."
-          />
+          <div
+            style={{
+              width: "40%",
+            }}
+          >
+            <img
+              style={{
+                height: "400px",
+              }}
+              src={image_boss}
+              alt=""
+            />
+          </div>
         </div>
         {user === "user" ? (
           <></>
