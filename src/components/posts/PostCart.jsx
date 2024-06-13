@@ -1,10 +1,10 @@
 import { CommentOutlined, HeartOutlined, HeartTwoTone, UserOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, Form, Input, Menu, Modal, Switch, message } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { API_URL } from '../../utils/helpers';
-import { deletePostApi, getAllPostsApi } from '../../api/post';
+import { checkIsLikedApi, deletePostApi, getAllPostsApi, likePostApi, unlikePostApi } from '../../api/post';
 import Comment from './Comment';
 import PostDetail from './PostDetail';
 import { getUser } from '../../api';
@@ -29,6 +29,7 @@ function PostCart({ post, setPosts }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
+    const [isLiked, setIsLiked] = useState(false);
     const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [isModalPostDetailOpen, setIsModalPostDetailOpen] = useState(false);
@@ -36,7 +37,45 @@ function PostCart({ post, setPosts }) {
     const words = content.split(' ');
     const isLongContent = words.length > 50;
     const displayedContent = isExpanded ? content : words.slice(0, 50).join(' ');
+    useEffect(() => {
+      const checkIsLiked = async () => {
 
+        try {
+          const response = await checkIsLikedApi(id);
+          setIsLiked(response.isLiked);
+        } catch (error) {
+          console.error('Error checking like status:', error);
+        }
+      };
+  
+      checkIsLiked();
+    }, [id]);
+  
+    const handleLike = async () => {
+      try {
+        const response = await likePostApi(id);
+        if (response.message) {
+          setIsLiked(true);
+          post.like_count++;
+          message.success('Liked the post!');
+        }
+      } catch (error) {
+        console.error('Error liking the post:', error);
+      }
+    };
+  
+    const handleUnlike = async () => {
+      try {
+        const response = await unlikePostApi(id);
+        if (response.message) {
+          setIsLiked(false);
+          post.like_count--;
+          message.success('Unliked the post!');
+        }
+      } catch (error) {
+        console.error('Error unliking the post:', error);
+      }
+    };
     const handleFormUpdatePost = () => {
       form.validateFields().then(async values => {
         const token = localStorage.getItem("__token__");
@@ -209,9 +248,15 @@ function PostCart({ post, setPosts }) {
           )}
         </PostContent>
         <div style={{ marginTop: '20px', display:'flex', gap:'10px' }}>
-            <HeartOutlined style={{
-              fontSize: '32px',
-            }} />
+        {
+              isLiked ? (
+                <HeartTwoTone twoToneColor="#eb2f96" onClick={handleUnlike} />
+              ) : (
+                <HeartOutlined onClick={handleLike}  style={{
+                  fontSize: '32px',
+                }}/>
+              )
+            }
             <CommentOutlined onClick={() => setIsModalPostDetailOpen(true)} style={{
               fontSize: '32px',
             }}/>
