@@ -36,6 +36,7 @@ const Booking = () => {
     try {
       const response = await axios.get(API_URL + `/experts/${expert_id}`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
@@ -74,7 +75,13 @@ const Booking = () => {
     try {
       const paymentResponse = await axios.post(`${API_URL}/payment`, {
         total: price * 100,
-      }); // Adjust the amount here
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }); // Adjust the amount here
       const { data } = paymentResponse;
 
       if (data.code === "00") {
