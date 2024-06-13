@@ -1,6 +1,15 @@
 import axios from "axios";
 import { API_URL } from "../utils/helpers";
 
+export const getCommentApi = async (postId) => {
+    const token = localStorage.getItem("__token__");
+    return axios.get(`${API_URL}/posts/${postId}/comments/`,{
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+};
 export const createCommentApi = async (postId, commentData) => {
     const token = localStorage.getItem("__token__");
     return axios.post(`${API_URL}/posts/${postId}/comments/create`,

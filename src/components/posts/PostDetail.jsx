@@ -2,14 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, Button, Modal } from "antd";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
+import { getCommentApi } from '../../api/comment';
 
 function PostDetail({ post, isModalPostDetailOpen, setIsModalPostDetailOpen}){
     const [isExpanded, setIsExpanded] = useState(false);
-    const [comments, setComments] = useState(post.comments || []);
+    const [comments, setComments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-    setComments(post.comments || []);
-    }, [post.comments]);
+    const fetchComments = async () => {
+        try {
+            setLoading(false);
+            const response = await getCommentApi(post.id);
+            setComments(response.data.data.comments);
+            } catch (error) {
+            console.error("Failed to fetch comments:", error);
+        }finally{
+            setLoading(true);
+        }
+      };
+    
+      useEffect(() => {
+        if (isModalPostDetailOpen) {
+          fetchComments();
+        }
+      }, [isModalPostDetailOpen]);
+
+    // useEffect(() => {
+    // setComments(post.comments || []);
+    // }, [post.comments]);
     
     const words = post.content.split(' ');
     const isLongContent = words.length > 50;
