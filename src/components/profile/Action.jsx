@@ -6,6 +6,7 @@ import { message } from "antd";
 import "../../assets/css/profile/loadingProfille.css";
 import PostItem from "./PostItem";
 import { BellOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 export default function Action(props) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [formData, setFormData] = useState({});
@@ -18,7 +19,8 @@ export default function Action(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingCert, setIsLoadingCert] = useState(false);
   const [isPostLoading, setIsPostLoading] = useState(true);
-  const {postInfor} = props;
+  const { postInfor } = props;
+  const navigate = useNavigate();
   useEffect(() => {
     if (props.infor) {
       setFormData({
@@ -213,7 +215,7 @@ export default function Action(props) {
                 &times;
               </span>
               {props.infor ? (
-                <div data-aos="zoom-in">
+                <div>
                   <h2>Personal Information</h2>
                   <form onSubmit={handleSubmit}>
                     <div className="avatar-container">
@@ -237,7 +239,6 @@ export default function Action(props) {
                           </button>
                         </>
                       )}
-                      
                     </div>
                     <input
                       type="hidden"
@@ -340,9 +341,12 @@ export default function Action(props) {
               ) : postInfor && postInfor.length > 0 ? (
                 <div>
                   <h2>Your post recently</h2>
-                  {postInfor.map((post, index) => (
-                    <PostItem key={index} post={post} />
-                  ))}
+                  {postInfor
+                    .slice()
+                    .reverse()
+                    .map((post, index) => (
+                      <PostItem key={index} post={post} />
+                    ))}
                 </div>
               ) : (
                 <p>You currently have no posts</p>

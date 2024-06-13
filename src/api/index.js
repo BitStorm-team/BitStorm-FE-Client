@@ -26,6 +26,7 @@ export const signIn = async (values, csrfToken) => {
         "X-CSRF-TOKEN": csrfToken,
       },
     });
+    setUser(response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -57,13 +58,22 @@ export const getUserProfile = async () => {
   try {
     // First attempt with the primary URL
     const response = await api.get(apiUrl, { headers: header });
+    setUser(response.data);
     return response.data;
   } catch (error) {
     console.error("Primary server error:", error);
     throw error;
   }
 };
+let user = null;
 
+export const setUser = (userInfo) => {
+    user = userInfo;
+};
+
+export const getUser = () => {
+    return user;
+};
 export const getExpertProfile = async (userId) => {
   const header = headerAPI();
   const apiUrl = `${API_URL}/experts/profile/${userId}`;

@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { API_URL } from '../../utils/helpers';
 import { deletePostApi, getAllPostsApi } from '../../api/post';
+import Comment from './Comment';
+import PostDetail from './PostDetail';
+import { getUser } from '../../api';
 
 const PostContent = styled.div`
   margin-left: 10px;
@@ -21,16 +24,18 @@ const formItemLayout = {
     lg: { span: 20 },
   },
 };
-function PostCart({ post, currentUser, setPosts }) {
+function PostCart({ post, setPosts }) {
+  const currentUser=getUser();
     const [isExpanded, setIsExpanded] = useState(false);
-    const [loading, setLoading] = useState(false); // State for loading
+    const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-    const { id, content, comments, profile_picture, is_anonymous, user } = post;
+    const [isModalPostDetailOpen, setIsModalPostDetailOpen] = useState(false);
+    const { id, content, comments, profile_picture, is_anonymous, user} = post;
     const words = content.split(' ');
     const isLongContent = words.length > 50;
-    const displayedContent = isExpanded ? content : words.slice(0, 50).join(' ') + '...';
+    const displayedContent = isExpanded ? content : words.slice(0, 50).join(' ');
 
     const handleFormUpdatePost = () => {
       form.validateFields().then(async values => {
@@ -166,8 +171,7 @@ function PostCart({ post, currentUser, setPosts }) {
        <Modal
         title="Confirm Delete Post"
         open={isModalDeleteOpen}
-        onCancel={() => setIsModalDeleteOpen(false)}
-        
+        onCancel={() => setIsModalDeleteOpen(false)}  
         footer={[
           <Button key="cancel" onClick={() => setIsModalDeleteOpen(false)}>
             Cancel
@@ -189,11 +193,7 @@ function PostCart({ post, currentUser, setPosts }) {
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar style={{marginRight:"1rem"}}
-                      size={40} 
-                      src={user.profile_picture}
-                      alt={user.name}
-                  />
+            <Avatar style={{marginRight:"1rem"}} size={40} src={user.profile_picture} alt={user.name}/>
             <p><strong>{is_anonymous ? 'Anonymous' : user.name}</strong></p>
           </div>
           {user?.id === currentUser?.id && (
@@ -205,18 +205,22 @@ function PostCart({ post, currentUser, setPosts }) {
         <PostContent>
           <p style={{marginBottom:'0', }}>{displayedContent}</p>
           {isLongContent && (
-          <Button style={{padding:'0'}} type="link" onClick={() => setIsExpanded(!isExpanded)}> {isExpanded ? 'Thu gọn' : 'Read More'}</Button>
+          <Button style={{padding:'0'}} type="link" onClick={() => setIsExpanded(!isExpanded)}> {isExpanded ? 'Show less' : 'Show More'}</Button>
           )}
         </PostContent>
         <div style={{ marginTop: '20px', display:'flex', gap:'10px' }}>
             <HeartOutlined style={{
               fontSize: '32px',
             }} />
-            <CommentOutlined style={{
+            <CommentOutlined onClick={() => setIsModalPostDetailOpen(true)} style={{
               fontSize: '32px',
             }}/>
         </div>
         <span style={{ marginLeft: '8px' }}>{post.like_count} lượt thích</span>
+        {isModalPostDetailOpen && (
+          <PostDetail  post={post}isModalPostDetailOpen={isModalPostDetailOpen}
+          setIsModalPostDetailOpen={setIsModalPostDetailOpen} />
+        )}
       </div>
     );
 }
