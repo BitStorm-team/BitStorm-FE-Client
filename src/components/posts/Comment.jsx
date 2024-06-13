@@ -58,7 +58,13 @@ function Comment({ comment, onCommentUpdated, onCommentDeleted }) {
     setReplies([...replies, newReply]);
     setShowReplyInput(false);
   };
+  const handleCommentUpdated = (updatedComment) => {
+    setReplies(replies.map(comment => comment.id === updatedComment.id ? updatedComment : comment));
+  };
 
+  const handleCommentDeleted = (commentId) => {
+    setReplies(replies.filter(comment => comment.id !== commentId));
+  };
   const handleUpdate = async () => {
     if (!content.trim()) {
       message.error('Content is required');
@@ -167,7 +173,7 @@ function Comment({ comment, onCommentUpdated, onCommentDeleted }) {
       {replies.length > 0 && (
         <ReplyContainer>
           {replies.map(reply => (
-            <Comment key={reply.id} comment={reply} onCommentUpdated={onCommentUpdated} onCommentDeleted={onCommentDeleted} />
+            <Comment key={reply.id} comment={reply} onCommentUpdated={handleCommentUpdated} onCommentDeleted={handleCommentDeleted} />
           ))}
         </ReplyContainer>
       )}
