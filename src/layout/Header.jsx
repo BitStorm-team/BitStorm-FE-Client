@@ -43,6 +43,8 @@ const MainHeader = () => {
     }
   }, [userInfo]);
 
+  // Call the checkLocalStorage function where appropriate in your code
+
   const fetchDataAndBook = async () => {
     const currentUrlParams = window.location.search;
     const transaction = checkTransactionStatus(currentUrlParams);
