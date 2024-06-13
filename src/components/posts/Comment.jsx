@@ -1,8 +1,9 @@
-import React, { useState} from 'react';
-import { Avatar, Button, Col, Dropdown, Menu, Row, Tooltip } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Avatar, Button, Col, Dropdown, Input, Menu, Modal, Row, Tooltip, message } from 'antd';
+import { MoreOutlined, SendOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { getUser} from '../../api';
+import { getUser } from '../../api';
+import { updateCommentApi, deleteCommentApi } from '../../api/comment';
 import CommentInput from './CommentInput';
 
 const CommentContent = styled.div`
@@ -34,31 +35,108 @@ const ReplyButton = styled(Button)`
   padding: 0px;
 `;
 
-const menu = (
-  <Menu>
-    <Menu.Item key="1">Update comment</Menu.Item>
-    <Menu.Item key="2">Delete comment</Menu.Item>
-  </Menu>
-);
+const CommentTextarea = styled(Input.TextArea)`
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 100%;
+`;
 
-function Comment({ comment }) {
+const SendButton = styled(Button)`
+  margin-top: auto;
+`;
+
+function Comment({ comment, onCommentUpdated, onCommentDeleted }) {
   const [showReplyInput, setShowReplyInput] = useState(false);
+  const [showUpdateInput, setShowUpdateInput] = useState(false);
+  const [content, setContent] = useState(comment.content);
   const [replies, setReplies] = useState(comment.replies || []);
   const user = getUser();
+  const [isModalDeleteCommentOpen, setIsModalDeleteCommentOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleReplyCreated = (newReply) => {
     setReplies([...replies, newReply]);
     setShowReplyInput(false);
   };
+
+  const handleUpdate = async () => {
+    if (!content.trim()) {
+      message.error('Content is required');
+      return;
+    }
+    try {
+      const updatedComment = {
+        content: content.trim(),
+      };
+      const response = await updateCommentApi(comment.post_id, comment.id, updatedComment);
+      console.log(response);
+      setShowUpdateInput(false);
+
+      onCommentUpdated(response.data.data);
+    } catch (error) {
+      console.error('Failed to update comment:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteCommentApi(comment.post_id, comment.id);
+      onCommentDeleted(comment.id);
+    } catch (error) {
+      console.error('Failed to delete comment:', error);
+    }
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={() => setShowUpdateInput(true)}>Update comment</Menu.Item>
+      <Menu.Item key="2" onClick={() => setIsModalDeleteCommentOpen(true)}>Delete comment</Menu.Item>
+    </Menu>
+  );
+
   return (
     <CommentContent>
+      {/* Delete Confirmation Modal */}
+      <Modal
+        title="Confirm Delete Post"
+        open={isModalDeleteCommentOpen}
+        onCancel={() => setIsModalDeleteCommentOpen(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsModalDeleteCommentOpen(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="delete"
+            type="primary"
+            danger
+            loading={loading}
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>,
+        ]}
+      >
+        <p>Are you sure you want to delete this comment?</p>
+      </Modal>
       <CommentContainer>
-        <Avatar size={40} src={user.profile_picture} alt={user.name} />
+        <Avatar size={40} src={comment.user.profile_picture} alt={comment.user.name} />
         <CommentText>
           <Row justify="space-between">
             <Col xs={{ span: 23 }} lg={{ span: 23 }}>
               <strong>{comment.user.name}</strong>
-              <p style={{ margin: '5px 0', lineHeight: '1.4' }}>{comment.content}</p>
+              {showUpdateInput ? (
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CommentTextarea
+                    rows={2}
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                    placeholder="Write a comment..."
+                  />
+                  <SendButton type="primary" icon={<SendOutlined />} onClick={handleUpdate} />
+                </div>
+              ) : (
+                <p style={{ margin: '5px 0', lineHeight: '1.4' }}>{comment.content}</p>
+              )}
             </Col>
             <Col xs={{ span: 1 }} lg={{ span: 1 }}>
               {user?.id === comment.user.id && (
@@ -70,13 +148,15 @@ function Comment({ comment }) {
               )}
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <ReplyButton type='link' onClick={() => setShowReplyInput(!showReplyInput)}>Reply</ReplyButton>
-            </Col>
-          </Row>
+          {!showUpdateInput && (
+            <Row>
+              <Col>
+                <ReplyButton type='link' onClick={() => setShowReplyInput(!showReplyInput)}>Reply</ReplyButton>
+              </Col>
+            </Row>
+          )}
           {showReplyInput && (
-            <CommentInput 
+            <CommentInput
               postId={comment.post_id}
               parentId={comment.id}
               onCommentCreated={handleReplyCreated}
@@ -87,11 +167,12 @@ function Comment({ comment }) {
       {replies.length > 0 && (
         <ReplyContainer>
           {replies.map(reply => (
-            <Comment key={reply.id} comment={reply} />
+            <Comment key={reply.id} comment={reply} onCommentUpdated={onCommentUpdated} onCommentDeleted={onCommentDeleted} />
           ))}
         </ReplyContainer>
       )}
     </CommentContent>
   );
-};
+}
+
 export default Comment;

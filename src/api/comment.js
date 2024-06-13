@@ -14,7 +14,7 @@ export const createCommentApi = async (postId, commentData) => {
 
 export const updateCommentApi = async (postId, commentId, commentData) => {
     const token = localStorage.getItem("__token__");
-    return axios.put(`${API_URL}/posts/${postId}/comments/update/${commentId}`, commentData, {
+    return axios.post(`${API_URL}/posts/${postId}/comments/update/${commentId}`, commentData, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
