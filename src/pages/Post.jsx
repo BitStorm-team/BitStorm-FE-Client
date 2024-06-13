@@ -13,7 +13,7 @@ import {
   Spin,
 } from "antd";
 import PostCart from "../components/posts/PostCart";
-import { getUserProfile } from "../api"; // Ensure this import is correct
+import { getUser, getUserProfile } from "../api"; // Ensure this import is correct
 import axios from "axios";
 import { API_URL } from "../utils/helpers";
 import Loading from "../components/expertDetail/Loading";
@@ -40,19 +40,7 @@ export default function Post() {
   const [loading, setLoading] = useState(true); // State for loading
   const [form] = Form.useForm();
 
-  // Fetch user profile data
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userProfile = await getUserProfile();
-        console.log("User Profile:", userProfile);
-        setUserProfile(userProfile);
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    };
-    fetchUserData();
-  }, []);
+  const user=getUser();
 
   useEffect(() => {
     const token = localStorage.getItem("__token__");
@@ -132,7 +120,7 @@ export default function Post() {
       console.error("Error creating post:", error);
       message.error("Failed to create post");
     } finally {
-      setLoading(false); // Reset loading to false after process completes
+      setLoading(false); 
     }
   };
   
@@ -201,11 +189,11 @@ return (
           }}
         >
           <Col xs={3} lg={1}>
-            {userProfile && (
+            {user && (
               <Avatar
                 size={50}
-                src={userProfile.profile_picture}
-                alt={userProfile.name}
+                src={user.profile_picture}
+                alt={user.name}
               />
             )}
           </Col>
@@ -223,7 +211,7 @@ return (
           <Row>
             {posts.slice().reverse().map((post) => (
               <Col span={24} key={post.id}>
-                <PostCart post={post} currentUser={userProfile} setPosts={setPosts}/>
+                <PostCart post={post} setPosts={setPosts}/>
               </Col>
             ))}
           </Row>
