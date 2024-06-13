@@ -307,9 +307,7 @@ const settings = {
       <div className="background">
         <h1>Do you know</h1>
         <p>
-          Every year we happily work on many platforms to help everyone have a
-          website that heals everyone's soul. And that is also our mission.
-        </p>
+        Every year, we enthusiastically collaborate across a variety of platforms with the aim of helping everyone create a website that heals and uplifts the soul. Our mission extends beyond the technical aspects of web development; it is about fostering connections, providing comfort, and spreading positivity through the digital spaces we build. </p>
       </div>
       <CommentUser />
       <Star />
