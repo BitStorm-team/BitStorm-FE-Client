@@ -33,7 +33,7 @@ function CommentInput({ postId, parentId, onCommentCreated }) {
         content: content.trim()
       };
       const response = await createCommentApi(postId, commentData);
-      onCommentCreated(response.data);
+      onCommentCreated(response.data.data);
       setContent('');
     } catch (error) {
       console.error('Failed to create comment:', error);
