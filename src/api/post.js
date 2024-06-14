@@ -22,7 +22,7 @@ export const getAllPostsApi= async()=>{
         }
 };
 export const deletePostApi= async(id)=>{
-    // console.log('id post to delete' + id);
+    console.log('id post to delete' + id);
     try {
         const response = await axios.delete(
           API_URL + `/posts/delete/${id}`,
