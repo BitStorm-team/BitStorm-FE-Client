@@ -177,9 +177,6 @@ return (
 
     <Row style={{ margin: "10px 50px" }} justify="center">
       <Col span={24}>
-        <Search placeholder="input search text" enterButton />
-      </Col>
-      <Col span={24}>
         <Row
           style={{
             display: "flex",

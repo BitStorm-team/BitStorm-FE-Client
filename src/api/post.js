@@ -6,12 +6,8 @@ export const setPostDetais = (postInfor) => {postDetails= postInfor};
 export const getPostDetails =()=>{
   return postDetails;
 }
+const token = localStorage.getItem("__token__");
 export const getAllPostsApi= async()=>{
-    const token = localStorage.getItem("__token__");
-        if (!token) {
-          console.error("No token found");
-          return;
-        }
         try {
             const response = await axios.get(`${API_URL}/posts`, {
               headers: {
@@ -26,12 +22,13 @@ export const getAllPostsApi= async()=>{
         }
 };
 export const deletePostApi= async(id)=>{
-    const token = localStorage.getItem("__token__");
+    console.log('id post to delete' + id);
     try {
         const response = await axios.delete(
           API_URL + `/posts/delete/${id}`,
           {
             headers: {
+              "Content-Type" : "application/json",
               'Authorization': `Bearer ${token}`,
             },
           }
@@ -44,11 +41,6 @@ export const deletePostApi= async(id)=>{
       }
 };
   export const getOnePostApi=async(postId)=>{
-  const token = localStorage.getItem("__token__");
-        if (!token) {
-          console.error("No token found");
-          return;
-        }
         try {
             const response = await axios.get(`${API_URL}/posts/${postId}/comments`, {
               headers: {
@@ -56,10 +48,51 @@ export const deletePostApi= async(id)=>{
                 Authorization: `Bearer ${token}`,
               },
             });
-            setPostDetais(response);
             return response;
         } catch (error) {
         console.error("Error fetching posts:", error);
         message.error("Failed to fetch posts");
         }
 }
+// Kiểm tra xem bài viết đã được người dùng like hay chưa
+export const checkIsLikedApi = async (postId) => {
+  try {
+    const response = await axios.get(`${API_URL}/posts/${postId}/is-liked`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error checking like status:', error);
+    throw error;
+  }
+};
+
+export const likePostApi = async (postId) => {
+  try {
+    const response = await axios.post(`${API_URL}/posts/${postId}/like`, {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error liking the post:', error);
+    throw error;
+  }
+};
+
+export const unlikePostApi = async (postId) => {
+  try {
+    const response = await axios.delete(`${API_URL}/posts/${postId}/unlike`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error unliking the post:', error);
+    throw error;
+  }
+};

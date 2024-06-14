@@ -85,5 +85,4 @@ export function checkTransactionStatus(urlParams) {
 }
 
 // export const API_URL = process.env.API_URL || 'https://bitstormbe1.zeabur.app/api'
-
-export const API_URL = "http://localhost:8000/api";
+export const API_URL = 'http://127.0.0.1:8000/api';
