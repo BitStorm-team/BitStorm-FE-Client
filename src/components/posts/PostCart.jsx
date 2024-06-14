@@ -62,7 +62,6 @@ const PostCart = ({ post, setPosts,isLiked }) => {
   const words = content.split(" ");
   const isLongContent = words.length > 50;
   const displayedContent = isExpanded ? content : words.slice(0, 50).join(" ");
-
   
 
   const handleLike = async () => {
