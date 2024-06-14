@@ -197,3 +197,14 @@
   cursor: pointer;
 }
 
+.ant-message-success .ant-message-notice-content {
+  margin-top: 60px;
+}
+
+.ant-message-error .ant-message-notice-content {
+  margin-top: 60px;
+}
+
+.ant-message-notice-content {
+  margin-top: 60px;
+}
