@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  Input,
-  Button,
-  List,
-  Avatar,
-  Row,
-  Col,
-  Modal,
-  Form,
-  message,
-  Switch,
-  Spin,
-} from "antd";
-import PostCart from "../components/posts/PostCart";
-import { getUser, getUserProfile } from "../api"; // Ensure this import is correct
-import axios from "axios";
-import { API_URL } from "../utils/helpers";
-import Loading from "../components/expertDetail/Loading";
-import { getLikedPosts } from "../api/post";
+import React, {useEffect, useState} from 'react'
+import {Avatar, Button, Col, Form, Input, message, Modal, Row, Switch,} from 'antd'
+import PostCart from '../components/posts/PostCart'
+import {getUser} from '../api' // Ensure this import is correct
+import axios from 'axios'
+import {API_URL, headerAPI} from '../utils/helpers'
+import Loading from '../components/expertDetail/Loading'
+import {getLikedPosts} from '../api/post'
 
 
 const { Search } = Input;
@@ -44,39 +32,32 @@ export default function Post() {
   const user=getUser();
   useEffect(() => {
     const fetchData = async () => {
-      const likedPosts= await Promise.all([getLikedPosts()]);
-      setLikedPosts(likedPosts);
-    };
-
+      const likedPosts = await Promise.all([getLikedPosts()])
+      setLikedPosts(likedPosts)
+    }
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("__token__");
-
-    const fetchPosts = async () => {
-      setLoading(true); // Set loading to true before fetching posts
-      try {
-        const response = await axios.get(`${API_URL}/posts`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-        if (response.data.success) {
-          setPosts(response.data.data);
-        } else {
-          message.error(`Error fetching posts: ${response.data.message}`);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-        message.error("Failed to fetch posts");
-      } 
-      finally {
-        setLoading(false); // Set loading to false after fetching posts
+  const fetchPosts = async () => {
+    setLoading(true) // Set loading to true before fetching posts
+    try {
+      const response = await axios.get(`${API_URL}/posts`, {
+        headers: headerAPI(),
+      })
+      if (response.data.success) {
+        setPosts(response.data.data)
+      } else {
+        message.error(`Error fetching posts: ${response.data.message}`)
       }
-    };
+    } catch (error) {
+      console.error('Error fetching posts:', error)
+      message.error('Failed to fetch posts')
+    } finally {
+      setLoading(false) // Set loading to false after fetching posts
+    }
+  }
 
+  useEffect(() => {
     fetchPosts();
   }, []);
 
@@ -86,37 +67,31 @@ export default function Post() {
       console.error("No token found");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const values = form.getFieldsValue();
       console.log("Form values:", values);
-  
+
       const createResponse = await axios.post(
         `${API_URL}/posts/create`,
         values,
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: headerAPI(),
         }
       );
-  
+
       if (createResponse.data.success) {
         message.success("Post created successfully!");
         form.resetFields();
         setIsModalCreatePostOpen(false);
-  
+
         // Fetch posts again to update the table
         const fetchResponse = await axios.get(`${API_URL}/posts`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: headerAPI(),
         });
-  
+
         if (fetchResponse.data.success) {
           setPosts(fetchResponse.data.data);
         } else {
@@ -129,10 +104,10 @@ export default function Post() {
       console.error("Error creating post:", error);
       message.error("Failed to create post");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-  
+
 
 return (
   <>
@@ -215,11 +190,17 @@ return (
           <Loading />
         ) : (
           <Row>
-            {posts.slice().reverse().map((post) => (
-              <Col span={24} key={post.id}>
-                <PostCart post={post} setPosts={setPosts} isLiked={likedPosts.some(likedPost => likedPost.post_id === post.id)}/>
-              </Col>
-            ))}
+            {posts.slice().reverse().map((post) => {
+              const isLiked = likedPosts.some((likedPost) =>
+                parseInt(likedPost.post_id) === parseInt(post.id)
+              );
+              console.log('isLiked:', isLiked);
+              return (
+                <Col span={24} key={post.id}>
+                  <PostCart post={post} setPosts={setPosts} isLiked={isLiked} />
+                </Col>
+              );
+            })}
           </Row>
           )}
         </Col>
