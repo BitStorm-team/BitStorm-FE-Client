@@ -102,7 +102,7 @@ export default function ExpertDetail() {
   const { average_rating, certificate, experience, user } = expertDetail;
   const { name, email, profile_picture } = user;
   const rating = parseInt(average_rating, 10);
-  // console.log("feedback",feedback)
+  console.log("name user", expert)
 
   const handleFilterClick = (rating) => {
     setIsFilter(true);

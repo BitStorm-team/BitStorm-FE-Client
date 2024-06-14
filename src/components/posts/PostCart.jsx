@@ -1,8 +1,8 @@
 import {
   CommentOutlined,
-  HeartOutlined,
-  HeartFilled,
   EllipsisOutlined,
+  HeartFilled,
+  HeartOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -11,22 +11,20 @@ import {
   Form,
   Input,
   Menu,
+  message,
   Modal,
   Switch,
-  message,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { API_URL } from "../../utils/helpers";
+import { API_URL, headerAPI } from "../../utils/helpers";
 import {
-  checkIsLikedApi,
   deletePostApi,
   getAllPostsApi,
   likePostApi,
   unlikePostApi,
 } from "../../api/post";
-import Comment from "./Comment";
 import PostDetail from "./PostDetail";
 import { getUser } from "../../api";
 
@@ -47,65 +45,61 @@ const formItemLayout = {
   },
 };
 
-const PostCart = ({ post, setPosts }) => {
+const PostCart = ({ post, setPosts, isLiked }) => {
   const currentUser = getUser();
   const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.like_count);
   const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalPostDetailOpen, setIsModalPostDetailOpen] = useState(false);
+  const [liked, setLiked] = useState(isLiked);
   const { id, content, is_anonymous, user } = post;
   const words = content.split(" ");
   const isLongContent = words.length > 50;
   const displayedContent = isExpanded ? content : words.slice(0, 50).join(" ");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [likeResponse] = await Promise.all([checkIsLikedApi(post.id)]);
-        setIsLiked(likeResponse.isLiked);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setLiked(isLiked);
+    console.log(liked, "whjkvw");
+  }, [isLiked]);
 
   const handleLike = async () => {
-    setLikeCount(likeCount + 1);
-    post.like_count++;
-    try {
-      const response = await likePostApi(post.id);
-      if (response.data.success) {
-        setIsLiked(true);
-        setLikeCount(likeCount + 1);
-      } else {
-        message.error("Error liking the post");
+    if (!liked) {
+      setLiked(true);
+      setLikeCount(likeCount + 1);
+      try {
+        const response = await likePostApi(post.id);
+        if (response.success) {
+          message.success("Liked");
+        } else {
+          setLikeCount(post.like_count);
+          message.error("Error liking the post");
+        }
+      } catch (error) {
+        setLikeCount(post.like_count);
+        message.error("Failed to like post");
       }
-    } catch (error) {
-      console.error("Error liking the post:", error);
-      message.error("Failed to like post");
     }
   };
 
   const handleUnlike = async () => {
+    setLiked(false);
     setLikeCount(likeCount - 1);
-    post.like_count--;
-    try {
-      const response = await unlikePostApi(post.id);
-      if (response.data.success) {
-        setIsLiked(false);
-        // setLikeCount(likeCount - 1);
-      } else {
-        message.error("Error unliking the post");
+    if (liked) {
+      try {
+        const response = await unlikePostApi(post.id);
+        if (response.success) {
+          message.success("Unliked");
+        } else {
+          setLikeCount(post.like_count);
+          message.error("Error unliking the post");
+        }
+      } catch (error) {
+        setLikeCount(post.like_count);
+        message.error("Failed to unlike post");
       }
-    } catch (error) {
-      console.error("Error unliking the post:", error);
-      message.error("Failed to unlike post");
     }
   };
 
@@ -124,10 +118,7 @@ const PostCart = ({ post, setPosts }) => {
             `${API_URL}/posts/update/${id}`,
             values,
             {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
+              headers: headerAPI(),
             }
           );
           if (response.data.success) {
@@ -265,7 +256,7 @@ const PostCart = ({ post, setPosts }) => {
       </Modal>
       {/* Delete Confirmation Modal */}
       <Modal
-        title='Confirm Delete Post'
+        title='Confirm Delete This Comment'
         visible={isModalDeleteOpen}
         onCancel={() => setIsModalDeleteOpen(false)}
         footer={[
@@ -317,13 +308,12 @@ const PostCart = ({ post, setPosts }) => {
             type='link'
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            {" "}
             {isExpanded ? "Show less" : "Show More"}
           </Button>
         )}
       </PostContent>
       <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-        {isLiked === true || post.like_count !== 0 ? (
+        {liked ? (
           <HeartFilled
             style={{ color: "#F32525", fontSize: "32px", cursor: "pointer" }}
             onClick={handleUnlike}
