@@ -12,6 +12,10 @@ const formatTime = (timestamp) => {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
+const formatDateTime = (timestamp) => {
+  return moment(timestamp).format("YYYY-MM-DD HH:mm");
+};
+
 export default function Schedule({ schedule, onUpdate }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
@@ -36,18 +40,17 @@ export default function Schedule({ schedule, onUpdate }) {
 
   const deleteSchedule = async () => {
     const API = `${API_URL}/experts/calendar/${schedule.id}`;
-    // const hideLoading = message.loading("Deleting schedule...", 0);
     try {
       const response = await axios.delete(API, {
         headers: header,
       });
-      // hideLoading();
       message.success(response.data.message || "Delete schedule successfully");
     } catch (error) {
-      // hideLoading();
       message.error(
         "Delete failed " + (error.response?.data?.message || error.message)
       );
+    } finally {
+      setShowMenu(false);
     }
     onUpdate();
   };
@@ -83,6 +86,8 @@ export default function Schedule({ schedule, onUpdate }) {
 
   const formattedStartTime = formatTime(schedule.start_time);
   const formattedEndTime = formatTime(schedule.end_time);
+  const formattedStartDateTime = formatDateTime(schedule.start_time);
+  const formattedEndDateTime = formatDateTime(schedule.end_time);
 
   return (
     <>
@@ -131,7 +136,6 @@ export default function Schedule({ schedule, onUpdate }) {
                 >
                   <label>Describe:</label>
                   <textarea
-                    type="textarea"
                     value={describe}
                     onChange={(e) => setDescribe(e.target.value)}
                     required
@@ -156,6 +160,7 @@ export default function Schedule({ schedule, onUpdate }) {
                     showTimeSelect
                     dateFormat="Pp"
                     timeIntervals={30}
+                    placeholder={formattedStartDateTime}
                   />
                 </div>
                 <div
@@ -175,6 +180,7 @@ export default function Schedule({ schedule, onUpdate }) {
                     showTimeSelect
                     dateFormat="Pp"
                     timeIntervals={30}
+                    placeholder={formattedEndDateTime}
                   />
                 </div>
                 <div
@@ -190,6 +196,8 @@ export default function Schedule({ schedule, onUpdate }) {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     required
+                    min="0"
+                    max="100"
                   />
                 </div>
                 <button type="submit">Update</button>
