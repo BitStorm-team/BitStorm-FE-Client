@@ -13,7 +13,7 @@ import HistoryBooking from "../components/profile/HistoryBooking";
 import { getAllBooking, getAllBookingExpert, getUserProfile } from "../api";
 import axios from "axios";
 import { API_URL, headerAPI } from "../utils/helpers.js";
-import { DatePicker } from "antd";
+import { Button, DatePicker } from "antd";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { message } from "antd";
@@ -35,6 +35,7 @@ export default function Profile() {
   const [bookings, setBookings] = useState([]);
   const [userId, setUserId] = useState(1);
   const [postData, setPostData] = useState([{}]);
+  const [isCreateLoading, setIsCreateLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -132,6 +133,7 @@ export default function Profile() {
     e.preventDefault();
     const API = `${API_URL}/experts/calendar`;
     try {
+      setIsCreateLoading(true);
       const response = await axios.post(
         API,
         {
@@ -145,17 +147,18 @@ export default function Profile() {
         }
       );
       message.success(response.data.message || "Send message successfully");
-      // Fetch the updated schedules after creating a new one
+      setShowCreateCalendarModal(false);
       const updatedSchedules = await axios.get(
         `${API_URL}/experts/${userData.id}/calendars`,
         { headers: header }
       );
       setAllSchedules(updatedSchedules.data.data.data);
-      setShowCreateCalendarModal(false);
     } catch (error) {
       message.error(
         "Contact failed " + (error.response?.data?.message || error.message)
       );
+    } finally {
+      setIsCreateLoading(false);
     }
   };
 
@@ -327,6 +330,7 @@ export default function Profile() {
                       showTimeSelect
                       dateFormat="Pp"
                       timeIntervals={30}
+                      required
                     />
                   </div>
                   <div
@@ -348,6 +352,7 @@ export default function Profile() {
                       showTimeSelect
                       dateFormat="Pp"
                       timeIntervals={30}
+                      required
                     />
                   </div>
                   <div
@@ -363,9 +368,18 @@ export default function Profile() {
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                       required
+                      min="0"
+                      max="100"
                     />
                   </div>
-                  <button type="submit">Create</button>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="update-button"
+                    loading={isCreateLoading} // 4. Use loading state to display loading indicator
+                  >
+                    Create
+                  </Button>
                 </form>
               </div>
             </div>

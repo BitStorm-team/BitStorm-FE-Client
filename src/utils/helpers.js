@@ -1,6 +1,6 @@
 // import crypto from 'crypto-browserify';
-import {jwtDecode} from 'jwt-decode' // Correctly import jwtDecode
-import axios from 'axios'
+import { jwtDecode } from "jwt-decode"; // Correctly import jwtDecode
+import axios from "axios";
 
 const ACCESS_TOKEN = "__token__";
 
@@ -53,9 +53,9 @@ export const fetchAPIUserExpert = async (endPoint, setData) => {
     const response = await axios.get(endPoint, {
       headers,
     });
-    if (response.data.success ) {
-        setData(response.data.data);
-        console.log(response.data.data);
+    if (response.data.success) {
+      setData(response.data.data);
+      console.log(response.data.data);
     }
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -74,17 +74,16 @@ export function headerAPI() {
 // Function to parse URL parameters and check transaction status
 export function checkTransactionStatus(urlParams) {
   const params = new URLSearchParams(urlParams);
-  const responseCode = params.get('vnp_ResponseCode');
-  const transactionStatus = params.get('vnp_TransactionStatus');
+  const responseCode = params.get("vnp_ResponseCode");
+  const transactionStatus = params.get("vnp_TransactionStatus");
   // Check if either responseCode or transactionStatus indicates success
-  if(responseCode){
-    return responseCode === '00' || transactionStatus === '00';
-  }else{
-    return null
+  if (responseCode) {
+    return responseCode === "00" || transactionStatus === "00";
+  } else {
+    return null;
   }
 }
 
+// export const API_URL = process.env.API_URL || 'https://bitstormbe1.zeabur.app/api'
 
-
-export const API_URL = process.env.API_URL || 'https://bitstormbe1.zeabur.app/api'
-
+export const API_URL = "http://localhost:8000/api";

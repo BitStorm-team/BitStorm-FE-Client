@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../assets/css/profile/action.css";
 import { API_URL, headerAPI } from "../../utils/helpers";
-import { message } from "antd";
+import { Button, message } from "antd";
 import "../../assets/css/profile/loadingProfille.css";
 import PostItem from "./PostItem";
 import { BellOutlined } from "@ant-design/icons";
@@ -19,6 +19,7 @@ export default function Action(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingCert, setIsLoadingCert] = useState(false);
   const [isPostLoading, setIsPostLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { postInfor } = props;
   const navigate = useNavigate();
   useEffect(() => {
@@ -69,13 +70,13 @@ export default function Action(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUpdating(true);
     const API =
       formData.role_id === 2
         ? `${API_URL}/user/profile`
         : formData.role_id === 3
         ? `${API_URL}/experts/profile`
         : null;
-
     if (API) {
       try {
         if (formData.role_id === 3) {
@@ -95,6 +96,7 @@ export default function Action(props) {
             updateResponse.data.message || "Updated successfully"
           );
           setShowDetailModal(false);
+          
         } else {
           const updateResponse = await axios.patch(
             API,
@@ -110,11 +112,14 @@ export default function Action(props) {
             updateResponse.data.message || "Updated successfully"
           );
           setShowDetailModal(false);
+          setIsUpdating(true);
         }
       } catch (error) {
         message.error(
           "Update failed " + (error.response?.data?.message || error.message)
         );
+      } finally{
+        setIsUpdating(false);
       }
     }
     console.log("Form data submitted:", formData);
@@ -330,9 +335,14 @@ export default function Action(props) {
                       </>
                     )}
                     <div className="input-group">
-                      <button type="submit" className="update-button">
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="update-button"
+                        loading={isUpdating} // 4. Use loading state to display loading indicator
+                      >
                         Update
-                      </button>
+                      </Button>
                     </div>
                   </form>
                 </div>
