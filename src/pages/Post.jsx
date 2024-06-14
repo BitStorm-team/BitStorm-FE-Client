@@ -32,7 +32,7 @@ export default function Post() {
   const user=getUser();
   useEffect(() => {
     const fetchData = async () => {
-      const likedPosts = await Promise.all([getLikedPosts()])
+      const likedPosts = await getLikedPosts();
       setLikedPosts(likedPosts)
     }
     fetchData();
@@ -191,10 +191,11 @@ return (
         ) : (
           <Row>
             {posts.slice().reverse().map((post) => {
-              const isLiked = likedPosts.some((likedPost) =>
-                parseInt(likedPost.post_id) === parseInt(post.id)
+
+              const isLiked = likedPosts.some((it) =>
+                parseInt(it.post_id) === parseInt(post.id)
               );
-              console.log('isLiked:', isLiked);
+              console.log('isLiked:', likedPosts);
               return (
                 <Col span={24} key={post.id}>
                   <PostCart post={post} setPosts={setPosts} isLiked={isLiked} />
