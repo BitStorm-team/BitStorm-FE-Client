@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../utils/helpers";
+import { API_URL, headerAPI } from "../utils/helpers";
 import { message } from "antd";
 let  postDetails = null;
 export const setPostDetais = (postInfor) => {postDetails= postInfor};
@@ -55,14 +55,14 @@ export const deletePostApi= async(id)=>{
         }
 }
 // Kiểm tra xem bài viết đã được người dùng like hay chưa
-export const checkIsLikedApi = async (postId) => {
+const headers = headerAPI();
+export const getLikedPosts = async () => {
   try {
-    const response = await axios.get(`${API_URL}/posts/${postId}/is-liked`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
+    const response = await axios.get(`${API_URL}/liked-posts`, {
+      headers
     });
-    return response.data;
+    console.log("likedPosts",response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error('Error checking like status:', error);
     throw error;
@@ -72,9 +72,7 @@ export const checkIsLikedApi = async (postId) => {
 export const likePostApi = async (postId) => {
   try {
     const response = await axios.post(`${API_URL}/posts/${postId}/like`, {}, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
+      headers
     });
     return response.data;
   } catch (error) {
@@ -86,9 +84,7 @@ export const likePostApi = async (postId) => {
 export const unlikePostApi = async (postId) => {
   try {
     const response = await axios.delete(`${API_URL}/posts/${postId}/unlike`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
+      headers
     });
     return response.data;
   } catch (error) {

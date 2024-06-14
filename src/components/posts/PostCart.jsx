@@ -23,6 +23,7 @@ import {
   checkIsLikedApi,
   deletePostApi,
   getAllPostsApi,
+  getLikedPosts,
   likePostApi,
   unlikePostApi,
 } from "../../api/post";
@@ -47,12 +48,12 @@ const formItemLayout = {
   },
 };
 
-const PostCart = ({ post, setPosts }) => {
+const PostCart = ({ post, setPosts,isLiked }) => {
   const currentUser = getUser();
   const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [isLiked, setIsLiked] = useState(false);
+  
   const [likeCount, setLikeCount] = useState(post.like_count);
   const [isModalUpdatePostOpen, setIsModalUpdatePostOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
@@ -62,26 +63,15 @@ const PostCart = ({ post, setPosts }) => {
   const isLongContent = words.length > 50;
   const displayedContent = isExpanded ? content : words.slice(0, 50).join(" ");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [likeResponse] = await Promise.all([checkIsLikedApi(post.id)]);
-        setIsLiked(likeResponse.isLiked);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  
 
   const handleLike = async () => {
     setLikeCount(likeCount + 1);
-    post.like_count++;
+    // post.like_count++;
     try {
       const response = await likePostApi(post.id);
       if (response.data.success) {
-        setIsLiked(true);
+        // setIsLiked(true);
         setLikeCount(likeCount + 1);
       } else {
         message.error("Error liking the post");
@@ -94,12 +84,11 @@ const PostCart = ({ post, setPosts }) => {
 
   const handleUnlike = async () => {
     setLikeCount(likeCount - 1);
-    post.like_count--;
     try {
       const response = await unlikePostApi(post.id);
       if (response.data.success) {
-        setIsLiked(false);
-        // setLikeCount(likeCount - 1);
+        // setIsLiked(false);
+        setLikeCount(likeCount - 1);
       } else {
         message.error("Error unliking the post");
       }
@@ -323,7 +312,7 @@ const PostCart = ({ post, setPosts }) => {
         )}
       </PostContent>
       <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-        {isLiked === true || post.like_count !== 0 ? (
+        {isLiked ? (
           <HeartFilled
             style={{ color: "#F32525", fontSize: "32px", cursor: "pointer" }}
             onClick={handleUnlike}

@@ -17,6 +17,7 @@ import { getUser, getUserProfile } from "../api"; // Ensure this import is corre
 import axios from "axios";
 import { API_URL } from "../utils/helpers";
 import Loading from "../components/expertDetail/Loading";
+import { getLikedPosts } from "../api/post";
 
 
 const { Search } = Input;
@@ -39,8 +40,16 @@ export default function Post() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); // State for loading
   const [form] = Form.useForm();
-
+  const [likedPosts, setLikedPosts] = useState([]);
   const user=getUser();
+  useEffect(() => {
+    const fetchData = async () => {
+      const likedPosts= await Promise.all([getLikedPosts()]);
+      setLikedPosts(likedPosts);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("__token__");
@@ -208,7 +217,7 @@ return (
           <Row>
             {posts.slice().reverse().map((post) => (
               <Col span={24} key={post.id}>
-                <PostCart post={post} setPosts={setPosts}/>
+                <PostCart post={post} setPosts={setPosts} isLiked={likedPosts.some(likedPost => likedPost.post_id === post.id)}/>
               </Col>
             ))}
           </Row>
